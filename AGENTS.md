@@ -1,22 +1,114 @@
-## Development
+# Shri Varasiddhi Shopping Mall Website
 
-When starting the dev server, use background mode:
+## Objective
 
-```
-astro dev --background
-```
+Build a production-quality, mobile-first fashion retail website for Shri Varasiddhi Shopping Mall, Adilabad.
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+The result must look custom-designed, premium and editorial, not like a generated template.
 
-## Documentation
+## Stack
 
-Full documentation: https://docs.astro.build
+- Astro 6
+- TypeScript strict
+- Tailwind CSS v4
+- Astro assets
+- Lucide Astro
+- Bodoni Moda Variable
+- Instrument Sans Variable
+- Playwright
+- static output
+- Cloudflare Pages compatible
 
-Consult these guides before working on related tasks:
+Do not introduce another framework unless technically necessary.
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+## Current product scope
+
+Phase 1 is a premium catalogue/brand website.
+
+It is NOT currently:
+- an e-commerce checkout application
+- an account system
+- a stock-management platform
+- an ERP
+- a payment system
+
+Do not add cart/login/backend/database/payment architecture without explicit instruction.
+
+## Data
+
+During the design phase use typed local data.
+
+Do not integrate Sanity until the main visual system and page structure are approved.
+
+Design data structures so they can later be migrated to Sanity.
+
+## Truthfulness
+
+Never invent:
+- products
+- prices
+- discounts
+- opening hours
+- reviews
+- addresses
+- phone numbers
+- policies
+
+Use provided/verified information or obvious temporary development labels clearly marked as such.
+
+## Design
+
+Always use the `varasiddhi-design` skill for significant frontend work.
+
+For major design work also use relevant installed design skills.
+
+References supplied by the client are inspiration for:
+- typography
+- visual hierarchy
+- editorial composition
+- catalogue presentation
+
+Do not clone reference layouts.
+
+## Code quality
+
+- Keep components focused.
+- Avoid unnecessary abstractions.
+- Avoid unnecessary client-side JavaScript.
+- No unused components.
+- No placeholder lorem ipsum in final UI.
+- Use semantic HTML.
+- Prefer Astro over hydrated components.
+
+## Assets
+
+Do not replace supplied brand or product assets unless explicitly requested.
+
+Preserve source assets.
+
+Never overwrite originals.
+
+## Validation
+
+After meaningful work run:
+
+npm run check
+npm run build
+
+For major visual milestones also run Playwright viewport checks.
+
+Fix errors before reporting completion.
+
+## Git
+
+Do not rewrite history.
+
+Do not delete unrelated work.
+
+Create cohesive changes.
+
+Before finishing, report:
+- files changed
+- key design decisions
+- validation run
+- remaining limitations
