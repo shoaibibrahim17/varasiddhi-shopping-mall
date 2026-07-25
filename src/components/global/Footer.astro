@@ -1,0 +1,56 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#top" aria-label="Back to top">Shri Varasiddhi Shopping Mall</a>
+    <p>Adilabad, Telangana</p>
+    <small>© {year} Shri Varasiddhi Shopping Mall.</small>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .footer-inner {
+    display: grid;
+    width: min(100%, var(--content-max));
+    min-height: 9rem;
+    align-items: center;
+    gap: 1rem;
+    margin-inline: auto;
+    padding: 2rem var(--gutter);
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .footer-inner a {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 460;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .footer-inner p,
+  .footer-inner small {
+    color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 47.99rem) {
+    .footer-inner {
+      align-items: start;
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

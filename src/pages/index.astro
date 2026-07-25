@@ -1,17 +1,35 @@
 ---
-
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import EditorialHero from "../components/home/EditorialHero.astro";
+import CollectionIndex from "../components/home/CollectionIndex.astro";
+import WomenEdit from "../components/home/WomenEdit.astro";
+import SareeEdit from "../components/home/SareeEdit.astro";
+import MenEdit from "../components/home/MenEdit.astro";
+import OccasionVisit from "../components/home/OccasionVisit.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<!--
+THESIS: The Celebration Folio turns a regional fashion catalogue into a composed editorial journey and refuses the marketplace grid.
+OWN-WORLD: Warm paper, espresso type, textile-led crimson and indigo fields, fine gold rules, sharp image crops, and flat square-edged surfaces.
+STORY: Visitors meet the brand through celebration dressing, discover women’s, saree, occasion, and men’s chapters, then recognise Adilabad as the destination.
+FIRST VIEWPORT: A quiet typographic field meets a tightly cropped red saree portrait and a slim espresso location rail; the catalogue action sits beneath the headline.
+FORM: A lookbook-and-invitation folio composition, selected directly from the client-pinned editorial direction; no concept seed was needed.
+-->
+
+<BaseLayout
+  title="Shri Varasiddhi Shopping Mall | Fashion in Adilabad"
+  description="Explore sarees, women’s fashion, men’s fashion and occasion wear from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
+>
+  <Header />
+  <main id="main-content">
+    <EditorialHero />
+    <CollectionIndex />
+    <WomenEdit />
+    <SareeEdit />
+    <MenEdit />
+    <OccasionVisit />
+  </main>
+  <Footer />
+</BaseLayout>

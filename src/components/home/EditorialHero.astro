@@ -1,0 +1,328 @@
+---
+import { Image } from "astro:assets";
+import { ArrowDownRight } from "lucide-astro";
+
+import { getCatalogueItem } from "../../data/catalogue";
+
+const hero = getCatalogueItem("festive-red-saree");
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="hero-kicker">Adilabad <span aria-hidden="true">·</span> A house of fashion</p>
+    <h1 class="display-title" id="hero-title">
+      <span>Style for</span>
+      <em>Every</em>
+      <span>Celebration.</span>
+    </h1>
+    <p class="hero-intro">
+      Sarees, women’s, men’s and occasion edits, brought together through
+      considered dressing.
+    </p>
+    <a class="button-primary" href="#collections">
+      View the catalogue
+      <ArrowDownRight size={17} stroke-width={1.5} aria-hidden="true" />
+    </a>
+  </div>
+
+  <figure class="hero-visual">
+    <div class="hero-image-frame">
+      <Image
+        class="hero-image"
+        src={hero.image}
+        alt={hero.alt}
+        widths={[640, 960, 1280]}
+        sizes="(max-width: 768px) 100vw, 54vw"
+        quality={84}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <figcaption>
+      <span>The Saree Edit</span>
+      <strong>Festive red</strong>
+    </figcaption>
+  </figure>
+
+  <aside class="hero-rail" aria-label="Location">
+    <span>Shri Varasiddhi</span>
+    <p>Adilabad <span aria-hidden="true">·</span> Telangana</p>
+  </aside>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    min-height: min(51rem, calc(100svh - 5.1rem));
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    grid-template-columns: minmax(23rem, 39%) minmax(0, 1fr) 4rem;
+  }
+
+  .hero-copy {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(3.5rem, 7vh, 6rem) clamp(2rem, 5vw, 5rem) 3.6rem;
+    padding-left: max(
+      var(--gutter),
+      calc((100vw - var(--content-max)) / 2 + var(--gutter))
+    );
+    flex-direction: column;
+  }
+
+  .hero-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: clamp(1.75rem, 4vh, 3.7rem);
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 680;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .hero-kicker::before {
+    width: 1.8rem;
+    height: 1px;
+    background: currentColor;
+    content: "";
+  }
+
+  .hero h1 span,
+  .hero h1 em {
+    display: block;
+  }
+
+  .hero h1 em {
+    color: var(--color-crimson);
+    font-weight: 430;
+  }
+
+  .hero-intro {
+    max-width: 35ch;
+    margin-top: clamp(1.8rem, 4vh, 3rem);
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+    font-size: clamp(1rem, 1.35vw, 1.12rem);
+    line-height: 1.7;
+  }
+
+  .hero .button-primary {
+    margin-top: 2rem;
+  }
+
+  .hero-visual {
+    position: relative;
+    min-width: 0;
+    min-height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #ead9c1;
+  }
+
+  .hero-image-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    transform: scale(2.18);
+    transform-origin: left center;
+    object-fit: cover;
+    object-position: left 48%;
+  }
+
+  .hero-visual figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    min-width: 11rem;
+    padding: 1rem 1.2rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .hero-visual figcaption span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .hero-visual figcaption strong {
+    margin-top: 0.15rem;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 480;
+    line-height: 1.15;
+  }
+
+  .hero-rail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.5rem;
+    background: var(--color-espresso);
+    color: var(--color-paper);
+    flex-direction: column;
+  }
+
+  .hero-rail span,
+  .hero-rail p {
+    margin: 0;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  .hero-rail span {
+    color: var(--color-gold);
+  }
+
+  .hero-rail p {
+    color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-image-frame {
+      animation: image-curtain 1.05s var(--ease-out) both;
+    }
+
+    .hero-image {
+      animation: image-settle 1.35s var(--ease-out) both;
+    }
+
+    @keyframes image-curtain {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+      to {
+        clip-path: inset(0);
+      }
+    }
+
+    @keyframes image-settle {
+      from {
+        transform: scale(2.28);
+        filter: saturate(0.82);
+      }
+      to {
+        transform: scale(2.18);
+        filter: saturate(1);
+      }
+    }
+  }
+
+  @media (max-width: 64rem) {
+    .hero {
+      min-height: 43rem;
+      grid-template-columns: minmax(21rem, 47%) minmax(0, 1fr) 3.5rem;
+    }
+
+    .hero-copy {
+      padding-right: 2.5rem;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero {
+      min-height: auto;
+      grid-template-columns: minmax(0, 1fr) 2.75rem;
+      grid-template-rows: auto 22.5rem;
+    }
+
+    .hero-copy {
+      padding: 2.25rem var(--gutter) 2.25rem;
+      grid-column: 1 / -1;
+    }
+
+    .hero-kicker {
+      margin-bottom: 1.8rem;
+      font-size: 0.66rem;
+    }
+
+    .hero h1 {
+      max-width: 8ch;
+    }
+
+    .hero-intro {
+      max-width: 32ch;
+      margin-top: 1.35rem;
+      font-size: 0.95rem;
+    }
+
+    .hero .button-primary {
+      margin-top: 1.5rem;
+    }
+
+    .hero-visual {
+      min-height: 22.5rem;
+      grid-column: 1;
+    }
+
+    .hero-image {
+      transform: scale(2.14);
+      transform-origin: left center;
+      object-position: left 46%;
+    }
+
+    .hero-visual figcaption {
+      right: auto;
+      left: 0;
+      min-width: 9.75rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .hero-visual figcaption strong {
+      font-size: 1.2rem;
+    }
+
+    .hero-rail {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-image {
+        animation-name: image-settle-mobile;
+      }
+
+      @keyframes image-settle-mobile {
+        from {
+          transform: scale(2.24);
+          filter: saturate(0.82);
+        }
+        to {
+          transform: scale(2.14);
+          filter: saturate(1);
+        }
+      }
+    }
+  }
+
+  @media (max-width: 23rem) {
+    .hero-copy {
+      padding-top: 2.25rem;
+    }
+
+    .hero-intro {
+      font-size: 0.9rem;
+    }
+
+    .hero-visual {
+      min-height: 21rem;
+    }
+  }
+</style>
+
+

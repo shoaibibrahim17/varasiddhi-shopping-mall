@@ -1,0 +1,323 @@
+---
+import { Image } from "astro:assets";
+
+import buildingConcept from "../../concepts/varasiddhi-brand-building-concept-03.png.png";
+import { getCatalogueItem, type CatalogueItem } from "../../data/catalogue";
+
+const occasionItems = [
+  getCatalogueItem("festive-red-saree"),
+  getCatalogueItem("mustard-sharara-set"),
+  getCatalogueItem("classic-white-kurta"),
+];
+
+function cropStyle(item: CatalogueItem) {
+  return `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+}
+---
+
+<section class="occasion-edit page-section" id="occasion" aria-labelledby="occasion-title">
+  <div class="occasion-layout container">
+    <div class="occasion-copy">
+      <p class="folio-label">Occasion</p>
+      <h2 class="section-title" id="occasion-title">
+        Celebration dressing across the family.
+      </h2>
+      <p class="section-copy">
+        Phase 1 presents the store as a fashion destination, not a checkout
+        system. These previews show the range visitors can explore before an
+        in-store visit.
+      </p>
+    </div>
+
+    <div class="occasion-stack no-scrollbar" aria-label="Occasion catalogue previews">
+      {
+        occasionItems.map((item, index) => (
+          <article class:list={[index === 0 && "occasion-card--lead"]}>
+            <span class="occasion-image asset-frame asset-frame--fashion-crop" style={cropStyle(item)}>
+              <Image
+                src={item.image}
+                alt={item.alt}
+                widths={[300, 440, 620]}
+                sizes="(max-width: 768px) 62vw, 17vw"
+                quality={82}
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </span>
+            <p>{item.category}</p>
+            <h3>{item.title}</h3>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="visit-edit page-section" id="visit" aria-labelledby="visit-title">
+  <div class="visit-layout container">
+    <div class="visit-copy">
+      <p class="folio-label">Visit</p>
+      <h2 class="section-title" id="visit-title">
+        Shri Varasiddhi Shopping Mall, Adilabad.
+      </h2>
+      <div class="visit-note">
+        <p>
+          The verified public details available in this repository currently
+          confirm the brand name and location as Adilabad, Telangana.
+        </p>
+        <p>
+          Street address, opening hours, phone number and social links are not
+          published here until they are supplied or verified.
+        </p>
+      </div>
+    </div>
+
+    <figure class="visit-visual">
+      <span class="visit-building asset-frame asset-frame--building-crop">
+        <Image
+          src={buildingConcept}
+          alt="Generated concept visualization of the Varasiddhi shopping mall exterior."
+          widths={[720, 960, 1280, 1536]}
+          sizes="(max-width: 768px) 100vw, 56vw"
+          quality={84}
+          loading="eager"
+        />
+      </span>
+      <figcaption>
+        <span>Destination visual</span>
+        <strong>Adilabad</strong>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .occasion-edit {
+    background:
+      linear-gradient(
+        90deg,
+        var(--color-ivory) 0,
+        var(--color-ivory) 42%,
+        var(--color-paper) 42%,
+        var(--color-paper) 100%
+      );
+  }
+
+  .occasion-layout,
+  .visit-layout {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .occasion-layout {
+    align-items: center;
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.28fr);
+  }
+
+  .occasion-copy .section-copy {
+    margin-top: 1.5rem;
+  }
+
+  .occasion-stack {
+    display: grid;
+    align-items: stretch;
+    gap: 1px;
+    background: var(--color-line);
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  }
+
+  .occasion-stack article {
+    scroll-snap-align: start;
+    display: grid;
+    min-width: 0;
+    background: var(--color-paper);
+    grid-template-rows: auto auto auto;
+  }
+
+  .occasion-card--lead {
+    grid-row: span 2;
+  }
+
+  .occasion-image {
+    --asset-ratio: 3 / 4;
+    --asset-scale: var(--crop-scale);
+    --asset-x: var(--crop-x);
+    --asset-y: var(--crop-y);
+  }
+
+  .occasion-card--lead .occasion-image {
+    --asset-ratio: 4 / 5;
+  }
+
+  .occasion-image img,
+  .visit-building img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    transform: scale(var(--asset-scale, 1));
+    transform-origin: var(--asset-origin, left center);
+    object-fit: cover;
+    object-position: var(--asset-x, 50%) var(--asset-y, 50%);
+  }
+
+  .occasion-stack p {
+    padding: 0.9rem 1rem 0;
+    color: var(--color-muted-gold);
+    font-size: 0.66rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .occasion-stack h3 {
+    min-height: 4.1rem;
+    padding: 0.35rem 1rem 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.08rem, 1.38vw, 1.38rem);
+    font-weight: 460;
+    letter-spacing: -0.012em;
+    line-height: 1.05;
+  }
+
+  .visit-edit {
+    overflow: hidden;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper);
+  }
+
+  .visit-layout {
+    align-items: end;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.2fr);
+  }
+
+  .visit-copy {
+    display: grid;
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+  }
+
+  .visit-copy .section-title {
+    max-width: 12ch;
+  }
+
+  .visit-note {
+    display: grid;
+    max-width: 36rem;
+    gap: 1rem;
+    padding-left: clamp(1rem, 2vw, 1.4rem);
+    border-left: 2px solid var(--color-gold);
+    color: color-mix(in srgb, var(--color-ink) 74%, transparent);
+    font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    line-height: 1.75;
+  }
+
+  .visit-visual {
+    position: relative;
+    margin: 0;
+    background: var(--color-espresso);
+  }
+
+  .visit-building {
+    --asset-ratio: 16 / 9;
+    --asset-scale: 1.04;
+    --asset-x: 50%;
+    --asset-y: 82%;
+    --asset-origin: 50% 82%;
+  }
+
+  .visit-visual figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    min-width: 13rem;
+    padding: 1rem 1.15rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .visit-visual figcaption span {
+    color: var(--color-muted-gold);
+    font-size: 0.65rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .visit-visual figcaption strong {
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 460;
+    line-height: 1;
+  }
+
+  @media (max-width: 64rem) {
+    .occasion-layout,
+    .visit-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .visit-building {
+      --asset-ratio: 3 / 2;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .occasion-edit {
+      background: var(--color-ivory);
+    }
+
+    .occasion-stack {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      background: transparent;
+      grid-template-columns: repeat(3, minmax(14.5rem, 64vw));
+    }
+
+    .occasion-stack article,
+    .occasion-card--lead {
+      border: 1px solid var(--color-line);
+      grid-row: auto;
+    }
+
+    .occasion-image,
+    .occasion-card--lead .occasion-image {
+      --asset-ratio: 4 / 5;
+    }
+
+    .visit-edit {
+      padding-top: clamp(3.25rem, 12vw, 4.75rem);
+    }
+
+    .visit-note {
+      font-size: 0.95rem;
+    }
+
+    .visit-layout {
+      gap: 2rem;
+    }
+
+    .visit-visual {
+      margin-inline: calc(var(--gutter) * -1);
+    }
+
+    .visit-building {
+      --asset-ratio: 4 / 5;
+      --asset-scale: 1.42;
+      --asset-y: 100%;
+      --asset-origin: 50% 100%;
+    }
+
+    .visit-visual figcaption {
+      right: auto;
+      left: var(--gutter);
+      min-width: 11.5rem;
+    }
+  }
+</style>
+
+
+
+

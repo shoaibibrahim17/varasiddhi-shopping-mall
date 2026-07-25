@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+
+import {
+  getCatalogueByCategory,
+  getCatalogueItem,
+  type CatalogueItem,
+} from "../../data/catalogue";
+
+const sarees = [
+  ...getCatalogueByCategory("Sarees"),
+  ...getCatalogueByCategory("Cotton Sarees"),
+];
+const plate = getCatalogueItem("designer-brocade-saree");
+
+function cropStyle(item: CatalogueItem) {
+  return `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+}
+---
+
+<section class="saree-edit page-section" id="sarees" aria-labelledby="sarees-title">
+  <div class="saree-layout container">
+    <div class="saree-lede">
+      <p class="folio-label">Sarees</p>
+      <h2 class="section-title" id="sarees-title">
+        The saree edit carries the visual signature.
+      </h2>
+      <p class="section-copy">
+        Brocade, silk, festive red and indigo cotton previews are arranged with
+        enough space for border, weave and colour to remain visible.
+      </p>
+    </div>
+
+    <figure class="saree-plate">
+      <span class="saree-lead-image asset-frame asset-frame--fashion-crop" style={cropStyle(plate)}>
+        <Image
+          src={plate.image}
+          alt={plate.alt}
+          widths={[520, 760, 1040]}
+          sizes="(max-width: 768px) 100vw, 38vw"
+          quality={84}
+          loading="eager"
+        />
+      </span>
+    </figure>
+
+    <div class="saree-list">
+      {
+        sarees.map((item, index) => (
+          <article class="saree-row">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div>
+              <p>{item.category}</p>
+              <h3>{item.title}</h3>
+            </div>
+            <figure>
+              <span class="saree-thumb asset-frame asset-frame--fashion-crop asset-frame--compact" style={cropStyle(item)}>
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  widths={[220, 320, 440]}
+                  sizes="(max-width: 768px) 34vw, 10vw"
+                  quality={80}
+                  loading="eager"
+                />
+              </span>
+            </figure>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .saree-edit {
+    background: var(--color-paper);
+  }
+
+  .saree-layout {
+    display: grid;
+    align-items: start;
+    gap: clamp(2rem, 4.2vw, 4rem);
+    grid-template-columns: minmax(22rem, 0.9fr) minmax(0, 0.95fr) minmax(21rem, 1fr);
+  }
+
+  .saree-lede {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .saree-lede .section-title {
+    max-width: 10ch;
+  }
+
+  .saree-lede .section-copy {
+    margin-top: 1.5rem;
+  }
+
+  .saree-plate {
+    margin: 0;
+    border: 1px solid var(--color-line);
+    background: var(--color-ivory);
+  }
+
+  .saree-lead-image {
+    aspect-ratio: 4 / 5;
+  }
+
+  .saree-lead-image img,
+  .saree-thumb img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    transform: scale(var(--crop-scale));
+    transform-origin: left center;
+    object-fit: cover;
+    object-position: var(--crop-x) var(--crop-y);
+  }
+
+  .saree-list {
+    display: grid;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .saree-row {
+    display: grid;
+    min-height: 7.6rem;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--color-line);
+    grid-template-columns: 2.15rem minmax(0, 1fr) 6.25rem;
+  }
+
+  .saree-row > span {
+    color: var(--color-muted-gold);
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .saree-row p {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .saree-row h3 {
+    margin-top: 0.35rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.12rem, 1.45vw, 1.42rem);
+    font-weight: 460;
+    letter-spacing: -0.012em;
+    line-height: 1.05;
+  }
+
+  .saree-row figure {
+    margin: 0;
+  }
+
+  .saree-thumb {
+    aspect-ratio: 1 / 1;
+  }
+
+  @media (max-width: 64rem) {
+    .saree-layout {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    }
+
+    .saree-lede {
+      position: static;
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .saree-edit {
+      padding-top: clamp(3.25rem, 12vw, 4.75rem);
+    }
+
+    .saree-lede .section-title {
+      max-width: 9ch;
+    }
+
+    .saree-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .saree-row {
+      grid-template-columns: 1.85rem minmax(0, 1fr) 5.25rem;
+    }
+  }
+</style>
+
