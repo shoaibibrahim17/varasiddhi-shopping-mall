@@ -18,7 +18,7 @@ import skyBlueShirt from "../assets/catalogue/men/shirts/sky-blue-button-down-sh
 import champagneSherwaniSet from "../assets/catalogue/men/wedding/champagne-sherwani-set.png";
 import ivorySherwani from "../assets/catalogue/men/wedding/ivory-sherwani.png";
 import sparklePinkCoord from "../assets/catalogue/women/fusion/sparkle-pink-coord.png.png";
-import blushPinkAnarkali from "../assets/catalogue/women/occasion/blush-pink-anarkali.png.png";
+import blushPinkAnarkali from "../assets/catalogue/women/occasion/blush-pink-anarkali.png";
 import mustardSharara from "../assets/catalogue/women/occasion/mustard-sharara-set.png.png";
 import royalBlueAnarkali from "../assets/catalogue/women/occasion/royal-blue-anarkali.png.png";
 import designerBrocadeSaree from "../assets/catalogue/women/sarees/designer-brocade-saree.png.png";
