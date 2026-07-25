@@ -18,21 +18,21 @@ function cropStyle(item: CatalogueItem) {
 }
 ---
 
-<section class="saree-edit page-section" id="sarees" aria-labelledby="sarees-title">
+<section class="saree-edit page-section" data-reveal-section id="sarees" aria-labelledby="sarees-title">
   <div class="saree-layout container">
     <div class="saree-lede">
-      <p class="folio-label">Sarees</p>
-      <h2 class="section-title" id="sarees-title">
+      <p class="folio-label" data-reveal="eyebrow">Sarees</p>
+      <h2 class="section-title" id="sarees-title" data-reveal="title">
         The saree edit carries the visual signature.
       </h2>
-      <p class="section-copy">
+      <p class="section-copy" data-reveal="copy">
         Brocade, silk, festive red and indigo cotton previews are arranged with
         enough space for border, weave and colour to remain visible.
       </p>
     </div>
 
     <figure class="saree-plate">
-      <span class="saree-lead-image asset-frame asset-frame--fashion-crop" style={cropStyle(plate)}>
+      <span class="saree-lead-image asset-frame asset-frame--fashion-crop" data-image-reveal data-parallax style={cropStyle(plate)}>
         <Image
           src={plate.image}
           alt={plate.alt}
@@ -47,7 +47,7 @@ function cropStyle(item: CatalogueItem) {
     <div class="saree-list">
       {
         sarees.map((item, index) => (
-          <article class="saree-row">
+          <article class="saree-row" data-stagger-item>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <div>
               <p>{item.category}</p>
@@ -198,5 +198,6 @@ function cropStyle(item: CatalogueItem) {
     }
   }
 </style>
+
 
 

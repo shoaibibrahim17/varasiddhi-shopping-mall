@@ -112,3 +112,39 @@ Before finishing, report:
 - key design decisions
 - validation run
 - remaining limitations
+## Animation System
+
+The site uses:
+
+- Lenis for controlled vertical smooth scrolling.
+- Motion JavaScript API for premium editorial animation.
+
+Do not introduce React or motion/react.
+
+Do not install Animate UI components. Animate UI may be used only as visual inspiration.
+
+Animation should feel like premium fashion editorial art direction.
+
+Prefer:
+- clip reveals
+- opacity
+- transform
+- subtle stagger
+- restrained scroll-linked motion
+- image scale
+- typography reveal
+
+Avoid:
+- bounce
+- elastic effects
+- excessive parallax
+- floating cards
+- cursor gimmicks
+- constant animation
+- animation on every element
+
+Never hide important content permanently behind JavaScript animation.
+
+Respect `prefers-reduced-motion`.
+
+Lenis must not interfere with horizontal catalogue rails.

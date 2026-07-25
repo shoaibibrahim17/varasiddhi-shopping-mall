@@ -1,39 +1,45 @@
 ---
 import { Image } from "astro:assets";
 
-import { getCatalogueByGroup, type CatalogueItem } from "../../data/catalogue";
+import { getCatalogueItem, type CatalogueItem } from "../../data/catalogue";
 
-const men = getCatalogueByGroup("Men");
+const men = [
+  getCatalogueItem("black-bandhgala"),
+  getCatalogueItem("pink-blue-printed-kurta"),
+  getCatalogueItem("navy-pinstripe-suit"),
+  getCatalogueItem("ivory-sherwani"),
+  getCatalogueItem("white-overshirt"),
+];
 
 function cropStyle(item: CatalogueItem) {
   return `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
 }
 ---
 
-<section class="men-edit page-section" id="men" aria-labelledby="men-title">
+<section class="men-edit page-section" id="men" aria-labelledby="men-title" data-reveal-section>
   <div class="men-heading container">
     <div>
-      <p class="folio-label">Men</p>
-      <h2 class="section-title" id="men-title">
+      <p class="folio-label" data-reveal="eyebrow">Men</p>
+      <h2 class="section-title" id="men-title" data-reveal="title">
         Menswear, edited without losing warmth.
       </h2>
     </div>
-    <p class="section-copy">
+    <p class="section-copy" data-reveal="copy">
       The men’s chapter balances ethnicwear and casualwear with clean spacing,
       dark textile fields and direct product imagery.
     </p>
   </div>
 
-  <div class="men-grid container no-scrollbar">
+  <div class="men-grid container no-scrollbar" data-lenis-prevent>
     {
       men.map((item, index) => (
-        <article class:list={["men-card", index === 0 && "men-card--large"]}>
-          <span class="men-image asset-frame asset-frame--fashion-crop" style={cropStyle(item)}>
+        <article class:list={["men-card", index === 0 && "men-card--large"]} data-stagger-item>
+          <span class="men-image asset-frame asset-frame--fashion-crop" style={cropStyle(item)} data-image-reveal={index === 0 ? true : undefined} data-parallax={index === 0 ? true : undefined}>
             <Image
               src={item.image}
               alt={item.alt}
-              widths={[360, 520, 760]}
-              sizes="(max-width: 768px) 78vw, 28vw"
+              widths={[360, 520, 760, 960]}
+              sizes={index === 0 ? "(max-width: 768px) 62vw, 36vw" : "(max-width: 768px) 58vw, 18vw"}
               quality={82}
               loading={index === 0 ? "eager" : "lazy"}
             />
@@ -75,7 +81,7 @@ function cropStyle(item: CatalogueItem) {
     gap: 1px;
     margin-top: clamp(2.25rem, 5vw, 3.75rem);
     background: color-mix(in srgb, var(--color-paper) 22%, transparent);
-    grid-template-columns: 1.05fr 0.95fr 0.95fr;
+    grid-template-columns: minmax(0, 1.16fr) repeat(2, minmax(0, 0.72fr));
   }
 
   .men-card {
@@ -86,15 +92,20 @@ function cropStyle(item: CatalogueItem) {
     grid-template-rows: auto auto;
   }
 
+  .men-card--large {
+    grid-row: span 2;
+  }
+
   .men-image {
-    --asset-scale: 2.02;
-    --asset-x: 20%;
-    --asset-y: 48%;
+    --asset-ratio: 1 / 1;
+    --asset-scale: var(--crop-scale);
+    --asset-x: var(--crop-x);
+    --asset-y: var(--crop-y);
     background: #1f160f;
   }
 
   .men-card--large .men-image {
-    --asset-ratio: 3 / 4;
+    --asset-ratio: 4 / 5;
   }
 
   .men-image img {
@@ -102,7 +113,7 @@ function cropStyle(item: CatalogueItem) {
     height: 100%;
     max-width: none;
     transform: scale(var(--asset-scale));
-    transform-origin: left center;
+    transform-origin: center center;
     object-fit: cover;
     object-position: var(--asset-x) var(--asset-y);
   }
@@ -140,6 +151,7 @@ function cropStyle(item: CatalogueItem) {
 
     .men-card--large {
       grid-column: 1 / -1;
+      grid-row: auto;
     }
   }
 
@@ -150,7 +162,7 @@ function cropStyle(item: CatalogueItem) {
       scroll-snap-type: x mandatory;
       padding-inline: var(--gutter);
       background: transparent;
-      grid-template-columns: repeat(3, minmax(14.5rem, 68vw));
+      grid-template-columns: minmax(15.75rem, 70vw) repeat(4, minmax(13.5rem, 58vw));
     }
 
     .men-card,
@@ -159,15 +171,13 @@ function cropStyle(item: CatalogueItem) {
       grid-column: auto;
     }
 
+    .men-card--large .men-image,
     .men-image {
       --asset-ratio: 1 / 1;
     }
+
     .men-card p {
       font-size: 0.75rem;
     }
   }
 </style>
-
-
-
-

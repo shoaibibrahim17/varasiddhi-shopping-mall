@@ -7,26 +7,26 @@ import { getCatalogueItem } from "../../data/catalogue";
 const hero = getCatalogueItem("festive-red-saree");
 ---
 
-<section class="hero" id="top" aria-labelledby="hero-title">
+<section class="hero" data-hero id="top" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <p class="hero-kicker">Adilabad <span aria-hidden="true">·</span> A house of fashion</p>
+    <p class="hero-kicker" data-hero-item>Adilabad <span aria-hidden="true">·</span> A house of fashion</p>
     <h1 class="display-title" id="hero-title">
-      <span>Style for</span>
-      <em>Every</em>
-      <span>Celebration.</span>
+      <span data-hero-title-line>Style for</span>
+      <em data-hero-title-line>Every</em>
+      <span data-hero-title-line>Celebration.</span>
     </h1>
-    <p class="hero-intro">
+    <p class="hero-intro" data-hero-item>
       Sarees, women’s, men’s and occasion edits, brought together through
       considered dressing.
     </p>
-    <a class="button-primary" href="#collections">
+    <a class="button-primary" href="#collections" data-hero-item>
       View the catalogue
       <ArrowDownRight size={17} stroke-width={1.5} aria-hidden="true" />
     </a>
   </div>
 
   <figure class="hero-visual">
-    <div class="hero-image-frame">
+    <div class="hero-image-frame" data-hero-image>
       <Image
         class="hero-image"
         src={hero.image}
@@ -337,6 +337,7 @@ const hero = getCatalogueItem("festive-red-saree");
     }
   }
 </style>
+
 
 
 

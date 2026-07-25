@@ -32,5 +32,11 @@ const { title, description } = Astro.props;
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <slot />
+    <script>
+      import "../scripts/smooth-scroll";
+      import "../scripts/animations";
+    </script>
   </body>
 </html>
+
+

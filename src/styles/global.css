@@ -274,6 +274,30 @@ p {
 .text-link:focus-visible::after {
   transform: scaleX(1);
 }
+.button-primary svg,
+.button-light svg,
+.text-link svg {
+  transition: transform 240ms var(--ease-out);
+}
+
+.button-primary:hover svg,
+.button-primary:focus-visible svg,
+.button-light:hover svg,
+.button-light:focus-visible svg,
+.text-link:hover svg,
+.text-link:focus-visible svg {
+  transform: translate(0.14rem, 0.14rem);
+}
+
+[data-image-reveal] {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-reveal="title"] {
+    overflow: hidden;
+  }
+}
 
 
 .asset-frame {
@@ -369,4 +393,6 @@ p {
     animation-iteration-count: 1 !important;
   }
 }
+
+
 

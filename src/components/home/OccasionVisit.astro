@@ -5,9 +5,9 @@ import buildingConcept from "../../concepts/varasiddhi-brand-building-concept-03
 import { getCatalogueItem, type CatalogueItem } from "../../data/catalogue";
 
 const occasionItems = [
-  getCatalogueItem("festive-red-saree"),
-  getCatalogueItem("mustard-sharara-set"),
-  getCatalogueItem("classic-white-kurta"),
+  getCatalogueItem("champagne-sherwani-set"),
+  getCatalogueItem("blush-pink-anarkali"),
+  getCatalogueItem("pink-blue-printed-kurta"),
 ];
 
 function cropStyle(item: CatalogueItem) {
@@ -15,21 +15,21 @@ function cropStyle(item: CatalogueItem) {
 }
 ---
 
-<section class="occasion-edit page-section" id="occasion" aria-labelledby="occasion-title">
+<section class="occasion-edit page-section" data-reveal-section id="occasion" aria-labelledby="occasion-title">
   <div class="occasion-layout container">
     <div class="occasion-copy">
-      <p class="folio-label">Occasion</p>
-      <h2 class="section-title" id="occasion-title">
+      <p class="folio-label" data-reveal="eyebrow">Occasion</p>
+      <h2 class="section-title" id="occasion-title" data-reveal="title">
         Celebration dressing across the family.
       </h2>
-      <p class="section-copy">
+      <p class="section-copy" data-reveal="copy">
         Phase 1 presents the store as a fashion destination, not a checkout
         system. These previews show the range visitors can explore before an
         in-store visit.
       </p>
     </div>
 
-    <div class="occasion-stack no-scrollbar" aria-label="Occasion catalogue previews">
+    <div class="occasion-stack no-scrollbar" data-lenis-prevent aria-label="Occasion catalogue previews">
       {
         occasionItems.map((item, index) => (
           <article class:list={["occasion-card", index === 0 && "occasion-card--lead"]}>
@@ -52,14 +52,14 @@ function cropStyle(item: CatalogueItem) {
   </div>
 </section>
 
-<section class="visit-edit page-section" id="visit" aria-labelledby="visit-title">
+<section class="visit-edit page-section" data-reveal-section id="visit" aria-labelledby="visit-title">
   <div class="visit-layout container">
     <div class="visit-copy">
-      <p class="folio-label">Visit</p>
-      <h2 class="section-title" id="visit-title">
+      <p class="folio-label" data-reveal="eyebrow">Visit</p>
+      <h2 class="section-title" id="visit-title" data-reveal="title">
         Shri Varasiddhi Shopping Mall, Adilabad.
       </h2>
-      <div class="visit-note">
+      <div class="visit-note" data-reveal="copy">
         <p>
           The verified public details available in this repository currently
           confirm the brand name and location as Adilabad, Telangana.
@@ -72,7 +72,7 @@ function cropStyle(item: CatalogueItem) {
     </div>
 
     <figure class="visit-visual">
-      <span class="visit-building asset-frame asset-frame--building-crop">
+      <span class="visit-building asset-frame asset-frame--building-crop" data-image-reveal data-parallax>
         <Image
           src={buildingConcept}
           alt="Generated concept visualization of the Varasiddhi shopping mall exterior."
@@ -373,6 +373,8 @@ function cropStyle(item: CatalogueItem) {
     }
   }
 </style>
+
+
 
 
 

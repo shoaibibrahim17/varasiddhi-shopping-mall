@@ -8,28 +8,28 @@ const chapters = [
     eyebrow: "01",
     title: "Women’s edits",
     href: "#women",
-    item: getCatalogueItem("royal-blue-anarkali"),
+    item: getCatalogueItem("blush-pink-anarkali"),
     copy: "Composed occasion, fusion and festive silhouettes for a dressed-up wardrobe.",
   },
   {
     eyebrow: "02",
     title: "Saree room",
     href: "#sarees",
-    item: getCatalogueItem("designer-brocade-saree"),
+    item: getCatalogueItem("kalamkari-cotton-saree"),
     copy: "Silk, brocade, festive red and cotton saree directions shown as catalogue previews.",
   },
   {
     eyebrow: "03",
     title: "Men’s wear",
     href: "#men",
-    item: getCatalogueItem("classic-white-kurta"),
+    item: getCatalogueItem("black-bandhgala"),
     copy: "Ethnic and casual menswear presented with the same editorial restraint.",
   },
   {
     eyebrow: "04",
     title: "Occasion dressing",
     href: "#occasion",
-    item: getCatalogueItem("mustard-sharara-set"),
+    item: getCatalogueItem("champagne-sherwani-set"),
     copy: "Celebration-led dressing across sarees, women’s occasionwear and men’s ethnic wear.",
   },
 ];
@@ -39,14 +39,14 @@ function cropStyle(item: CatalogueItem) {
 }
 ---
 
-<section class="collection-index page-section" id="collections" aria-labelledby="collections-title">
+<section class="collection-index page-section" data-reveal-section id="collections" aria-labelledby="collections-title">
   <div class="collection-heading container">
-    <p class="folio-label">Catalogue chapters</p>
+    <p class="folio-label" data-reveal="eyebrow">Catalogue chapters</p>
     <div>
-      <h2 class="section-title" id="collections-title">
+      <h2 class="section-title" id="collections-title" data-reveal="title">
         A considered route through the collection.
       </h2>
-      <p class="section-copy">
+      <p class="section-copy" data-reveal="copy">
         Browse the current fashion previews by chapter. The page uses only the
         supplied catalogue artwork and avoids prices, stock claims or invented
         store details.
@@ -54,10 +54,10 @@ function cropStyle(item: CatalogueItem) {
     </div>
   </div>
 
-  <div class="chapter-grid container no-scrollbar" aria-label="Catalogue chapter links">
+  <div class="chapter-grid container no-scrollbar" data-lenis-prevent aria-label="Catalogue chapter links">
     {
       chapters.map((chapter) => (
-        <a class="chapter-card" href={chapter.href}>
+        <a class="chapter-card" href={chapter.href} data-stagger-item>
           <figure>
             <span class="chapter-image asset-frame asset-frame--fashion-crop" style={cropStyle(chapter.item)}>
               <Image
@@ -217,6 +217,8 @@ function cropStyle(item: CatalogueItem) {
     }
   }
 </style>
+
+
 
 
 
