@@ -271,9 +271,9 @@ const hero = getCatalogueItem("festive-red-saree");
     }
 
     .hero-image {
-      transform: scale(2.14);
+      transform: scale(2.28);
       transform-origin: left center;
-      object-position: left 46%;
+      object-position: left 47%;
     }
 
     .hero-visual figcaption {
@@ -299,17 +299,25 @@ const hero = getCatalogueItem("festive-red-saree");
 
       @keyframes image-settle-mobile {
         from {
-          transform: scale(2.24);
+          transform: scale(2.38);
           filter: saturate(0.82);
         }
         to {
-          transform: scale(2.14);
+          transform: scale(2.28);
           filter: saturate(1);
         }
       }
     }
   }
 
+
+  @media (max-width: 47.99rem) {
+    .hero-visual figcaption span,
+    .hero-rail span,
+    .hero-rail p {
+      font-size: 0.72rem;
+    }
+  }
   @media (max-width: 23rem) {
     .hero-copy {
       padding-top: 2.25rem;
@@ -322,7 +330,15 @@ const hero = getCatalogueItem("festive-red-saree");
     .hero-visual {
       min-height: 21rem;
     }
+    .hero-visual figcaption span,
+    .hero-rail span,
+    .hero-rail p {
+      font-size: 0.72rem;
+    }
   }
 </style>
+
+
+
 
 

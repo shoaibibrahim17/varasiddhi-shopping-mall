@@ -32,7 +32,7 @@ function cropStyle(item: CatalogueItem) {
     <div class="occasion-stack no-scrollbar" aria-label="Occasion catalogue previews">
       {
         occasionItems.map((item, index) => (
-          <article class:list={[index === 0 && "occasion-card--lead"]}>
+          <article class:list={["occasion-card", index === 0 && "occasion-card--lead"]}>
             <span class="occasion-image asset-frame asset-frame--fashion-crop" style={cropStyle(item)}>
               <Image
                 src={item.image}
@@ -268,23 +268,79 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .occasion-stack {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
+      overflow: hidden;
       margin-inline: calc(var(--gutter) * -1);
-      padding-inline: var(--gutter);
-      background: transparent;
-      grid-template-columns: repeat(3, minmax(14.5rem, 64vw));
+      padding-inline: 0;
+      background: var(--color-line);
+      aspect-ratio: 1.12 / 1;
+      grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.86fr);
+      grid-template-rows: repeat(2, minmax(0, 1fr));
     }
 
-    .occasion-stack article,
-    .occasion-card--lead {
-      border: 1px solid var(--color-line);
+    .occasion-card {
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+      border: 0;
       grid-row: auto;
+      grid-template-rows: 1fr;
+    }
+
+    .occasion-card--lead {
+      grid-row: 1 / span 2;
+    }
+
+    .occasion-card:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .occasion-card:nth-child(3) {
+      grid-column: 2;
+      grid-row: 2;
     }
 
     .occasion-image,
     .occasion-card--lead .occasion-image {
-      --asset-ratio: 4 / 5;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .occasion-card--lead .occasion-image {
+      --asset-scale: 1.82;
+      --asset-x: 16%;
+    }
+
+    .occasion-card:not(.occasion-card--lead) .occasion-image {
+      --asset-scale: 2.16;
+      --asset-x: 18%;
+    }
+
+    .occasion-stack p,
+    .occasion-stack h3 {
+      position: absolute;
+      left: 0;
+      z-index: 1;
+      background: var(--color-paper);
+    }
+
+    .occasion-stack p {
+      bottom: 2.35rem;
+      padding: 0.55rem 0.7rem 0;
+      font-size: 0.72rem;
+    }
+
+    .occasion-stack h3 {
+      bottom: 0;
+      min-height: 2.35rem;
+      max-width: 100%;
+      padding: 0.1rem 0.7rem 0.62rem;
+      overflow: hidden;
+      font-size: clamp(1rem, 4.3vw, 1.2rem);
+    }
+
+    .occasion-card:not(.occasion-card--lead) h3 {
+      font-size: clamp(0.92rem, 3.7vw, 1.05rem);
     }
 
     .visit-edit {
@@ -292,7 +348,7 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .visit-note {
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     .visit-layout {
@@ -305,7 +361,7 @@ function cropStyle(item: CatalogueItem) {
 
     .visit-building {
       --asset-ratio: 4 / 5;
-      --asset-scale: 1.42;
+      --asset-scale: 1.52;
       --asset-y: 100%;
       --asset-origin: 50% 100%;
     }
@@ -313,10 +369,13 @@ function cropStyle(item: CatalogueItem) {
     .visit-visual figcaption {
       right: auto;
       left: var(--gutter);
-      min-width: 11.5rem;
+      min-width: 12rem;
     }
   }
 </style>
+
+
+
 
 
 
