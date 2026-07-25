@@ -4,9 +4,10 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  canonicalPath?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
 ---
 
 <!doctype html>
@@ -28,6 +29,7 @@ const { title, description } = Astro.props;
     <meta property="og:site_name" content="Shri Varasiddhi Shopping Mall" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <link rel="canonical" href={canonicalPath} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

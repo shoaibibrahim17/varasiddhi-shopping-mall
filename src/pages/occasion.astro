@@ -1,0 +1,77 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueItem } from "../data/catalogue";
+
+const familyCelebration = [
+  getCatalogueItem("champagne-sherwani-set"),
+  getCatalogueItem("blush-pink-anarkali"),
+  getCatalogueItem("mustard-sharara-set"),
+  getCatalogueItem("ivory-sherwani"),
+];
+const menCeremony = [
+  getCatalogueItem("black-bandhgala"),
+  getCatalogueItem("ivory-sherwani"),
+  getCatalogueItem("champagne-sherwani-set"),
+];
+---
+
+<BaseLayout
+  title="Occasion Wear Catalogue | Shri Varasiddhi Shopping Mall"
+  description="Browse celebration and wedding dressing previews for women and men from Shri Varasiddhi Shopping Mall in Adilabad."
+  canonicalPath="/occasion"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Occasion"
+      title="Celebration dressing across the family."
+      copy="A combined occasion story for women’s festive silhouettes, saree-adjacent dressing and men’s wedding or formal looks."
+      item={getCatalogueItem("champagne-sherwani-set")}
+      cta={{ label: "Browse occasion wear", href: "#family" }}
+      tone="ivory"
+      imageLabel="Family celebration lead"
+    />
+    <CategoryNav items={[
+      { label: "Family Edit", href: "#family", detail: "Women and men" },
+      { label: "Women", href: "#women-occasion", detail: "Anarkali and sharara" },
+      { label: "Men", href: "#men-ceremony", detail: "Bandhgala and sherwani" },
+      { label: "Visit", href: "#visit", detail: "Adilabad" },
+    ]} />
+    <CatalogueLook
+      id="family"
+      eyebrow="Family Edit"
+      title="One celebration story, not separate inventory lanes."
+      copy="The page mixes women’s and men’s occasion imagery so the offer reads as family dressing rather than a duplicate women’s page."
+      items={familyCelebration}
+      tone="paper"
+      layout="mosaic"
+    />
+    <EditorialBreak
+      id="women-occasion"
+      eyebrow="Women"
+      title="Colour-led occasion silhouettes anchor the softer side."
+      copy="Anarkali and sharara pieces create the women’s celebration thread with different scale from the Women page."
+      item={getCatalogueItem("royal-blue-anarkali")}
+      tone="espresso"
+      imageMode="wide"
+    />
+    <CatalogueLook
+      id="men-ceremony"
+      eyebrow="Men"
+      title="Ceremonial menswear brings the architectural counterpoint."
+      copy="Bandhgala and sherwani looks give the occasion route a more formal closing rhythm."
+      items={menCeremony}
+      tone="ivory"
+      layout="feature"
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>

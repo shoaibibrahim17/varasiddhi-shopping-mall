@@ -1,0 +1,147 @@
+---
+import { Image } from "astro:assets";
+import { ArrowDownRight } from "lucide-astro";
+
+import buildingConcept from "../../concepts/varasiddhi-brand-building-concept-03.png.png";
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  copy?: string;
+  href?: string;
+  ctaLabel?: string;
+}
+
+const {
+  eyebrow = "Visit",
+  title = "Plan a visit to the Adilabad store.",
+  copy = "The current verified public details confirm Shri Varasiddhi Shopping Mall in Adilabad, Telangana. Address, hours, phone number and social links will remain unpublished until supplied or verified.",
+  href = "/visit",
+  ctaLabel = "Visit details",
+} = Astro.props;
+---
+
+<section class="visit-cta" data-reveal-section>
+  <div class="visit-cta__inner container">
+    <div class="visit-cta__copy">
+      <p class="folio-label" data-reveal="eyebrow">{eyebrow}</p>
+      <h2 class="section-title" data-reveal="title">{title}</h2>
+      <p class="section-copy" data-reveal="copy">{copy}</p>
+      <a class="button-primary" href={href} data-reveal="copy">
+        {ctaLabel}
+        <ArrowDownRight size={16} stroke-width={1.5} aria-hidden="true" />
+      </a>
+    </div>
+
+    <figure>
+      <span class="asset-frame asset-frame--building-crop visit-cta__image" data-image-reveal data-parallax>
+        <Image
+          class="asset-frame__image"
+          src={buildingConcept}
+          alt="Generated concept visualization of the Varasiddhi shopping mall exterior."
+          widths={[640, 900, 1200, 1536]}
+          sizes="(max-width: 768px) 100vw, 46vw"
+          quality={84}
+          loading="lazy"
+        />
+      </span>
+      <figcaption>
+        <span>Destination</span>
+        <strong>Adilabad</strong>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .visit-cta {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper);
+  }
+
+  .visit-cta__inner {
+    display: grid;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .visit-cta__copy {
+    display: grid;
+    justify-items: start;
+    gap: 1.35rem;
+  }
+
+  .visit-cta__copy .section-title {
+    max-width: 12ch;
+  }
+
+  .visit-cta__copy .section-copy {
+    max-width: 38rem;
+  }
+
+  .visit-cta figure {
+    position: relative;
+    margin: 0;
+    background: var(--color-espresso);
+  }
+
+  .visit-cta__image {
+    --asset-ratio: 3 / 2;
+    --asset-scale: 1.04;
+    --asset-y: 84%;
+    --asset-origin: 50% 84%;
+  }
+
+  .visit-cta figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 12rem;
+    padding: 1rem 1.15rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .visit-cta figcaption span {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .visit-cta figcaption strong {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 460;
+    line-height: 1;
+  }
+
+  @media (max-width: 64rem) {
+    .visit-cta__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .visit-cta figure {
+      margin-inline: calc(var(--gutter) * -1);
+    }
+
+    .visit-cta__image {
+      --asset-ratio: 4 / 5;
+      --asset-scale: 1.5;
+      --asset-y: 100%;
+      --asset-origin: 50% 100%;
+    }
+
+    .visit-cta figcaption {
+      right: auto;
+      left: var(--gutter);
+    }
+  }
+</style>

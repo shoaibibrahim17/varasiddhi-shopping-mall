@@ -1,0 +1,270 @@
+---
+import { Image } from "astro:assets";
+
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import buildingConcept from "../concepts/varasiddhi-brand-building-concept-03.png.png";
+---
+
+<BaseLayout
+  title="Visit Shri Varasiddhi Shopping Mall | Adilabad"
+  description="Visit information foundation for Shri Varasiddhi Shopping Mall in Adilabad, Telangana, with unverified address, hours, phone and social details intentionally withheld."
+  canonicalPath="/visit"
+>
+  <Header />
+  <main id="main-content">
+    <section class="visit-page-hero" data-reveal-section>
+      <div class="visit-page-hero__copy">
+        <p class="folio-label" data-reveal="eyebrow">Visit</p>
+        <h1 class="display-title" data-reveal="title">Shri Varasiddhi Shopping Mall, Adilabad.</h1>
+        <p class="section-copy" data-reveal="copy">
+          The site currently verifies the brand name and location as Adilabad,
+          Telangana. Practical store details are structured below for later
+          verified content.
+        </p>
+      </div>
+      <figure>
+        <span class="visit-page-hero__image" data-image-reveal>
+          <Image
+            class="visit-page-hero__img"
+            src={buildingConcept}
+            alt="Generated concept visualization of the Varasiddhi shopping mall exterior."
+            widths={[760, 1040, 1320, 1536]}
+            sizes="(max-width: 768px) 100vw, 58vw"
+            quality={84}
+            loading="eager"
+          />
+        </span>
+        <figcaption>
+          <span>Destination visual</span>
+          <strong>Adilabad</strong>
+        </figcaption>
+      </figure>
+    </section>
+
+    <CategoryNav items={[
+      { label: "Store", href: "#store", detail: "Brand and city" },
+      { label: "Details", href: "#details", detail: "Verified fields" },
+      { label: "Directions", href: "#directions", detail: "Prepared only" },
+      { label: "Catalogue", href: "/collections", detail: "Browse first" },
+    ]} />
+
+    <section class="visit-facts page-section" id="details" data-reveal-section>
+      <div class="visit-facts__inner container">
+        <div>
+          <p class="folio-label" data-reveal="eyebrow">Store facts</p>
+          <h2 class="section-title" data-reveal="title">Only verified business information is shown.</h2>
+        </div>
+        <dl data-reveal="copy">
+          <div>
+            <dt>Brand name</dt>
+            <dd>Shri Varasiddhi Shopping Mall</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>Adilabad, Telangana</dd>
+          </div>
+          <div>
+            <dt>Street address</dt>
+            <dd>Not yet supplied or verified.</dd>
+          </div>
+          <div>
+            <dt>Opening hours</dt>
+            <dd>Not yet supplied or verified.</dd>
+          </div>
+          <div>
+            <dt>Phone number</dt>
+            <dd>Not yet supplied or verified.</dd>
+          </div>
+          <div>
+            <dt>Social links</dt>
+            <dd>Not yet supplied or verified.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <EditorialBreak
+      id="store"
+      eyebrow="Store story"
+      title="A fashion destination first, with practical details ready for verification."
+      copy="The Visit page keeps the brand destination visible while avoiding invented address, hours, phone or social information. The structure can accept those fields when the client supplies them."
+      tone="ivory"
+      cta={{ label: "Browse collections", href: "/collections" }}
+    />
+
+    <section class="directions-shell page-section" id="directions" data-reveal-section>
+      <div class="container">
+        <p class="folio-label" data-reveal="eyebrow">Directions</p>
+        <h2 class="section-title" data-reveal="title">Map and directions are prepared, but not populated.</h2>
+        <p class="section-copy" data-reveal="copy">
+          A directions module can be connected once a verified street address or
+          map URL is supplied. No placeholder map link has been invented.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .visit-page-hero {
+    display: grid;
+    min-height: min(46rem, calc(100svh - 5rem));
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  }
+
+  .visit-page-hero__copy {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding: clamp(3.5rem, 7vw, 7rem) var(--gutter);
+  }
+
+  .visit-page-hero__copy .display-title {
+    max-width: 10ch;
+  }
+
+  .visit-page-hero figure {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-espresso);
+  }
+
+  .visit-page-hero__image {
+    position: relative;
+    display: block;
+    height: 100%;
+    min-height: 30rem;
+    overflow: hidden;
+    background: var(--color-espresso);
+  }
+
+  .visit-page-hero__img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 225%;
+    height: auto;
+    max-width: none;
+    transform: translateX(-50%);
+    object-fit: contain;
+    object-position: 50% 100%;
+  }
+
+  .visit-page-hero figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 14rem;
+    padding: 1rem 1.15rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .visit-page-hero figcaption span,
+  .visit-facts dt {
+    color: var(--color-muted-gold);
+    font-size: 0.7rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .visit-page-hero figcaption strong {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 460;
+    line-height: 1;
+  }
+
+  .visit-facts {
+    background: var(--color-paper);
+  }
+
+  .visit-facts__inner {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  }
+
+  .visit-facts dl {
+    display: grid;
+    margin: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .visit-facts div {
+    display: grid;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--color-line);
+    grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1fr);
+  }
+
+  .visit-facts dd {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-ink) 74%, transparent);
+    line-height: 1.65;
+  }
+
+  .directions-shell {
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper);
+  }
+
+  .directions-shell .section-title,
+  .directions-shell .section-copy {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 64rem) {
+    .visit-page-hero,
+    .visit-facts__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .visit-page-hero__image {
+      min-height: 0;
+      aspect-ratio: 3 / 2;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .visit-page-hero {
+      min-height: 0;
+    }
+
+    .visit-page-hero__copy {
+      padding-block: clamp(2.7rem, 12vw, 4rem);
+    }
+
+    .visit-page-hero__image {
+      aspect-ratio: 4 / 5;
+    }
+
+    .visit-page-hero__img {
+      width: 164%;
+    }
+
+    .visit-page-hero figcaption {
+      right: auto;
+      left: var(--gutter);
+    }
+
+    .visit-facts div {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+  }
+</style>

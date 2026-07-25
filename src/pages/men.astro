@@ -1,0 +1,92 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueItem } from "../data/catalogue";
+
+const casual = [
+  getCatalogueItem("white-overshirt"),
+  getCatalogueItem("beige-cargo-pants"),
+  getCatalogueItem("green-tee-white-shorts"),
+];
+const ethnic = [
+  getCatalogueItem("pink-blue-printed-kurta"),
+  getCatalogueItem("classic-white-kurta"),
+  getCatalogueItem("taupe-pathani-suit"),
+  getCatalogueItem("navy-embroidered-jacket-kurta"),
+  getCatalogueItem("navy-nehru-jacket-kurta"),
+];
+const wedding = [
+  getCatalogueItem("ivory-sherwani"),
+  getCatalogueItem("champagne-sherwani-set"),
+  getCatalogueItem("navy-nehru-jacket-kurta"),
+];
+---
+
+<BaseLayout
+  title="Men’s Fashion Catalogue | Shri Varasiddhi Shopping Mall"
+  description="Browse men’s casual, ethnic, formal and wedding fashion previews from Shri Varasiddhi Shopping Mall in Adilabad."
+  canonicalPath="/men"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Men"
+      title="Menswear with structure, ceremony and ease."
+      copy="The expanded men’s library is arranged by visual chapters: casual, ethnic, formal and wedding, each with a clear lead rather than equal product tiles."
+      item={getCatalogueItem("navy-pinstripe-suit")}
+      cta={{ label: "Browse menswear", href: "#ethnic" }}
+      tone="espresso"
+      imageLabel="Formal lead"
+    />
+    <CategoryNav items={[
+      { label: "Casual", href: "#casual", detail: "Overshirt and separates" },
+      { label: "Ethnic", href: "#ethnic", detail: "Kurta and Pathani" },
+      { label: "Formal", href: "#formal", detail: "Bandhgala and suit" },
+      { label: "Wedding", href: "#wedding", detail: "Sherwani sets" },
+    ]} />
+    <CatalogueLook
+      id="casual"
+      eyebrow="Casual"
+      title="Everyday menswear with clean, architectural spacing."
+      copy="Casual pieces stay quiet and direct, giving the page a lighter counterpoint before ceremonial dressing."
+      items={casual}
+      tone="paper"
+      layout="feature"
+    />
+    <CatalogueLook
+      id="ethnic"
+      eyebrow="Ethnic"
+      title="Printed, classic and jacketed kurta directions."
+      copy="Ethnicwear is the broadest men’s chapter, so it uses a larger editorial spread with one strong printed lead."
+      items={ethnic}
+      tone="espresso"
+      layout="mosaic"
+    />
+    <EditorialBreak
+      id="formal"
+      eyebrow="Formal"
+      title="Bandhgala and tailoring sharpen the middle of the page."
+      copy="Formal menswear is kept disciplined: darker fields, tighter crops and minimal supporting copy."
+      item={getCatalogueItem("black-bandhgala")}
+      tone="ivory"
+      imageMode="wide"
+    />
+    <CatalogueLook
+      id="wedding"
+      eyebrow="Wedding"
+      title="Sherwani looks carry the ceremonial finish."
+      copy="Wedding previews are composed with larger garment scale and restrained captions."
+      items={wedding}
+      tone="paper"
+      layout="feature"
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>

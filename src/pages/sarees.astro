@@ -1,0 +1,77 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueItem } from "../data/catalogue";
+
+const festiveEdit = [
+  getCatalogueItem("festive-red-saree"),
+  getCatalogueItem("designer-brocade-saree"),
+  getCatalogueItem("maroon-silk-saree"),
+];
+const cottonCraft = [
+  getCatalogueItem("kalamkari-cotton-saree"),
+  getCatalogueItem("indigo-blockprint-saree"),
+  getCatalogueItem("designer-brocade-saree"),
+];
+---
+
+<BaseLayout
+  title="Saree Catalogue | Shri Varasiddhi Shopping Mall"
+  description="Explore the editorial saree edit from Shri Varasiddhi Shopping Mall, including festive red, brocade, silk, blockprint and Kalamkari cotton sarees."
+  canonicalPath="/sarees"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Sarees"
+      title="The saree edit, built around border, weave and colour."
+      copy="A focused saree page for festive, brocade, silk and cotton craft directions, arranged as a lookbook rather than inventory."
+      item={getCatalogueItem("designer-brocade-saree")}
+      cta={{ label: "Browse the edit", href: "#festive" }}
+      tone="paper"
+      imageLabel="Brocade lead"
+      reverse
+    />
+    <CategoryNav items={[
+      { label: "Festive Edit", href: "#festive", detail: "Red, brocade, silk" },
+      { label: "Cotton & Craft", href: "#craft", detail: "Blockprint and Kalamkari" },
+      { label: "Kalamkari Moment", href: "#kalamkari", detail: "Large craft crop" },
+      { label: "Visit", href: "#visit", detail: "Adilabad" },
+    ]} />
+    <CatalogueLook
+      id="festive"
+      eyebrow="The Festive Edit"
+      title="Festive sarees with controlled colour and textile scale."
+      copy="The red, brocade and silk looks are cropped differently from the homepage so the page feels curated, not repeated."
+      items={festiveEdit}
+      tone="ivory"
+      layout="feature"
+    />
+    <EditorialBreak
+      id="craft"
+      eyebrow="Cotton & Craft"
+      title="Blockprint and Kalamkari create the quieter counterpoint."
+      copy="Cotton sarees bring a craft-led pause between the richer festive plates."
+      item={getCatalogueItem("indigo-blockprint-saree")}
+      tone="paper"
+      imageMode="wide"
+    />
+    <CatalogueLook
+      id="kalamkari"
+      eyebrow="Kalamkari Moment"
+      title="A single craft image gets room to lead."
+      copy="Kalamkari appears as a large textile moment with supporting sarees kept compact."
+      items={cottonCraft}
+      tone="espresso"
+      layout="mosaic"
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+interface Item {
+  label: string;
+  href: string;
+  detail?: string;
+}
+
+interface Props {
+  items: Item[];
+  label?: string;
+}
+
+const { items, label = "Browse this page" } = Astro.props;
+---
+
+<nav class="category-nav container no-scrollbar" aria-label={label} data-lenis-prevent style={`--nav-count: ${items.length}; --mobile-count: ${items.length};`}>
+  {items.map((item, index) => (
+    <a href={item.href} data-stagger-item>
+      <span>{String(index + 1).padStart(2, "0")}</span>
+      <strong>{item.label}</strong>
+      {item.detail && <small>{item.detail}</small>}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .category-nav {
+    display: grid;
+    gap: 1px;
+    padding-block: clamp(1.75rem, 3vw, 2.5rem);
+    background: var(--color-line);
+    grid-template-columns: repeat(var(--nav-count, 4), minmax(0, 1fr));
+  }
+
+  .category-nav a {
+    display: grid;
+    min-height: 8.5rem;
+    align-content: end;
+    gap: 0.6rem;
+    padding: 1.2rem;
+    background: var(--color-paper);
+    text-decoration: none;
+    transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+  }
+
+  .category-nav a:hover,
+  .category-nav a:focus-visible {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .category-nav span,
+  .category-nav small {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .category-nav strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 460;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  @media (max-width: 64rem) {
+    .category-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .category-nav {
+      display: grid;
+      width: auto;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-inline: var(--gutter);
+      background: transparent;
+      grid-template-columns: repeat(var(--mobile-count, 4), minmax(14.5rem, 66vw));
+    }
+
+    .category-nav a {
+      scroll-snap-align: start;
+      min-height: 7.5rem;
+      border: 1px solid var(--color-line);
+    }
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+import { Image } from "astro:assets";
+import { ArrowDownRight } from "lucide-astro";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  copy: string;
+  item: CatalogueItem;
+  cta?: { label: string; href: string };
+  tone?: "paper" | "ivory" | "espresso";
+  imageLabel?: string;
+  reverse?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  copy,
+  item,
+  cta,
+  tone = "paper",
+  imageLabel = item.category,
+  reverse = false,
+} = Astro.props;
+
+const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+---
+
+<section class:list={["catalogue-hero", `catalogue-hero--${tone}`, reverse && "catalogue-hero--reverse"]} data-reveal-section>
+  <div class="catalogue-hero__copy">
+    <p class="folio-label" data-reveal="eyebrow">{eyebrow}</p>
+    <h1 class="display-title" data-reveal="title">{title}</h1>
+    <p class="section-copy" data-reveal="copy">{copy}</p>
+    {cta && (
+      <a class:list={[tone === "espresso" ? "button-light" : "button-primary"]} href={cta.href} data-reveal="copy">
+        {cta.label}
+        <ArrowDownRight size={16} stroke-width={1.5} aria-hidden="true" />
+      </a>
+    )}
+  </div>
+
+  <figure class="catalogue-hero__figure">
+    <span class="asset-frame asset-frame--fashion-crop catalogue-hero__image" data-image-reveal data-parallax style={cropStyle}>
+      <Image
+        class="asset-frame__image"
+        src={item.image}
+        alt={item.alt}
+        widths={[520, 760, 1040, 1320]}
+        sizes="(max-width: 768px) 100vw, 50vw"
+        quality={84}
+        loading="eager"
+      />
+    </span>
+    <figcaption>
+      <span>{imageLabel}</span>
+      <strong>{item.title}</strong>
+    </figcaption>
+  </figure>
+</section>
+
+<style>
+  .catalogue-hero {
+    display: grid;
+    min-height: min(46rem, calc(100svh - 5rem));
+    align-items: stretch;
+    border-bottom: 1px solid var(--color-line);
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  }
+
+  .catalogue-hero--reverse {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+
+  .catalogue-hero--reverse .catalogue-hero__copy {
+    order: 2;
+  }
+
+  .catalogue-hero--reverse .catalogue-hero__figure {
+    order: 1;
+  }
+
+  .catalogue-hero--paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .catalogue-hero--ivory {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .catalogue-hero--espresso {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .catalogue-hero--espresso .section-copy {
+    color: color-mix(in srgb, var(--color-paper) 76%, transparent);
+  }
+
+  .catalogue-hero__copy {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding: clamp(3.5rem, 7vw, 7rem) var(--gutter);
+  }
+
+  .catalogue-hero__copy .display-title {
+    max-width: 10.5ch;
+  }
+
+  .catalogue-hero__copy .section-copy {
+    max-width: 34rem;
+  }
+
+  .catalogue-hero__figure {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    background: var(--color-espresso);
+  }
+
+  .catalogue-hero__image {
+    height: 100%;
+    min-height: 30rem;
+    aspect-ratio: auto;
+  }
+
+  .catalogue-hero__figure figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: min(18rem, 72%);
+    padding: 1.05rem 1.2rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .catalogue-hero__figure figcaption span {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .catalogue-hero__figure figcaption strong {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 460;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  @media (max-width: 47.99rem) {
+    .catalogue-hero,
+    .catalogue-hero--reverse {
+      min-height: 0;
+      grid-template-columns: 1fr;
+    }
+
+    .catalogue-hero--reverse .catalogue-hero__copy,
+    .catalogue-hero--reverse .catalogue-hero__figure {
+      order: initial;
+    }
+
+    .catalogue-hero__copy {
+      padding-block: clamp(2.7rem, 12vw, 4rem);
+    }
+
+    .catalogue-hero__image {
+      min-height: 0;
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

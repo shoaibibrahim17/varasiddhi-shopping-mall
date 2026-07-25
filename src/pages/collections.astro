@@ -1,0 +1,94 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueItem } from "../data/catalogue";
+
+const sareeEdit = [
+  getCatalogueItem("designer-brocade-saree"),
+  getCatalogueItem("festive-red-saree"),
+  getCatalogueItem("kalamkari-cotton-saree"),
+];
+const occasionEdit = [
+  getCatalogueItem("blush-pink-anarkali"),
+  getCatalogueItem("champagne-sherwani-set"),
+  getCatalogueItem("mustard-sharara-set"),
+];
+const menswearEdit = [
+  getCatalogueItem("black-bandhgala"),
+  getCatalogueItem("pink-blue-printed-kurta"),
+  getCatalogueItem("white-overshirt"),
+];
+---
+
+<BaseLayout
+  title="Collections | Shri Varasiddhi Shopping Mall"
+  description="Explore the main fashion collection chapters from Shri Varasiddhi Shopping Mall: sarees, occasion wear, menswear, wedding and everyday casual previews."
+  canonicalPath="/collections"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Collections"
+      title="The current catalogue, organized as editorial chapters."
+      copy="A visual directory for the site’s major fashion directions: sarees, occasion, menswear, wedding and everyday casual."
+      item={getCatalogueItem("kalamkari-cotton-saree")}
+      cta={{ label: "Browse chapters", href: "#saree-edit" }}
+      tone="paper"
+      imageLabel="Collection lead"
+    />
+    <CategoryNav items={[
+      { label: "The Saree Edit", href: "#saree-edit", detail: "Craft and festive" },
+      { label: "Occasion", href: "#occasion-edit", detail: "Celebration dressing" },
+      { label: "Menswear", href: "#menswear-edit", detail: "Casual to formal" },
+      { label: "Everyday", href: "#everyday-edit", detail: "Casual previews" },
+      { label: "Visit", href: "#visit", detail: "Adilabad" },
+    ]} />
+    <CatalogueLook
+      id="saree-edit"
+      eyebrow="The Saree Edit"
+      title="Sarees remain the visual signature."
+      copy="A compact route into silk, brocade, festive and cotton saree directions."
+      items={sareeEdit}
+      tone="ivory"
+      layout="feature"
+      cta={{ label: "Open sarees", href: "/sarees" }}
+    />
+    <CatalogueLook
+      id="occasion-edit"
+      eyebrow="Occasion"
+      title="Celebrationwear across women and men."
+      copy="A combined chapter for dressed-up occasions without inventing campaigns or dates."
+      items={occasionEdit}
+      tone="paper"
+      layout="mosaic"
+      cta={{ label: "Open occasion", href: "/occasion" }}
+    />
+    <CatalogueLook
+      id="menswear-edit"
+      eyebrow="Menswear"
+      title="Menswear moves from minimal to ceremonial."
+      copy="The men’s chapter uses the strongest expanded imagery without flattening it into a product grid."
+      items={menswearEdit}
+      tone="espresso"
+      layout="feature"
+      cta={{ label: "Open men", href: "/men" }}
+    />
+    <EditorialBreak
+      id="everyday-edit"
+      eyebrow="Everyday / Casual"
+      title="Casual pieces create a lighter close before the visit prompt."
+      copy="Everyday and casual are supported by the current catalogue structure and kept as visual previews, not commerce listings."
+      item={getCatalogueItem("green-tee-white-shorts")}
+      tone="paper"
+      imageMode="wide"
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>

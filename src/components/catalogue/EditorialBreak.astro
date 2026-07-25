@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import { ArrowDownRight } from "lucide-astro";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  copy: string;
+  item?: CatalogueItem;
+  tone?: "paper" | "ivory" | "espresso";
+  cta?: { label: string; href: string };
+  imageMode?: "wide" | "portrait";
+}
+
+const { id, eyebrow, title, copy, item, tone = "paper", cta, imageMode = "wide" } = Astro.props;
+const cropStyle = item ? `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};` : "";
+---
+
+<section class:list={["editorial-break", `editorial-break--${tone}`, item && "editorial-break--with-image", `editorial-break--${imageMode}`]} id={id} data-reveal-section>
+  <div class="editorial-break__inner container">
+    <div class="editorial-break__copy">
+      <p class="folio-label" data-reveal="eyebrow">{eyebrow}</p>
+      <h2 class="section-title" data-reveal="title">{title}</h2>
+      <p class="section-copy" data-reveal="copy">{copy}</p>
+      {cta && (
+        <a class:list={[tone === "espresso" ? "button-light" : "text-link"]} href={cta.href} data-reveal="copy">
+          {cta.label}
+          <ArrowDownRight size={16} stroke-width={1.5} aria-hidden="true" />
+        </a>
+      )}
+    </div>
+
+    {item && (
+      <figure>
+        <span class="asset-frame asset-frame--fashion-crop editorial-break__image" data-image-reveal data-parallax style={cropStyle}>
+          <Image
+            class="asset-frame__image"
+            src={item.image}
+            alt={item.alt}
+            widths={[520, 760, 1040, 1280]}
+            sizes="(max-width: 768px) 100vw, 48vw"
+            quality={84}
+            loading="lazy"
+          />
+        </span>
+        <figcaption>
+          <span>{item.category}</span>
+          <strong>{item.title}</strong>
+        </figcaption>
+      </figure>
+    )}
+  </div>
+</section>
+
+<style>
+  .editorial-break {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .editorial-break--paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .editorial-break--ivory {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .editorial-break--espresso {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .editorial-break--espresso .section-copy {
+    color: color-mix(in srgb, var(--color-paper) 76%, transparent);
+  }
+
+  .editorial-break__inner {
+    display: grid;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .editorial-break--with-image .editorial-break__inner {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  }
+
+  .editorial-break__copy {
+    display: grid;
+    justify-items: start;
+    gap: 1.35rem;
+  }
+
+  .editorial-break__copy .section-title {
+    max-width: 12ch;
+  }
+
+  .editorial-break__copy .section-copy {
+    max-width: 42rem;
+  }
+
+  .editorial-break figure {
+    position: relative;
+    margin: 0;
+  }
+
+  .editorial-break__image {
+    --asset-ratio: 16 / 10;
+  }
+
+  .editorial-break--portrait .editorial-break__image {
+    --asset-ratio: 4 / 5;
+  }
+
+  .editorial-break figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 13rem;
+    padding: 1rem 1.15rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .editorial-break figcaption span {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .editorial-break figcaption strong {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 460;
+    line-height: 1.02;
+  }
+
+  @media (max-width: 64rem) {
+    .editorial-break--with-image .editorial-break__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .editorial-break__image,
+    .editorial-break--portrait .editorial-break__image {
+      --asset-ratio: 4 / 5;
+    }
+
+    .editorial-break figure {
+      margin-inline: calc(var(--gutter) * -1);
+    }
+
+    .editorial-break figcaption {
+      right: auto;
+      left: var(--gutter);
+    }
+  }
+</style>

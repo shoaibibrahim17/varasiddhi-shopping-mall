@@ -1,0 +1,78 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
+import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueItem } from "../data/catalogue";
+
+const hero = getCatalogueItem("royal-blue-anarkali");
+const occasionLooks = [
+  getCatalogueItem("blush-pink-anarkali"),
+  getCatalogueItem("royal-blue-anarkali"),
+  getCatalogueItem("mustard-sharara-set"),
+];
+const fusionLooks = [
+  getCatalogueItem("sparkle-pink-coord"),
+  getCatalogueItem("indigo-blockprint-saree"),
+  getCatalogueItem("mustard-sharara-set"),
+];
+---
+
+<BaseLayout
+  title="Women’s Fashion Catalogue | Shri Varasiddhi Shopping Mall"
+  description="Browse an editorial preview of women’s occasion wear, sarees and fusion looks from Shri Varasiddhi Shopping Mall in Adilabad."
+  canonicalPath="/women"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Women"
+      title="Women’s edits with colour, craft and occasion." 
+      copy="An editorial route through Anarkali, sharara, saree and fusion directions, composed for browsing before an in-store visit."
+      item={hero}
+      cta={{ label: "Browse women’s edits", href: "#occasion" }}
+      tone="ivory"
+      imageLabel="Occasion lead"
+    />
+    <CategoryNav items={[
+      { label: "Occasion", href: "#occasion", detail: "Anarkali and sharara" },
+      { label: "Sarees", href: "#sarees", detail: "Silk and craft" },
+      { label: "Fusion", href: "#fusion", detail: "Dressed-up separates" },
+      { label: "Visit", href: "#visit", detail: "Adilabad" },
+    ]} />
+    <CatalogueLook
+      id="occasion"
+      eyebrow="Occasion Wear"
+      title="Anarkali and sharara pieces with a dressed-up rhythm."
+      copy="The women’s occasion edit gives each look different scale, crop and breathing room instead of repeating a product card pattern."
+      items={occasionLooks}
+      tone="paper"
+      layout="mosaic"
+    />
+    <EditorialBreak
+      id="sarees"
+      eyebrow="Saree room"
+      title="Sarees carry the craft note through the page."
+      copy="Cotton, brocade and silk previews sit inside the women’s route as a quieter textile-led passage."
+      item={getCatalogueItem("kalamkari-cotton-saree")}
+      tone="ivory"
+      imageMode="wide"
+      cta={{ label: "Open saree edit", href: "/sarees" }}
+    />
+    <CatalogueLook
+      id="fusion"
+      eyebrow="Fusion"
+      title="A compact festive bridge between tradition and ease."
+      copy="Fusion previews remain image-led and restrained, with the supplied garment artwork doing the visual work."
+      items={fusionLooks}
+      tone="paper"
+      layout="rail"
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -5,13 +5,16 @@ import { Menu, X } from "lucide-astro";
 import logo from "../../assets/brand/logo/varasiddhi-logo-primary.png";
 
 const navigation = [
-  { label: "Women", href: "#women" },
-  { label: "Sarees", href: "#sarees" },
-  { label: "Men", href: "#men" },
-  { label: "Occasion", href: "#occasion" },
-  { label: "Collections", href: "#collections" },
-  { label: "Visit Us", href: "#visit" },
+  { label: "Women", href: "/women" },
+  { label: "Sarees", href: "/sarees" },
+  { label: "Men", href: "/men" },
+  { label: "Occasion", href: "/occasion" },
+  { label: "Collections", href: "/collections" },
+  { label: "Visit Us", href: "/visit" },
 ];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => currentPath === href;
 ---
 
 <header class="site-header">
@@ -19,12 +22,12 @@ const navigation = [
     <nav class="desktop-nav desktop-nav--left" aria-label="Primary">
       {
         navigation.slice(0, 3).map((item) => (
-          <a href={item.href}>{item.label}</a>
+          <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
         ))
       }
     </nav>
 
-    <a class="brand" href="#top" aria-label="Shri Varasiddhi Shopping Mall home">
+    <a class="brand" href="/" aria-label="Shri Varasiddhi Shopping Mall home">
       <span class="brand-viewport">
         <Image
           class="brand-image"
@@ -40,7 +43,7 @@ const navigation = [
     <nav class="desktop-nav desktop-nav--right" aria-label="Featured">
       {
         navigation.slice(3).map((item) => (
-          <a href={item.href}>{item.label}</a>
+          <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
         ))
       }
     </nav>
@@ -55,7 +58,7 @@ const navigation = [
         <nav aria-label="Mobile navigation">
           {
             navigation.map((item) => (
-              <a href={item.href} data-mobile-nav-item>{item.label}</a>
+              <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined} data-mobile-nav-item>{item.label}</a>
             ))
           }
         </nav>
@@ -118,7 +121,8 @@ const navigation = [
   }
 
   .desktop-nav a:hover::after,
-  .desktop-nav a:focus-visible::after {
+  .desktop-nav a:focus-visible::after,
+  .desktop-nav a.is-active::after {
     transform: scaleX(1);
     transform-origin: left;
   }
@@ -245,6 +249,10 @@ const navigation = [
       text-decoration: none;
     }
 
+    .mobile-panel a.is-active {
+      color: var(--color-gold);
+    }
+
     .mobile-panel a:nth-child(even) {
       padding-left: 1rem;
       border-left: 1px solid
@@ -290,11 +298,9 @@ const navigation = [
 
       @keyframes mobile-link-enter {
         from {
-          opacity: 0;
           transform: translateY(0.55rem);
         }
         to {
-          opacity: 1;
           transform: translateY(0);
         }
       }
