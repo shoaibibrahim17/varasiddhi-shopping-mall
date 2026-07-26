@@ -112,7 +112,7 @@ function cropStyle(item: CatalogueItem) {
     width: 100%;
     height: 100%;
     max-width: none;
-    transform: scale(var(--asset-scale));
+    transform: translateY(var(--parallax-y, 0px)) scale(var(--asset-scale));
     transform-origin: center center;
     object-fit: cover;
     object-position: var(--asset-x) var(--asset-y);

@@ -93,7 +93,7 @@ const cropStyle = item ? `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; 
   .editorial-break__copy {
     display: grid;
     justify-items: start;
-    gap: 1.35rem;
+    gap: clamp(1rem, 3vw, 1.35rem);
   }
 
   .editorial-break__copy .section-title {
@@ -153,7 +153,8 @@ const cropStyle = item ? `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; 
   @media (max-width: 47.99rem) {
     .editorial-break__image,
     .editorial-break--portrait .editorial-break__image {
-      --asset-ratio: 4 / 5;
+      --asset-ratio: 3 / 4;
+      max-height: 70svh;
     }
 
     .editorial-break figure {

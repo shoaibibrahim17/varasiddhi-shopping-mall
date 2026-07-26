@@ -70,7 +70,7 @@ const {
   .visit-cta__copy {
     display: grid;
     justify-items: start;
-    gap: 1.35rem;
+    gap: clamp(1rem, 3vw, 1.35rem);
   }
 
   .visit-cta__copy .section-title {
@@ -133,7 +133,7 @@ const {
     }
 
     .visit-cta__image {
-      --asset-ratio: 4 / 5;
+      --asset-ratio: 3 / 4;
       --asset-scale: 1.5;
       --asset-y: 100%;
       --asset-origin: 50% 100%;

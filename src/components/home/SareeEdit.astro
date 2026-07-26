@@ -80,7 +80,7 @@ function cropStyle(item: CatalogueItem) {
   .saree-layout {
     display: grid;
     align-items: start;
-    gap: clamp(2rem, 4.2vw, 4rem);
+    gap: clamp(1.75rem, 3.8vw, 3.6rem);
     grid-template-columns: minmax(22rem, 0.9fr) minmax(0, 0.95fr) minmax(21rem, 1fr);
   }
 
@@ -94,7 +94,7 @@ function cropStyle(item: CatalogueItem) {
   }
 
   .saree-lede .section-copy {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
 
   .saree-plate {
@@ -112,7 +112,7 @@ function cropStyle(item: CatalogueItem) {
     width: 100%;
     height: 100%;
     max-width: none;
-    transform: scale(var(--crop-scale));
+    transform: translateY(var(--parallax-y, 0px)) scale(var(--crop-scale));
     transform-origin: left center;
     object-fit: cover;
     object-position: var(--crop-x) var(--crop-y);
@@ -179,7 +179,7 @@ function cropStyle(item: CatalogueItem) {
 
   @media (max-width: 47.99rem) {
     .saree-edit {
-      padding-top: clamp(3.25rem, 12vw, 4.75rem);
+      padding-top: clamp(2.8rem, 10vw, 4rem);
     }
 
     .saree-lede .section-title {
@@ -191,7 +191,9 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .saree-row {
-      grid-template-columns: 1.85rem minmax(0, 1fr) 5.25rem;
+      min-height: 6.4rem;
+      padding-block: 0.8rem;
+      grid-template-columns: 1.7rem minmax(0, 1fr) 4.8rem;
     }
     .saree-row p {
       font-size: 0.75rem;

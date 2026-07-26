@@ -118,7 +118,7 @@ const cropStyle = (item: CatalogueItem) => `--crop-x: ${item.crop.x}%; --crop-y:
 
   .catalogue-look__inner {
     display: grid;
-    gap: clamp(2.25rem, 5vw, 4.5rem);
+    gap: clamp(1.9rem, 4.5vw, 4rem);
   }
 
   .catalogue-look__header {
@@ -244,20 +244,23 @@ const cropStyle = (item: CatalogueItem) => `--crop-x: ${item.crop.x}%; --crop-y:
       scroll-snap-type: x mandatory;
       padding-inline: var(--gutter);
       background: transparent;
-      grid-template-columns: minmax(16rem, 72vw) repeat(6, minmax(13.5rem, 58vw));
+      grid-template-columns: minmax(14.75rem, 68vw) repeat(6, minmax(11.75rem, 50vw));
     }
 
     .look-card {
       border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
     }
 
-    .look-card--lead .look-card__image,
+    .look-card--lead .look-card__image {
+      --asset-ratio: 3 / 4;
+    }
+
     .look-card__image {
-      --asset-ratio: 4 / 5;
+      --asset-ratio: 1 / 1;
     }
 
     .look-card > div {
-      min-height: 5.75rem;
+      min-height: 5.15rem;
     }
 
     .look-card p {

@@ -39,9 +39,9 @@ function cropStyle(item: CatalogueItem) {
 }
 ---
 
-<section class="collection-index page-section" data-reveal-section id="collections" aria-labelledby="collections-title">
+<section class="collection-index page-section" data-reveal-section data-carousel id="collections" aria-labelledby="collections-title">
   <div class="collection-heading container">
-    <p class="folio-label" data-reveal="eyebrow">Catalogue chapters</p>
+    <p class="folio-label" data-reveal="eyebrow">Featured collections</p>
     <div>
       <h2 class="section-title" id="collections-title" data-reveal="title">
         A considered route through the collection.
@@ -54,30 +54,38 @@ function cropStyle(item: CatalogueItem) {
     </div>
   </div>
 
-  <div class="chapter-grid container no-scrollbar" data-lenis-prevent aria-label="Catalogue chapter links">
-    {
-      chapters.map((chapter) => (
-        <a class="chapter-card" href={chapter.href} data-stagger-item>
-          <figure>
-            <span class="chapter-image asset-frame asset-frame--fashion-crop" style={cropStyle(chapter.item)}>
-              <Image
-                src={chapter.item.image}
-                alt={chapter.item.alt}
-                widths={[360, 520, 720]}
-                sizes="(max-width: 768px) 72vw, 25vw"
-                quality={82}
-                loading="eager"
-              />
-            </span>
-            <figcaption>
-              <span>{chapter.eyebrow}</span>
-              <strong>{chapter.title}</strong>
-              <p>{chapter.copy}</p>
-            </figcaption>
-          </figure>
-        </a>
-      ))
-    }
+  <div class="carousel-shell container">
+    <div class="chapter-grid no-scrollbar" data-carousel-track data-lenis-prevent aria-label="Featured collection links">
+      {
+        chapters.map((chapter) => (
+          <a class="chapter-card" href={chapter.href} data-stagger-item data-carousel-item>
+            <figure>
+              <span class="chapter-image asset-frame asset-frame--fashion-crop" style={cropStyle(chapter.item)}>
+                <Image
+                  src={chapter.item.image}
+                  alt={chapter.item.alt}
+                  widths={[320, 480, 640, 820]}
+                  sizes="(max-width: 768px) 78vw, 25vw"
+                  quality={82}
+                  loading="eager"
+                />
+              </span>
+              <figcaption>
+                <span>{chapter.eyebrow}</span>
+                <strong>{chapter.title}</strong>
+                <p>{chapter.copy}</p>
+              </figcaption>
+            </figure>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="carousel-controls" aria-label="Featured collections controls">
+      <button type="button" data-carousel-prev aria-label="Previous featured collection">←</button>
+      <span data-carousel-counter aria-live="polite">01 — 04</span>
+      <button type="button" data-carousel-next aria-label="Next featured collection">→</button>
+    </div>
   </div>
 </section>
 
@@ -85,20 +93,28 @@ function cropStyle(item: CatalogueItem) {
   .collection-heading {
     display: grid;
     align-items: end;
-    gap: clamp(2rem, 5vw, 5rem);
+    gap: clamp(1.8rem, 5vw, 5rem);
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
   }
 
   .collection-heading .section-copy {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .carousel-shell {
+    margin-top: clamp(2.1rem, 5vw, 4rem);
   }
 
   .chapter-grid {
     display: grid;
     gap: 1px;
-    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    overflow-x: auto;
+    scroll-padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
     background: var(--color-line);
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-columns: minmax(18rem, 24vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
   }
 
   .chapter-card {
@@ -120,7 +136,7 @@ function cropStyle(item: CatalogueItem) {
   .chapter-image {
     position: relative;
     display: block;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
     background: var(--color-stone);
   }
@@ -129,26 +145,28 @@ function cropStyle(item: CatalogueItem) {
     width: 100%;
     height: 100%;
     max-width: none;
-    transform: scale(var(--crop-scale));
+    transform: translateY(var(--parallax-y, 0px)) scale(var(--crop-scale));
     transform-origin: left center;
     object-fit: cover;
     object-position: var(--crop-x) var(--crop-y);
     transition: transform 500ms var(--ease-out);
   }
 
-  .chapter-card:hover img,
-  .chapter-card:focus-visible img {
-    transform: scale(calc(var(--crop-scale) + 0.04));
+  @media (hover: hover) and (pointer: fine) {
+    .chapter-card:hover img,
+    .chapter-card:focus-visible img {
+      transform: translateY(var(--parallax-y, 0px)) scale(calc(var(--crop-scale) + 0.025));
+    }
   }
 
   .chapter-card figcaption {
-    min-height: 9.75rem;
-    padding: 1.35rem;
+    min-height: 8.35rem;
+    padding: 1.15rem;
   }
 
   .chapter-card figcaption span {
     color: var(--color-muted-gold);
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 720;
     letter-spacing: 0.14em;
     line-height: 1.2;
@@ -157,19 +175,69 @@ function cropStyle(item: CatalogueItem) {
 
   .chapter-card figcaption strong {
     display: block;
-    margin-top: 0.45rem;
+    margin-top: 0.4rem;
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-size: clamp(1.45rem, 2vw, 1.9rem);
     font-weight: 460;
     letter-spacing: -0.02em;
     line-height: 1.05;
   }
 
   .chapter-card figcaption p {
-    margin-top: 1rem;
+    margin-top: 0.8rem;
     color: color-mix(in srgb, var(--color-ink) 66%, transparent);
-    font-size: 0.92rem;
-    line-height: 1.55;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.9rem;
+    margin-top: 1.1rem;
+  }
+
+  .carousel-controls button {
+    display: grid;
+    width: 2.45rem;
+    height: 2.45rem;
+    cursor: pointer;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-espresso);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition:
+      border-color 180ms var(--ease-out),
+      color 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+
+  .carousel-controls button:hover,
+  .carousel-controls button:focus-visible {
+    border-color: var(--color-muted-gold);
+    color: var(--color-muted-gold);
+  }
+
+  .carousel-controls button:first-child:hover,
+  .carousel-controls button:first-child:focus-visible {
+    transform: translateX(-0.18rem);
+  }
+
+  .carousel-controls button:last-child:hover,
+  .carousel-controls button:last-child:focus-visible {
+    transform: translateX(0.18rem);
+  }
+
+  .carousel-controls span {
+    min-width: 4.25rem;
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-align: center;
   }
 
   @media (max-width: 64rem) {
@@ -178,7 +246,7 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .chapter-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-columns: minmax(15.5rem, 42vw);
     }
   }
 
@@ -187,17 +255,18 @@ function cropStyle(item: CatalogueItem) {
       overflow: hidden;
     }
 
+    .carousel-shell {
+      margin-top: 1.75rem;
+      padding-inline: 0;
+    }
+
     .chapter-grid {
-      width: auto;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
       padding-inline: var(--gutter);
       background: transparent;
-      grid-template-columns: repeat(4, minmax(16.5rem, 72vw));
+      grid-auto-columns: minmax(15rem, 78vw);
     }
 
     .chapter-card {
-    scroll-snap-align: start;
       border: 1px solid var(--color-line);
     }
 
@@ -207,18 +276,21 @@ function cropStyle(item: CatalogueItem) {
 
     .chapter-image {
       aspect-ratio: 4 / 5;
+      max-height: 22rem;
     }
-    .chapter-card figcaption span {
-      font-size: 0.75rem;
+
+    .chapter-card figcaption {
+      min-height: 7.5rem;
+      padding: 1rem;
     }
 
     .chapter-card figcaption p {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
+    }
+
+    .carousel-controls {
+      justify-content: space-between;
+      padding-inline: var(--gutter);
     }
   }
 </style>
-
-
-
-
-

@@ -289,18 +289,22 @@ const isActive = (href: string) => currentPath === href;
 
       @keyframes mobile-panel-enter {
         from {
+          opacity: 0;
           transform: translateY(-0.6rem);
         }
         to {
+          opacity: 1;
           transform: translateY(0);
         }
       }
 
       @keyframes mobile-link-enter {
         from {
+          opacity: 0;
           transform: translateY(0.55rem);
         }
         to {
+          opacity: 1;
           transform: translateY(0);
         }
       }

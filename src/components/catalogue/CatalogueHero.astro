@@ -171,12 +171,13 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     }
 
     .catalogue-hero__copy {
-      padding-block: clamp(2.7rem, 12vw, 4rem);
+      padding-block: clamp(2.35rem, 10vw, 3.4rem);
     }
 
     .catalogue-hero__image {
       min-height: 0;
-      aspect-ratio: 4 / 5;
+      height: min(68svh, 34rem);
+      aspect-ratio: auto;
     }
   }
 </style>
