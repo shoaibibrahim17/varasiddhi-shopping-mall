@@ -40,7 +40,6 @@ function cropStyle(item: CatalogueItem) {
                 widths={[300, 440, 620]}
                 sizes="(max-width: 768px) 62vw, 17vw"
                 quality={82}
-                loading={index === 0 ? "eager" : "lazy"}
               />
             </span>
             <p>{item.category}</p>
@@ -79,7 +78,6 @@ function cropStyle(item: CatalogueItem) {
           widths={[720, 960, 1280, 1536]}
           sizes="(max-width: 768px) 100vw, 56vw"
           quality={84}
-          loading="eager"
         />
       </span>
       <figcaption>

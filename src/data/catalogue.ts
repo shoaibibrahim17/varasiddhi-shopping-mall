@@ -315,3 +315,14 @@ export function getCatalogueByCategory(
 ): CatalogueItem[] {
   return catalogue.filter((entry) => entry.category === category);
 }
+
+export function getCatalogueByDepartment(
+  group: CatalogueGroup,
+  categories: CatalogueCategory[],
+): CatalogueItem[] {
+  return categories.flatMap((category) =>
+    catalogue.filter(
+      (entry) => entry.group === group && entry.category === category,
+    ),
+  );
+}

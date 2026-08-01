@@ -35,7 +35,7 @@ const initCarousel = (carousel: HTMLElement) => {
     let nearestDistance = Number.POSITIVE_INFINITY;
 
     items.forEach((item, index) => {
-      const distance = Math.abs(item.offsetLeft - trackLeft);
+      const distance = Math.abs(item.offsetLeft - track.offsetLeft - trackLeft);
       if (distance < nearestDistance) {
         nearestDistance = distance;
         nearestIndex = index;
@@ -53,7 +53,7 @@ const initCarousel = (carousel: HTMLElement) => {
   const scrollToIndex = (index: number, behavior: ScrollBehavior = "smooth") => {
     const normalized = (index + items.length) % items.length;
     activeIndex = normalized;
-    track.scrollTo({ left: items[normalized].offsetLeft, behavior });
+    track.scrollTo({ left: items[normalized].offsetLeft - track.offsetLeft, behavior });
     updateCounter();
   };
 

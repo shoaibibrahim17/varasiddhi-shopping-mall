@@ -1,36 +1,33 @@
 ---
 import { Image } from "astro:assets";
+import { ChevronLeft, ChevronRight } from "lucide-astro";
 
 import { getCatalogueItem, type CatalogueItem } from "../../data/catalogue";
 
-const chapters = [
+const featuredProducts = [
   {
     eyebrow: "01",
-    title: "Women’s edits",
-    href: "#women",
-    item: getCatalogueItem("blush-pink-anarkali"),
-    copy: "Composed occasion, fusion and festive silhouettes for a dressed-up wardrobe.",
+    href: "/sarees",
+    item: getCatalogueItem("kalamkari-cotton-saree"),
+    note: "Saree edit",
   },
   {
     eyebrow: "02",
-    title: "Saree room",
-    href: "#sarees",
-    item: getCatalogueItem("kalamkari-cotton-saree"),
-    copy: "Silk, brocade, festive red and cotton saree directions shown as catalogue previews.",
+    href: "/women",
+    item: getCatalogueItem("blush-pink-anarkali"),
+    note: "Women",
   },
   {
     eyebrow: "03",
-    title: "Men’s wear",
-    href: "#men",
+    href: "/men",
     item: getCatalogueItem("black-bandhgala"),
-    copy: "Ethnic and casual menswear presented with the same editorial restraint.",
+    note: "Menswear",
   },
   {
     eyebrow: "04",
-    title: "Occasion dressing",
-    href: "#occasion",
+    href: "/occasion",
     item: getCatalogueItem("champagne-sherwani-set"),
-    copy: "Celebration-led dressing across sarees, women’s occasionwear and men’s ethnic wear.",
+    note: "Occasion",
   },
 ];
 
@@ -44,12 +41,11 @@ function cropStyle(item: CatalogueItem) {
     <p class="folio-label" data-reveal="eyebrow">Featured collections</p>
     <div>
       <h2 class="section-title" id="collections-title" data-reveal="title">
-        A considered route through the collection.
+        Four catalogue previews, sliding in rhythm.
       </h2>
       <p class="section-copy" data-reveal="copy">
-        Browse the current fashion previews by chapter. The page uses only the
-        supplied catalogue artwork and avoids prices, stock claims or invented
-        store details.
+        A product-led pass through sarees, women’s occasionwear, menswear and
+        celebration dressing. It behaves like a showcase carousel, not a cart.
       </p>
     </div>
   </div>
@@ -57,23 +53,22 @@ function cropStyle(item: CatalogueItem) {
   <div class="carousel-shell container">
     <div class="chapter-grid no-scrollbar" data-carousel-track data-lenis-prevent aria-label="Featured collection links">
       {
-        chapters.map((chapter) => (
-          <a class="chapter-card" href={chapter.href} data-stagger-item data-carousel-item>
+        featuredProducts.map((product) => (
+          <a class="chapter-card" href={product.href} data-stagger-item data-carousel-item>
             <figure>
-              <span class="chapter-image asset-frame asset-frame--fashion-crop" style={cropStyle(chapter.item)}>
+              <span class="chapter-image asset-frame asset-frame--fashion-crop" style={cropStyle(product.item)}>
                 <Image
-                  src={chapter.item.image}
-                  alt={chapter.item.alt}
+                  src={product.item.image}
+                  alt={product.item.alt}
                   widths={[320, 480, 640, 820]}
-                  sizes="(max-width: 768px) 78vw, 25vw"
+                  sizes="(max-width: 768px) 82vw, 31vw"
                   quality={82}
-                  loading="eager"
                 />
               </span>
               <figcaption>
-                <span>{chapter.eyebrow}</span>
-                <strong>{chapter.title}</strong>
-                <p>{chapter.copy}</p>
+                <span>{product.eyebrow} / {product.note}</span>
+                <strong>{product.item.title}</strong>
+                <p>{product.item.category}</p>
               </figcaption>
             </figure>
           </a>
@@ -82,9 +77,13 @@ function cropStyle(item: CatalogueItem) {
     </div>
 
     <div class="carousel-controls" aria-label="Featured collections controls">
-      <button type="button" data-carousel-prev aria-label="Previous featured collection">←</button>
+      <button type="button" data-carousel-prev aria-label="Previous featured collection">
+        <ChevronLeft size={18} stroke-width={1.6} aria-hidden="true" />
+      </button>
       <span data-carousel-counter aria-live="polite">01 — 04</span>
-      <button type="button" data-carousel-next aria-label="Next featured collection">→</button>
+      <button type="button" data-carousel-next aria-label="Next featured collection">
+        <ChevronRight size={18} stroke-width={1.6} aria-hidden="true" />
+      </button>
     </div>
   </div>
 </section>
@@ -112,7 +111,7 @@ function cropStyle(item: CatalogueItem) {
     scroll-padding-inline: var(--gutter);
     scroll-snap-type: x mandatory;
     background: var(--color-line);
-    grid-auto-columns: minmax(18rem, 24vw);
+    grid-auto-columns: minmax(18rem, 38%);
     grid-auto-flow: column;
     grid-template-columns: none;
   }
@@ -160,7 +159,7 @@ function cropStyle(item: CatalogueItem) {
   }
 
   .chapter-card figcaption {
-    min-height: 8.35rem;
+    min-height: 7.35rem;
     padding: 1.15rem;
   }
 
@@ -184,10 +183,13 @@ function cropStyle(item: CatalogueItem) {
   }
 
   .chapter-card figcaption p {
-    margin-top: 0.8rem;
+    margin-top: 0.75rem;
     color: color-mix(in srgb, var(--color-ink) 66%, transparent);
-    font-size: 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
     line-height: 1.5;
+    text-transform: uppercase;
   }
 
   .carousel-controls {
@@ -207,7 +209,6 @@ function cropStyle(item: CatalogueItem) {
     border: 1px solid var(--color-line);
     background: transparent;
     color: var(--color-espresso);
-    font-size: 1.1rem;
     line-height: 1;
     transition:
       border-color 180ms var(--ease-out),
@@ -246,7 +247,7 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .chapter-grid {
-      grid-auto-columns: minmax(15.5rem, 42vw);
+      grid-auto-columns: minmax(15.5rem, 44vw);
     }
   }
 
@@ -263,7 +264,7 @@ function cropStyle(item: CatalogueItem) {
     .chapter-grid {
       padding-inline: var(--gutter);
       background: transparent;
-      grid-auto-columns: minmax(15rem, 78vw);
+      grid-auto-columns: minmax(15.5rem, 82vw);
     }
 
     .chapter-card {
@@ -280,12 +281,8 @@ function cropStyle(item: CatalogueItem) {
     }
 
     .chapter-card figcaption {
-      min-height: 7.5rem;
+      min-height: 7.2rem;
       padding: 1rem;
-    }
-
-    .chapter-card figcaption p {
-      font-size: 0.88rem;
     }
 
     .carousel-controls {
@@ -294,3 +291,4 @@ function cropStyle(item: CatalogueItem) {
     }
   }
 </style>
+

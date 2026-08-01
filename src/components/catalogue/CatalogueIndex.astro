@@ -1,0 +1,176 @@
+---
+import { Image } from "astro:assets";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  copy?: string;
+  items: CatalogueItem[];
+  tone?: "paper" | "ivory" | "espresso";
+  startNumber?: number;
+}
+
+const { id, eyebrow, title, copy, items, tone = "paper", startNumber = 1 } = Astro.props;
+
+function cropStyle(item: CatalogueItem) {
+  return `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+}
+---
+
+<section class:list={["catalogue-index", `catalogue-index--${tone}`]} id={id} data-reveal-section aria-labelledby={`${id}-title`}>
+  <div class="catalogue-index__inner container">
+    <header class="catalogue-index__header">
+      <p class="folio-label" data-reveal="eyebrow">{eyebrow}</p>
+      <div>
+        <h2 class="section-title" id={`${id}-title`} data-reveal="title">{title}</h2>
+        {copy && <p class="section-copy" data-reveal="copy">{copy}</p>}
+      </div>
+    </header>
+
+    <ol class="catalogue-index__list">
+      {
+        items.map((item, index) => (
+          <li class="catalogue-index__row" data-stagger-item>
+            <span class="catalogue-index__number">{String(startNumber + index).padStart(2, "0")}</span>
+            <div class="catalogue-index__copy">
+              <p>{item.category}</p>
+              <h3>{item.title}</h3>
+            </div>
+            <figure class="catalogue-index__thumb asset-frame asset-frame--fashion-crop asset-frame--compact" style={cropStyle(item)}>
+              <Image
+                src={item.image}
+                alt={item.alt}
+                widths={[220, 320, 440]}
+                sizes="(max-width: 768px) 30vw, 7vw"
+                quality={80}
+              />
+            </figure>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .catalogue-index {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .catalogue-index--paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .catalogue-index--ivory {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .catalogue-index--espresso {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .catalogue-index--espresso .section-copy {
+    color: color-mix(in srgb, var(--color-paper) 74%, transparent);
+  }
+
+  .catalogue-index__inner {
+    display: grid;
+    gap: clamp(1.9rem, 4.5vw, 4rem);
+  }
+
+  .catalogue-index__header {
+    display: grid;
+    align-items: end;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .catalogue-index__header .section-copy {
+    margin-top: 1.2rem;
+    max-width: 44rem;
+  }
+
+  .catalogue-index__list {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-line);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+  }
+
+  .catalogue-index__row {
+    display: grid;
+    min-width: 0;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.1rem 1.1rem 0;
+    background: var(--color-paper);
+    grid-template-columns: 2.15rem minmax(0, 1fr) 6.25rem;
+  }
+
+  .catalogue-index--espresso .catalogue-index__row {
+    background: var(--color-espresso);
+  }
+
+  .catalogue-index__number {
+    color: var(--color-muted-gold);
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .catalogue-index__copy p {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .catalogue-index__copy h3 {
+    margin-top: 0.35rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.12rem, 1.45vw, 1.42rem);
+    font-weight: 460;
+    letter-spacing: -0.012em;
+    line-height: 1.05;
+  }
+
+  .catalogue-index--espresso .catalogue-index__copy h3 {
+    color: var(--color-paper);
+  }
+
+  .catalogue-index__thumb {
+    --asset-ratio: 1 / 1;
+  }
+
+  @media (max-width: 47.99rem) {
+    .catalogue-index__header {
+      grid-template-columns: 1fr;
+    }
+
+    .catalogue-index__list {
+      grid-template-columns: 1fr;
+    }
+
+    .catalogue-index__row {
+      padding-block: 0.85rem;
+      grid-template-columns: 1.7rem minmax(0, 1fr) 4.8rem;
+    }
+
+    .catalogue-index__copy p {
+      font-size: 0.75rem;
+    }
+  }
+</style>

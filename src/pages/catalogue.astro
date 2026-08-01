@@ -1,0 +1,70 @@
+---
+import Header from "../components/global/Header.astro";
+import Footer from "../components/global/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
+import CategoryNav from "../components/catalogue/CategoryNav.astro";
+import CatalogueIndex from "../components/catalogue/CatalogueIndex.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { getCatalogueByDepartment, getCatalogueItem } from "../data/catalogue";
+
+const womenItems = getCatalogueByDepartment("Women", [
+  "Sarees",
+  "Cotton Sarees",
+  "Occasion Wear",
+  "Wedding Wear",
+  "Fusion Wear",
+]);
+const menItems = getCatalogueByDepartment("Men", [
+  "Ethnic Wear",
+  "Shirts",
+  "Casual Wear",
+  "Formal Wear",
+  "Wedding Wear",
+  "Lounge Wear",
+]);
+const totalItems = womenItems.length + menItems.length;
+---
+
+<BaseLayout
+  title="Full Catalogue | Shri Varasiddhi Shopping Mall"
+  description="The complete fashion catalogue from Shri Varasiddhi Shopping Mall in Adilabad: every women’s and men’s piece, organized by category."
+  canonicalPath="/catalogue"
+>
+  <Header />
+  <main id="main-content">
+    <CatalogueHero
+      eyebrow="Catalogue"
+      title="Every piece, numbered and organized."
+      copy={`All ${totalItems} supplied garments in one index, grouped by department and category.`}
+      item={getCatalogueItem("designer-brocade-saree")}
+      cta={{ label: "Browse the index", href: "#women" }}
+      tone="paper"
+      imageLabel="Catalogue lead"
+    />
+    <CategoryNav items={[
+      { label: "Women", href: "#women", detail: "Sarees to fusion" },
+      { label: "Men", href: "#men", detail: "Ethnic to lounge" },
+      { label: "Visit", href: "#visit", detail: "Adilabad" },
+    ]} />
+    <CatalogueIndex
+      id="women"
+      eyebrow="Women"
+      title={`${womenItems.length} pieces from sarees to fusion.`}
+      copy="The complete women’s selection, organized by category: silk and blockprint sarees, occasion silhouettes, wedding and fusion pieces."
+      items={womenItems}
+      tone="paper"
+    />
+    <CatalogueIndex
+      id="men"
+      eyebrow="Men"
+      title={`${menItems.length} pieces from ethnic to lounge.`}
+      copy="The complete men’s selection, organized by category: ethnicwear, shirts, casual, formal, wedding and loungewear."
+      items={menItems}
+      tone="ivory"
+      startNumber={womenItems.length + 1}
+    />
+    <VisitCta />
+  </main>
+  <Footer />
+</BaseLayout>
