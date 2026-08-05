@@ -49,13 +49,13 @@ const isActive = (href: string) => currentPath === href;
       }
     </nav>
 
-    <details class="mobile-menu">
-      <summary>
-        <span>Menu</span>
-        <Menu class="menu-icon menu-icon--open" size={20} stroke-width={1.5} />
-        <X class="menu-icon menu-icon--close" size={20} stroke-width={1.5} />
+    <details class="mobile-menu" data-mobile-menu>
+      <summary aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Menu">
+        <span aria-hidden="true">Menu</span>
+        <Menu class="menu-icon menu-icon--open" size={20} stroke-width={1.5} aria-hidden="true" />
+        <X class="menu-icon menu-icon--close" size={20} stroke-width={1.5} aria-hidden="true" />
       </summary>
-      <div class="mobile-panel" data-mobile-panel>
+      <div class="mobile-panel" id="mobile-nav-panel" data-mobile-panel>
         <nav aria-label="Mobile navigation">
           {
             navigation.map((item) => (

@@ -1,7 +1,6 @@
 import type { ImageMetadata } from "astro";
 
 import beigeCargoPants from "../assets/catalogue/men/casual/beige-cargo-pants.png";
-import essentialWhiteOvershirt from "../assets/catalogue/men/casual/essential-white-overshirt.png.png";
 import greenTeeWhiteShorts from "../assets/catalogue/men/casual/green-tee-white-shorts.png";
 import whiteOvershirt from "../assets/catalogue/men/casual/white-overshirt.png";
 import classicWhiteKurta from "../assets/catalogue/men/ethnic/classic-white-kurta.png.png";
@@ -187,21 +186,12 @@ export const catalogue: CatalogueItem[] = [
     crop: { x: 50, y: 50, scale: 1.08 },
   },
   {
-    id: "essential-white-overshirt",
-    title: "Essential White Overshirt",
-    group: "Men",
-    category: "Casual Wear",
-    image: essentialWhiteOvershirt,
-    alt: "Man wearing a white overshirt over a black T-shirt.",
-    crop: posterCrop,
-  },
-  {
     id: "white-overshirt",
     title: "White Overshirt",
     group: "Men",
     category: "Casual Wear",
     image: whiteOvershirt,
-    alt: "Man wearing a white overshirt over a black T-shirt.",
+    alt: "Man wearing a white double-pocket button-down overshirt over a black T-shirt.",
     crop: { x: 52, y: 50, scale: 1.08 },
   },
   {
