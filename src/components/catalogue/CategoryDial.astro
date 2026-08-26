@@ -1,0 +1,164 @@
+---
+import { Image } from "astro:assets";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface DialItem {
+  label: string;
+  href: string;
+  count: number;
+  item: CatalogueItem;
+}
+
+interface Props {
+  groups: Array<{
+    label: string;
+    items: DialItem[];
+  }>;
+}
+
+const { groups } = Astro.props;
+
+const cropStyle = (item: CatalogueItem) =>
+  `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale}; --crop-origin: ${item.crop.x < 40 ? "left center" : "center center"};`;
+---
+
+<section class="category-dial" aria-label="Catalogue categories" data-reveal-section>
+  <div class="category-dial__inner container">
+    {
+      groups.map((group) => (
+        <div class="category-dial__group">
+          <p class="folio-label" data-reveal="eyebrow">
+            {group.label} categories
+          </p>
+          <ul class="category-dial__rail no-scrollbar" data-lenis-prevent style={`--dial-count: ${group.items.length};`}>
+            {group.items.map((dial) => (
+              <li data-stagger-item>
+                <a class="category-dial__tile" href={dial.href}>
+                  <span class="category-dial__circle" style={cropStyle(dial.item)}>
+                    <Image
+                      src={dial.item.image}
+                      alt=""
+                      widths={[160, 240, 320]}
+                      sizes="(max-width: 768px) 34vw, 9vw"
+                      quality={80}
+                      loading="lazy"
+                    />
+                  </span>
+                  <span class="category-dial__label">{dial.label}</span>
+                  <span class="category-dial__count">
+                    {dial.count} {dial.count === 1 ? "piece" : "pieces"}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .category-dial {
+    padding-block: clamp(2.75rem, 5vw, 4.75rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .category-dial__inner {
+    display: grid;
+    gap: clamp(2.25rem, 4vw, 3.25rem);
+  }
+
+  .category-dial__group {
+    display: grid;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .category-dial__rail {
+    display: grid;
+    gap: clamp(1.1rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    grid-template-columns: repeat(var(--dial-count, 5), minmax(0, 1fr));
+  }
+
+  .category-dial__tile {
+    display: grid;
+    justify-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+
+  .category-dial__circle {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--color-stone);
+    outline: 1px solid color-mix(in srgb, var(--color-espresso) 22%, transparent);
+    outline-offset: 4px;
+    transition: outline-color var(--duration-fast) var(--ease-out);
+  }
+
+  .category-dial__circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--crop-x, 50%) var(--crop-y, 50%);
+    transform: scale(calc(var(--crop-scale, 1.4) * 1.05));
+    transform-origin: var(--crop-origin, center center);
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .category-dial__tile:hover .category-dial__circle,
+  .category-dial__tile:focus-visible .category-dial__circle {
+    outline-color: var(--color-gold);
+  }
+
+  .category-dial__tile:hover .category-dial__circle img,
+  .category-dial__tile:focus-visible .category-dial__circle img {
+    transform: scale(calc(var(--crop-scale, 1.4) * 1.12));
+  }
+
+  .category-dial__label {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+    font-weight: 480;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .category-dial__count {
+    color: var(--color-muted-gold);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 47.99rem) {
+    .category-dial__rail {
+      display: grid;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      grid-template-columns: repeat(var(--dial-count, 5), minmax(7.4rem, 1fr));
+    }
+
+    .category-dial__rail li {
+      scroll-snap-align: start;
+    }
+
+    .category-dial__label {
+      font-size: 0.92rem;
+    }
+  }
+</style>

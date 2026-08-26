@@ -316,3 +316,24 @@ export function getCatalogueByDepartment(
     ),
   );
 }
+
+export interface CatalogueCategoryGroup {
+  category: CatalogueCategory;
+  slug: string;
+  items: CatalogueItem[];
+}
+
+export function getCatalogueCategoryGroups(
+  group: CatalogueGroup,
+  categories: CatalogueCategory[],
+): CatalogueCategoryGroup[] {
+  return categories
+    .map((category) => ({
+      category,
+      slug: `${group}-${category}`.toLowerCase().replace(/\s+/g, "-"),
+      items: catalogue.filter(
+        (entry) => entry.group === group && entry.category === category,
+      ),
+    }))
+    .filter((categoryGroup) => categoryGroup.items.length > 0);
+}

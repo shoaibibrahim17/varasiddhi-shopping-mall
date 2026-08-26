@@ -1,0 +1,49 @@
+---
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  copy: string;
+  tone?: "paper" | "ivory";
+}
+
+const { id, eyebrow, title, copy, tone = "paper" } = Astro.props;
+---
+
+<section class:list={["catalogue-chapter", `catalogue-chapter--${tone}`]} id={id} data-reveal-section>
+  <div class="catalogue-chapter__inner container">
+    <p class="folio-label" data-reveal="eyebrow">{eyebrow}</p>
+    <h2 class="section-title" id={`${id}-title`} data-reveal="title">{title}</h2>
+    <p class="section-copy" data-reveal="copy">{copy}</p>
+  </div>
+</section>
+
+<style>
+  .catalogue-chapter {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .catalogue-chapter--paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .catalogue-chapter--ivory {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .catalogue-chapter__inner {
+    display: grid;
+    gap: clamp(1.1rem, 2.5vw, 1.6rem);
+  }
+
+  .catalogue-chapter__inner .section-title {
+    max-width: 16ch;
+  }
+
+  .catalogue-chapter__inner .section-copy {
+    max-width: 46rem;
+  }
+</style>

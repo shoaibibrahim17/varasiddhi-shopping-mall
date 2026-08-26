@@ -1,0 +1,166 @@
+---
+import { Image } from "astro:assets";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  id: string;
+  category: string;
+  items: CatalogueItem[];
+  startNumber?: number;
+  tone?: "paper" | "ivory";
+}
+
+const { id, category, items, startNumber = 1, tone = "paper" } = Astro.props;
+
+const cropStyle = (item: CatalogueItem) =>
+  `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+---
+
+<section class:list={["catalogue-shelf", `catalogue-shelf--${tone}`]} id={id} data-reveal-section aria-labelledby={`${id}-title`}>
+  <div class="catalogue-shelf__inner container">
+    <header class="catalogue-shelf__header">
+      <h3 class="catalogue-shelf__title" id={`${id}-title`} data-reveal="title">{category}</h3>
+      <p class="catalogue-shelf__count" data-reveal="copy">
+        {items.length} {items.length === 1 ? "piece" : "pieces"}
+      </p>
+    </header>
+
+    <ol class="catalogue-shelf__grid">
+      {
+        items.map((item, index) => (
+          <li class="catalogue-shelf__card" data-stagger-item>
+            <span class="asset-frame asset-frame--fashion-crop catalogue-shelf__image" style={cropStyle(item)}>
+              <Image
+                class="asset-frame__image"
+                src={item.image}
+                alt={item.alt}
+                widths={[320, 480, 680]}
+                sizes="(max-width: 768px) 46vw, 22vw"
+                quality={82}
+                loading="lazy"
+              />
+            </span>
+            <span class="catalogue-shelf__meta">
+              <span class="catalogue-shelf__number">{String(startNumber + index).padStart(2, "0")}</span>
+              <span class="catalogue-shelf__name">{item.title}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .catalogue-shelf {
+    padding-block: clamp(1.9rem, 3.5vw, 3rem);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .catalogue-shelf--paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .catalogue-shelf--ivory {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+  }
+
+  .catalogue-shelf__inner {
+    display: grid;
+    gap: clamp(1.35rem, 2.75vw, 2rem);
+  }
+
+  .catalogue-shelf__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .catalogue-shelf__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 2.6vw, 2.4rem);
+    font-weight: 460;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .catalogue-shelf__count {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .catalogue-shelf__grid {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 1.4rem 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalogue-shelf__card {
+    display: grid;
+    align-content: start;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+
+  .catalogue-shelf__image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-espresso);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .catalogue-shelf__card:hover .catalogue-shelf__image::after {
+    opacity: 0.08;
+  }
+
+  .catalogue-shelf__image :global(img) {
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .catalogue-shelf__card:hover .catalogue-shelf__image :global(img) {
+    transform: translateY(var(--parallax-y, 0px)) scale(calc(var(--asset-scale, 1.4) * 1.045));
+  }
+
+  .catalogue-shelf__meta {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .catalogue-shelf__number {
+    color: var(--color-muted-gold);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .catalogue-shelf__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.02rem, 1.3vw, 1.25rem);
+    font-weight: 470;
+    letter-spacing: -0.012em;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 48rem) {
+    .catalogue-shelf__grid {
+      gap: 2.25rem 1.25rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>
