@@ -2,77 +2,105 @@
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
-import CategoryNav from "../components/catalogue/CategoryNav.astro";
-import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
-import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import ProductCard from "../components/global/ProductCard.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
-import { getCatalogueItem } from "../data/catalogue";
+import { getCatalogueByGroup } from "../data/catalogue";
 
-const hero = getCatalogueItem("royal-blue-anarkali");
-const occasionLooks = [
-  getCatalogueItem("blush-pink-anarkali"),
-  getCatalogueItem("royal-blue-anarkali"),
-  getCatalogueItem("mustard-sharara-set"),
-];
-const fusionLooks = [
-  getCatalogueItem("sparkle-pink-coord"),
-  getCatalogueItem("indigo-blockprint-saree"),
-  getCatalogueItem("maroon-silk-saree"),
+const women = getCatalogueByGroup("Women");
+const categoryGroups = [
+  { label: "Sarees", items: women.filter((i) => i.category === "Sarees") },
+  { label: "Occasion Wear", items: women.filter((i) => i.category === "Occasion Wear") },
+  { label: "Fusion Wear", items: women.filter((i) => i.category === "Fusion Wear") },
 ];
 ---
 
 <BaseLayout
-  title="Women’s Fashion Catalogue | Shri Varasiddhi Shopping Mall"
-  description="Browse an editorial preview of women’s occasion wear, sarees and fusion looks from Shri Varasiddhi Shopping Mall in Adilabad."
+  title="Women's Fashion | Shri Varasiddhi Shopping Mall"
+  description="Explore sarees, occasion wear and fusion fashion from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
   canonicalPath="/women"
 >
   <Header />
   <main id="main-content">
-    <CatalogueHero
-      eyebrow="Women"
-      title="Women’s edits with colour, craft and occasion." 
-      copy="An editorial route through Anarkali, sharara, saree and fusion directions, composed for browsing before an in-store visit."
-      item={hero}
-      cta={{ label: "Browse women’s edits", href: "#occasion" }}
-      tone="ivory"
-      imageLabel="Occasion lead"
-    />
-    <CategoryNav items={[
-      { label: "Occasion", href: "#occasion", detail: "Anarkali and sharara" },
-      { label: "Sarees", href: "#sarees", detail: "Silk and craft" },
-      { label: "Fusion", href: "#fusion", detail: "Dressed-up separates" },
-      { label: "Visit", href: "#visit", detail: "Adilabad" },
-    ]} />
-    <CatalogueLook
-      id="occasion"
-      eyebrow="Occasion Wear"
-      title="Anarkali and sharara pieces with a dressed-up rhythm."
-      copy="The women’s occasion edit gives each look different scale, crop and breathing room instead of repeating a product card pattern."
-      items={occasionLooks}
-      tone="paper"
-      layout="mosaic"
-    />
-    <EditorialBreak
-      id="sarees"
-      eyebrow="Saree room"
-      title="Sarees carry the craft note through the page."
-      copy="Cotton, brocade and silk previews sit inside the women’s route as a quieter textile-led passage."
-      item={getCatalogueItem("kalamkari-cotton-saree")}
-      tone="ivory"
-      imageMode="wide"
-      cta={{ label: "Open saree edit", href: "/sarees" }}
-    />
-    <CatalogueLook
-      id="fusion"
-      eyebrow="Fusion"
-      title="A compact festive bridge between tradition and ease."
-      copy="Fusion previews remain image-led and restrained, with the supplied garment artwork doing the visual work."
-      items={fusionLooks}
-      tone="paper"
-      layout="rail"
-    />
+    <section class="collection-hero">
+      <div class="container">
+        <p class="collection-hero__eyebrow">Women</p>
+        <h1 class="collection-hero__title">Women's fashion with colour, craft and occasion.</h1>
+        <p class="collection-hero__copy">Browse the full women's collection. Add pieces to your cart, then order via WhatsApp.</p>
+      </div>
+    </section>
+
+    {categoryGroups.map((group) => (
+      group.items.length > 0 && (
+        <section class="collection-section">
+          <div class="container">
+            <h2 class="collection-section__title">{group.label}</h2>
+            <div class="collection-grid">
+              {group.items.map((item, i) => (
+                <ProductCard item={item} eager={i < 2} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    ))}
+
     <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .collection-hero {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-hero__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 32rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-hero__copy {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 28rem;
+  }
+
+  .collection-section {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 460;
+    letter-spacing: -0.01em;
+    margin-bottom: clamp(1.2rem, 3vw, 2rem);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>

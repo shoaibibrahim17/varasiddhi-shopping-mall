@@ -155,6 +155,11 @@ const initCarousel = (carousel: HTMLElement) => {
   });
 
   updateCounter();
+
+  if (carousel.hasAttribute("data-carousel-manual")) {
+    return;
+  }
+
   startAutoplay();
 };
 

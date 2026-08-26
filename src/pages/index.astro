@@ -1,37 +1,342 @@
 ---
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
-import EditorialHero from "../components/home/EditorialHero.astro";
-import CollectionIndex from "../components/home/CollectionIndex.astro";
-import CategoryWindow from "../components/home/CategoryWindow.astro";
-import WomenEdit from "../components/home/WomenEdit.astro";
-import SareeEdit from "../components/home/SareeEdit.astro";
-import MenEdit from "../components/home/MenEdit.astro";
-import OccasionVisit from "../components/home/OccasionVisit.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
----
+import ProductRail from "../components/global/ProductRail.astro";
+import VisitCta from "../components/catalogue/VisitCta.astro";
+import { Image } from "astro:assets";
+import {
+  catalogue,
+  getCatalogueByCategory,
+  getCatalogueByGroup,
+} from "../data/catalogue";
 
-<!--
-THESIS: The Celebration Folio turns a regional fashion catalogue into a composed editorial journey and refuses the marketplace grid.
-OWN-WORLD: Warm paper, espresso type, textile-led crimson and indigo fields, fine gold rules, sharp image crops, and flat square-edged surfaces.
-STORY: Visitors meet the brand through celebration dressing, discover women’s, saree, occasion, and men’s chapters, then recognise Adilabad as the destination.
-FIRST VIEWPORT: A quiet typographic field meets a tightly cropped red saree portrait and a slim espresso location rail; the catalogue action sits beneath the headline.
-FORM: A lookbook-and-invitation folio composition, selected directly from the client-pinned editorial direction; no concept seed was needed.
--->
+const heroSlides = [
+  { id: "festive-red-saree", eyebrow: "New arrivals", title: "The Saree Edit", cta: "Shop Sarees", href: "/sarees" },
+  { id: "mustard-sharara-set", eyebrow: "Celebration dressing", title: "Occasion & Festive", cta: "Explore", href: "/occasion" },
+  { id: "classic-white-kurta", eyebrow: "Sharp tailoring", title: "The Men's Edit", cta: "Shop Men", href: "/men" },
+].map((slide) => ({
+  ...slide,
+  item: catalogue.find((c) => c.id === slide.id)!,
+}));
+
+const categories = [
+  { label: "Sarees", href: "/sarees", items: getCatalogueByCategory("Sarees") },
+  { label: "Occasion Wear", href: "/occasion", items: getCatalogueByCategory("Occasion Wear") },
+  { label: "Wedding Wear", href: "/occasion", items: getCatalogueByCategory("Wedding Wear") },
+  { label: "Fusion Wear", href: "/women", items: getCatalogueByCategory("Fusion Wear") },
+  { label: "Ethnic Wear", href: "/men", items: getCatalogueByCategory("Ethnic Wear") },
+  { label: "Casual Wear", href: "/men", items: getCatalogueByCategory("Casual Wear") },
+  { label: "Shirts", href: "/men", items: getCatalogueByCategory("Shirts") },
+  { label: "Formal Wear", href: "/men", items: getCatalogueByCategory("Formal Wear") },
+];
+
+const sareeEdit = getCatalogueByCategory("Sarees").slice(0, 6);
+const occasionEdit = [
+  ...getCatalogueByCategory("Occasion Wear"),
+  ...getCatalogueByCategory("Wedding Wear"),
+].slice(0, 6);
+const menEdit = getCatalogueByGroup("Men").slice(0, 6);
+---
 
 <BaseLayout
   title="Shri Varasiddhi Shopping Mall | Fashion in Adilabad"
-  description="Explore sarees, women’s fashion, men’s fashion and occasion wear from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
+  description="Explore sarees, women's fashion, men's fashion and occasion wear from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
 >
   <Header />
   <main id="main-content">
-    <EditorialHero />
-    <CollectionIndex />
-    <CategoryWindow />
-    <WomenEdit />
-    <SareeEdit />
-    <MenEdit />
-    <OccasionVisit />
+    <!-- ─── Category Circles ─── -->
+    <section class="circle-nav" aria-label="Shop by category">
+      <div class="circle-nav__inner container">
+        {categories.map((cat) => (
+          <a class="circle-nav__link" href={cat.href} aria-label={`Shop ${cat.label}`}>
+            <span class="circle-nav__circle">
+              {cat.items.length > 0 && (
+                <Image
+                  class="circle-nav__img"
+                  src={cat.items[0].image}
+                  alt=""
+                  widths={[160, 240]}
+                  sizes="96px"
+                  quality={72}
+                  loading="lazy"
+                />
+              )}
+            </span>
+            <span class="circle-nav__label">{cat.label}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ─── Hero Slider ─── -->
+    <section class="hero" data-carousel aria-label="Featured collections">
+      <div class="hero__track" data-carousel-track>
+        {heroSlides.map((slide, i) => (
+          <div class="hero__slide" data-carousel-item>
+            <span class="hero__bg asset-frame asset-frame--fashion-crop" style={`--crop-x: ${slide.item.crop.x}%; --crop-y: ${slide.item.crop.y}%; --crop-scale: ${slide.item.crop.scale};`}>
+              <Image
+                class="asset-frame__image"
+                src={slide.item.image}
+                alt=""
+                widths={[720, 1080, 1440, 1920]}
+                sizes="100vw"
+                quality={80}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchpriority={i === 0 ? "high" : undefined}
+              />
+            </span>
+            <div class="hero__content container">
+              <p class="hero__eyebrow">{slide.eyebrow}</p>
+              <h2 class="hero__title">{slide.title}</h2>
+              <a class="hero__cta button-primary" href={slide.href}>{slide.cta}</a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="hero__controls">
+        <button type="button" data-carousel-prev aria-label="Previous slide">&larr;</button>
+        <span data-carousel-counter class="hero__counter">01 — 03</span>
+        <button type="button" data-carousel-next aria-label="Next slide">&rarr;</button>
+      </div>
+    </section>
+
+    <!-- ─── Saree Edit ─── -->
+    <ProductRail
+      title="The Saree Edit"
+      items={sareeEdit}
+      viewAllHref="/sarees"
+    />
+
+    <!-- ─── Promo Strip ─── -->
+    <section class="promo-strip" aria-label="Store promotion">
+      <div class="promo-strip__inner container">
+        <p class="promo-strip__title">Visit us in Adilabad</p>
+        <p class="promo-strip__text">See the full collection in person. Our team will help you find the right piece for every occasion.</p>
+        <a class="button-primary promo-strip__cta" href="/visit">Plan your visit</a>
+      </div>
+    </section>
+
+    <!-- ─── Occasion & Festive ─── -->
+    <ProductRail
+      title="Occasion & Festive"
+      items={occasionEdit}
+      viewAllHref="/occasion"
+    />
+
+    <!-- ─── Men's Edit ─── -->
+    <ProductRail
+      title="The Men's Edit"
+      items={menEdit}
+      viewAllHref="/men"
+    />
+
+    <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  /* ─── Category Circles ─── */
+  .circle-nav {
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .circle-nav__inner {
+    display: flex;
+    gap: clamp(1.2rem, 3vw, 2.5rem);
+    justify-content: center;
+  }
+
+  .circle-nav__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+  }
+
+  .circle-nav__circle {
+    display: grid;
+    place-items: center;
+    width: clamp(3.5rem, 8vw, 5rem);
+    height: clamp(3.5rem, 8vw, 5rem);
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    background: var(--color-stone);
+    transition: border-color 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
+  }
+
+  .circle-nav__link:hover .circle-nav__circle {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold) 25%, transparent);
+  }
+
+  .circle-nav__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .circle-nav__label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    position: relative;
+    background: var(--color-espresso);
+    color: var(--color-paper);
+    overflow: hidden;
+  }
+
+  .hero__track {
+    display: flex;
+    scroll-snap-type: x mandatory;
+  }
+
+  .hero__slide {
+    position: relative;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-height: clamp(55vh, 70vw, 80vh);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    --asset-ratio: 3 / 4;
+  }
+
+  .hero__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(23, 18, 18, 0.55) 0%,
+      rgba(23, 18, 18, 0.25) 50%,
+      rgba(23, 18, 18, 0.7) 100%
+    );
+  }
+
+  .hero__content {
+    position: absolute;
+    bottom: clamp(2rem, 8vw, 5rem);
+    left: var(--gutter);
+    right: var(--gutter);
+    z-index: 2;
+  }
+
+  .hero__eyebrow {
+    color: var(--color-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    min-height: 2.75rem;
+    padding: 0.85rem 1.8rem;
+    background: var(--color-gold);
+    color: var(--color-ink);
+    border-color: var(--color-gold);
+  }
+
+  .hero__cta:hover {
+    background: var(--color-paper);
+    border-color: var(--color-paper);
+  }
+
+  .hero__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem var(--gutter);
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .hero__controls button {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(252, 250, 245, 0.25);
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 180ms var(--ease-out);
+  }
+
+  .hero__controls button:hover {
+    border-color: var(--color-gold);
+  }
+
+  .hero__counter {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted-gold);
+  }
+
+  /* ─── Promo Strip ─── */
+  .promo-strip {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--color-stone);
+    color: var(--color-ink);
+    text-align: center;
+  }
+
+  .promo-strip__inner {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+  }
+
+  .promo-strip__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 460;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .promo-strip__text {
+    max-width: 32rem;
+    color: color-mix(in srgb, currentColor 65%, transparent);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .promo-strip__cta {
+    margin-top: 0.5rem;
+  }
+</style>

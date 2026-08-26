@@ -2,90 +2,113 @@
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
-import CategoryNav from "../components/catalogue/CategoryNav.astro";
-import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
-import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import ProductCard from "../components/global/ProductCard.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
-import { getCatalogueItem } from "../data/catalogue";
+import { getCatalogueByGroup } from "../data/catalogue";
 
-const casual = [
-  getCatalogueItem("white-overshirt"),
-  getCatalogueItem("beige-cargo-pants"),
-  getCatalogueItem("green-tee-white-shorts"),
-];
-const ethnic = [
-  getCatalogueItem("pink-blue-printed-kurta"),
-  getCatalogueItem("classic-white-kurta"),
-  getCatalogueItem("taupe-pathani-suit"),
-  getCatalogueItem("navy-embroidered-jacket-kurta"),
-];
-const wedding = [
-  getCatalogueItem("ivory-sherwani"),
-  getCatalogueItem("champagne-sherwani-set"),
-  getCatalogueItem("navy-nehru-jacket-kurta"),
+const men = getCatalogueByGroup("Men");
+const categoryGroups = [
+  { label: "Ethnic Wear", items: men.filter((i) => i.category === "Ethnic Wear") },
+  { label: "Shirts", items: men.filter((i) => i.category === "Shirts") },
+  { label: "Casual Wear", items: men.filter((i) => i.category === "Casual Wear") },
+  { label: "Formal Wear", items: men.filter((i) => i.category === "Formal Wear") },
+  { label: "Wedding Wear", items: men.filter((i) => i.category === "Wedding Wear") },
+  { label: "Lounge Wear", items: men.filter((i) => i.category === "Lounge Wear") },
 ];
 ---
 
 <BaseLayout
-  title="Men’s Fashion Catalogue | Shri Varasiddhi Shopping Mall"
-  description="Browse men’s casual, ethnic, formal and wedding fashion previews from Shri Varasiddhi Shopping Mall in Adilabad."
+  title="Men's Fashion | Shri Varasiddhi Shopping Mall"
+  description="Browse men's ethnic, casual, formal and wedding fashion from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
   canonicalPath="/men"
 >
   <Header />
   <main id="main-content">
-    <CatalogueHero
-      eyebrow="Men"
-      title="Menswear with structure, ceremony and ease."
-      copy="The expanded men’s library is arranged by visual chapters: casual, ethnic, formal and wedding, each with a clear lead rather than equal product tiles."
-      item={getCatalogueItem("navy-pinstripe-suit")}
-      cta={{ label: "Browse menswear", href: "#ethnic" }}
-      tone="espresso"
-      imageLabel="Formal lead"
-    />
-    <CategoryNav items={[
-      { label: "Casual", href: "#casual", detail: "Overshirt and separates" },
-      { label: "Ethnic", href: "#ethnic", detail: "Kurta and Pathani" },
-      { label: "Formal", href: "#formal", detail: "Bandhgala and suit" },
-      { label: "Wedding", href: "#wedding", detail: "Sherwani sets" },
-    ]} />
-    <CatalogueLook
-      id="casual"
-      eyebrow="Casual"
-      title="Everyday menswear with clean, architectural spacing."
-      copy="Casual pieces stay quiet and direct, giving the page a lighter counterpoint before ceremonial dressing."
-      items={casual}
-      tone="paper"
-      layout="feature"
-    />
-    <CatalogueLook
-      id="ethnic"
-      eyebrow="Ethnic"
-      title="Printed, classic and jacketed kurta directions."
-      copy="Ethnicwear is the broadest men’s chapter, so it uses a larger editorial spread with one strong printed lead."
-      items={ethnic}
-      tone="espresso"
-      layout="mosaic"
-    />
-    <EditorialBreak
-      id="formal"
-      eyebrow="Formal"
-      title="Bandhgala and tailoring sharpen the middle of the page."
-      copy="Formal menswear is kept disciplined: darker fields, tighter crops and minimal supporting copy."
-      item={getCatalogueItem("black-bandhgala")}
-      tone="ivory"
-      imageMode="wide"
-    />
-    <CatalogueLook
-      id="wedding"
-      eyebrow="Wedding"
-      title="Sherwani looks carry the ceremonial finish."
-      copy="Wedding previews are composed with larger garment scale and restrained captions."
-      items={wedding}
-      tone="paper"
-      layout="feature"
-    />
+    <section class="collection-hero collection-hero--espresso">
+      <div class="container">
+        <p class="collection-hero__eyebrow">Men</p>
+        <h1 class="collection-hero__title">Menswear with structure, ceremony and ease.</h1>
+        <p class="collection-hero__copy">Browse the full men's collection. Add pieces to your cart, then order via WhatsApp.</p>
+      </div>
+    </section>
+
+    {categoryGroups.map((group) => (
+      group.items.length > 0 && (
+        <section class="collection-section">
+          <div class="container">
+            <h2 class="collection-section__title">{group.label}</h2>
+            <div class="collection-grid">
+              {group.items.map((item, i) => (
+                <ProductCard item={item} eager={i < 2} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    ))}
+
     <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .collection-hero {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-hero--espresso {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .collection-hero__eyebrow {
+    color: var(--color-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 32rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-hero__copy {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 28rem;
+  }
+
+  .collection-section {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 460;
+    letter-spacing: -0.01em;
+    margin-bottom: clamp(1.2rem, 3vw, 2rem);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>

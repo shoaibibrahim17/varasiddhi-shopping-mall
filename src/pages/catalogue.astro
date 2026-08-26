@@ -2,137 +2,101 @@
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
-import CategoryDial from "../components/catalogue/CategoryDial.astro";
-import CatalogueChapter from "../components/catalogue/CatalogueChapter.astro";
-import CatalogueShelf from "../components/catalogue/CatalogueShelf.astro";
-import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import ProductCard from "../components/global/ProductCard.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
-import {
-  getCatalogueCategoryGroups,
-  getCatalogueItem,
-} from "../data/catalogue";
+import { catalogue } from "../data/catalogue";
 
-const womenCategories = [
-  "Sarees",
-  "Cotton Sarees",
-  "Occasion Wear",
-  "Wedding Wear",
-  "Fusion Wear",
-] as const;
-
-const menCategories = [
-  "Ethnic Wear",
-  "Shirts",
-  "Casual Wear",
-  "Formal Wear",
-  "Wedding Wear",
-  "Lounge Wear",
-] as const;
-
-const womenGroups = getCatalogueCategoryGroups("Women", [...womenCategories]);
-const menGroups = getCatalogueCategoryGroups("Men", [...menCategories]);
-
-const totalItems =
-  womenGroups.reduce((sum, group) => sum + group.items.length, 0) +
-  menGroups.reduce((sum, group) => sum + group.items.length, 0);
-
-let runningNumber = 1;
-const womenShelves = womenGroups.map((group) => {
-  const shelf = { ...group, startNumber: runningNumber };
-  runningNumber += group.items.length;
-  return shelf;
-});
-const menShelves = menGroups.map((group) => {
-  const shelf = { ...group, startNumber: runningNumber };
-  runningNumber += group.items.length;
-  return shelf;
-});
-
-const toDialItems = (groups: typeof womenGroups) =>
-  groups.map((group) => ({
-    label: group.category,
-    href: `#${group.slug}`,
-    count: group.items.length,
-    item: group.items[0],
-  }));
+const groups = [
+  { label: "Women", items: catalogue.filter((i) => i.group === "Women") },
+  { label: "Men", items: catalogue.filter((i) => i.group === "Men") },
+];
 ---
 
 <BaseLayout
   title="Full Catalogue | Shri Varasiddhi Shopping Mall"
-  description="The complete fashion catalogue from Shri Varasiddhi Shopping Mall in Adilabad: every women's and men's piece, organized by category."
+  description="Browse the complete Shri Varasiddhi Shopping Mall catalogue — sarees, occasion wear, fusion, ethnic, casual, formal and wedding fashion."
   canonicalPath="/catalogue"
 >
   <Header />
   <main id="main-content">
-    <CatalogueHero
-      eyebrow="Catalogue"
-      title="Every piece, numbered and organized."
-      copy={`All ${totalItems} supplied garments in one index, grouped by department and category.`}
-      item={getCatalogueItem("designer-brocade-saree")}
-      cta={{ label: "Browse the categories", href: "#categories" }}
-      tone="paper"
-      imageLabel="Catalogue lead"
-    />
-    <div id="categories">
-      <CategoryDial
-        groups={[
-          { label: "Women", items: toDialItems(womenGroups) },
-          { label: "Men", items: toDialItems(menGroups) },
-        ]}
-      />
-    </div>
+    <section class="collection-hero">
+      <div class="container">
+        <p class="collection-hero__eyebrow">All {catalogue.length} pieces</p>
+        <h1 class="collection-hero__title">The full catalogue.</h1>
+        <p class="collection-hero__copy">Browse every piece. Add to your cart, then order via WhatsApp.</p>
+      </div>
+    </section>
 
-    <CatalogueChapter
-      id="women"
-      eyebrow="Women · Department 01"
-      title="Nine pieces from sarees to fusion."
-      copy="The complete women's selection, organized by category: silk and blockprint sarees, occasion silhouettes, wedding and fusion pieces."
-      tone="paper"
-    />
-    {
-      womenShelves.map((shelf) => (
-        <CatalogueShelf
-          id={shelf.slug}
-          category={shelf.category}
-          items={shelf.items}
-          startNumber={shelf.startNumber}
-          tone="paper"
-        />
-      ))
-    }
-
-    <EditorialBreak
-      id="mens-break"
-      eyebrow="Department 02"
-      title="The men's edit, from kurta sets to sherwanis."
-      copy="Sixteen pieces moving through ethnicwear, shirts, casual and formal tailoring, wedding dressing and loungewear."
-      item={getCatalogueItem("ivory-sherwani")}
-      tone="espresso"
-      cta={{ label: "Open the men's edit", href: "#men" }}
-      imageMode="wide"
-    />
-
-    <CatalogueChapter
-      id="men"
-      eyebrow="Men · Department 02"
-      title="Sixteen pieces from ethnic to lounge."
-      copy="The complete men's selection, organized by category: ethnicwear, shirts, casual, formal, wedding and loungewear."
-      tone="ivory"
-    />
-    {
-      menShelves.map((shelf) => (
-        <CatalogueShelf
-          id={shelf.slug}
-          category={shelf.category}
-          items={shelf.items}
-          startNumber={shelf.startNumber}
-          tone="ivory"
-        />
-      ))
-    }
+    {groups.map((group) => (
+      <section class="collection-section">
+        <div class="container">
+          <h2 class="collection-section__title">{group.label}</h2>
+          <div class="collection-grid">
+            {group.items.map((item, i) => (
+              <ProductCard item={item} eager={i < 2} />
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
 
     <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .collection-hero {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-hero__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 32rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-hero__copy {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 28rem;
+  }
+
+  .collection-section {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 460;
+    letter-spacing: -0.01em;
+    margin-bottom: clamp(1.2rem, 3vw, 2rem);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>

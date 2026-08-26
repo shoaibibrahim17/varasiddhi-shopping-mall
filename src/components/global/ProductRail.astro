@@ -1,0 +1,153 @@
+---
+import ProductCard from "./ProductCard.astro";
+import { ArrowDownRight } from "lucide-astro";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  title: string;
+  items: CatalogueItem[];
+  viewAllHref?: string;
+  viewAllLabel?: string;
+}
+
+const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
+---
+
+<section class="product-rail" data-carousel data-carousel-manual aria-labelledby={`rail-${title.replace(/\s+/g, "-").toLowerCase()}`}>
+  <div class="product-rail__header container">
+    <h2 class="product-rail__title" id={`rail-${title.replace(/\s+/g, "-").toLowerCase()}`}>{title}</h2>
+    <div class="product-rail__controls">
+      {viewAllHref && (
+        <a class="product-rail__viewall" href={viewAllHref}>
+          {viewAllLabel}
+          <ArrowDownRight size={14} stroke-width={1.5} aria-hidden="true" />
+        </a>
+      )}
+      <div class="product-rail__arrows">
+        <button type="button" data-carousel-prev aria-label={`Previous ${title}`}>&larr;</button>
+        <span data-carousel-counter class="product-rail__counter">01 — 04</span>
+        <button type="button" data-carousel-next aria-label={`Next ${title}`}>&rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-rail__track no-scrollbar" data-carousel-track data-lenis-prevent>
+    {items.map((item, i) => (
+      <div class="product-rail__slide" data-carousel-item>
+        <ProductCard item={item} eager={i === 0} />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .product-rail {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .product-rail__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .product-rail__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.8vw, 3.5rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .product-rail__controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .product-rail__viewall {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 180ms var(--ease-out);
+  }
+
+  .product-rail__viewall:hover {
+    color: var(--color-espresso);
+  }
+
+  .product-rail__arrows {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .product-rail__arrows button {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 180ms var(--ease-out), background-color 180ms var(--ease-out);
+  }
+
+  .product-rail__arrows button:hover {
+    border-color: var(--color-espresso);
+    background: color-mix(in srgb, var(--color-espresso) 5%, transparent);
+  }
+
+  .product-rail__counter {
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .product-rail__track {
+    display: flex;
+    gap: 1px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-inline: var(--gutter);
+    padding-bottom: 0.5rem;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .product-rail__slide {
+    flex: 0 0 min(62vw, 16rem);
+    scroll-snap-align: start;
+    background: var(--color-paper);
+    padding: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .product-rail__slide {
+      flex: 0 0 min(23vw, 19rem);
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .product-rail__slide {
+      flex: 0 0 19rem;
+    }
+  }
+</style>

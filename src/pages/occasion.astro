@@ -2,76 +2,90 @@
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
-import CategoryNav from "../components/catalogue/CategoryNav.astro";
-import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
-import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import ProductCard from "../components/global/ProductCard.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
-import { getCatalogueItem } from "../data/catalogue";
+import { getCatalogueByCategory } from "../data/catalogue";
 
-const familyCelebration = [
-  getCatalogueItem("champagne-sherwani-set"),
-  getCatalogueItem("blush-pink-anarkali"),
-  getCatalogueItem("mustard-sharara-set"),
-  getCatalogueItem("ivory-sherwani"),
-];
-const menCeremony = [
-  getCatalogueItem("black-bandhgala"),
-  getCatalogueItem("navy-pinstripe-suit"),
-  getCatalogueItem("navy-nehru-jacket-kurta"),
+const occasion = [
+  ...getCatalogueByCategory("Occasion Wear"),
+  ...getCatalogueByCategory("Wedding Wear"),
 ];
 ---
 
 <BaseLayout
-  title="Occasion Wear Catalogue | Shri Varasiddhi Shopping Mall"
-  description="Browse celebration and wedding dressing previews for women and men from Shri Varasiddhi Shopping Mall in Adilabad."
+  title="Occasion Wear | Shri Varasiddhi Shopping Mall"
+  description="Browse celebration and wedding dressing for women and men from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
   canonicalPath="/occasion"
 >
   <Header />
   <main id="main-content">
-    <CatalogueHero
-      eyebrow="Occasion"
-      title="Celebration dressing across the family."
-      copy="A combined occasion story for women’s festive silhouettes, saree-adjacent dressing and men’s wedding or formal looks."
-      item={getCatalogueItem("champagne-sherwani-set")}
-      cta={{ label: "Browse occasion wear", href: "#family" }}
-      tone="ivory"
-      imageLabel="Family celebration lead"
-    />
-    <CategoryNav items={[
-      { label: "Family Edit", href: "#family", detail: "Women and men" },
-      { label: "Women", href: "#women-occasion", detail: "Anarkali and sharara" },
-      { label: "Men", href: "#men-ceremony", detail: "Bandhgala and sherwani" },
-      { label: "Visit", href: "#visit", detail: "Adilabad" },
-    ]} />
-    <CatalogueLook
-      id="family"
-      eyebrow="Family Edit"
-      title="One celebration story, not separate inventory lanes."
-      copy="The page mixes women’s and men’s occasion imagery so the offer reads as family dressing rather than a duplicate women’s page."
-      items={familyCelebration}
-      tone="paper"
-      layout="mosaic"
-    />
-    <EditorialBreak
-      id="women-occasion"
-      eyebrow="Women"
-      title="Colour-led occasion silhouettes anchor the softer side."
-      copy="Anarkali and sharara pieces create the women’s celebration thread with different scale from the Women page."
-      item={getCatalogueItem("royal-blue-anarkali")}
-      tone="espresso"
-      imageMode="wide"
-    />
-    <CatalogueLook
-      id="men-ceremony"
-      eyebrow="Men"
-      title="Ceremonial menswear brings the architectural counterpoint."
-      copy="Bandhgala and sherwani looks give the occasion route a more formal closing rhythm."
-      items={menCeremony}
-      tone="ivory"
-      layout="feature"
-    />
+    <section class="collection-hero">
+      <div class="container">
+        <p class="collection-hero__eyebrow">Occasion</p>
+        <h1 class="collection-hero__title">Celebration dressing across the family.</h1>
+        <p class="collection-hero__copy">Browse occasion and wedding wear. Add pieces to your cart, then order via WhatsApp.</p>
+      </div>
+    </section>
+
+    <section class="collection-section">
+      <div class="container">
+        <div class="collection-grid">
+          {occasion.map((item, i) => (
+            <ProductCard item={item} eager={i < 2} />
+          ))}
+        </div>
+      </div>
+    </section>
+
     <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .collection-hero {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-hero__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 32rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-hero__copy {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 28rem;
+  }
+
+  .collection-section {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>

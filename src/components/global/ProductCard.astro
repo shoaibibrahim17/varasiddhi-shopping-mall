@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+
+import type { CatalogueItem } from "../../data/catalogue";
+
+interface Props {
+  item: CatalogueItem;
+  eager?: boolean;
+}
+
+const { item, eager = false } = Astro.props;
+
+const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+---
+
+<article class="product-card" data-stagger-item>
+  <a class="product-card__link" href={`/products/${item.id}`} aria-label={`${item.title}, view details`}>
+    <span class="product-card__frame asset-frame asset-frame--fashion-crop" style={cropStyle}>
+      <Image
+        class="asset-frame__image"
+        src={item.image}
+        alt={item.alt}
+        widths={[320, 480, 680]}
+        sizes="(max-width: 768px) 46vw, 22vw"
+        quality={82}
+        loading={eager ? "eager" : "lazy"}
+        fetchpriority={eager ? "high" : undefined}
+      />
+    </span>
+  </a>
+  <div class="product-card__info">
+    <p class="product-card__cat">{item.category}</p>
+    <h3 class="product-card__name"><a href={`/products/${item.id}`}>{item.title}</a></h3>
+    <p class="product-card__price">Price on WhatsApp</p>
+    <button type="button" class="product-card__add button-primary" data-cart-add={item.id}>
+      Add to cart
+    </button>
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: grid;
+    gap: 0;
+    min-width: 0;
+  }
+
+  .product-card__link {
+    display: block;
+    overflow: hidden;
+    background: var(--color-stone);
+  }
+
+  .product-card__frame {
+    --asset-ratio: 4 / 5;
+    transition: opacity 280ms var(--ease-out);
+  }
+
+  .product-card__link:hover .product-card__frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-espresso);
+    opacity: 0.08;
+  }
+
+  .product-card__frame :global(img) {
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .product-card__link:hover .product-card__frame :global(img) {
+    transform: translateY(var(--parallax-y, 0px)) scale(calc(var(--asset-scale, 1.4) * 1.04));
+  }
+
+  .product-card__info {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.85rem 0;
+  }
+
+  .product-card__cat {
+    color: var(--color-muted-gold);
+    font-size: 0.62rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .product-card__name {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 470;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .product-card__name a {
+    text-decoration: none;
+  }
+
+  .product-card__name a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-muted-gold);
+    text-underline-offset: 0.15em;
+  }
+
+  .product-card__price {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 0.82rem;
+    margin-top: 0.15rem;
+  }
+
+  .product-card__add {
+    margin-top: 0.5rem;
+    min-height: 2.2rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.68rem;
+    width: 100%;
+  }
+</style>

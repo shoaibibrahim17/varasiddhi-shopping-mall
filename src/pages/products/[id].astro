@@ -1,0 +1,338 @@
+---
+import Header from "../../components/global/Header.astro";
+import Footer from "../../components/global/Footer.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductRail from "../../components/global/ProductRail.astro";
+import { ArrowDownRight, ChevronRight } from "lucide-astro";
+import { Image } from "astro:assets";
+import { catalogue, getCatalogueByCategory } from "../../data/catalogue";
+import { site } from "../../data/site";
+
+export function getStaticPaths() {
+  return catalogue.map((item) => ({
+    params: { id: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+
+const groupLabel = item.group === "Women" ? "Women" : "Men";
+const breadcrumb = [
+  { label: "Home", href: "/" },
+  { label: groupLabel, href: item.group === "Women" ? "/women" : "/men" },
+  { label: item.category, href: item.group === "Women" ? "/sarees" : "/men" },
+  { label: item.title, href: null },
+];
+
+const related = getCatalogueByCategory(item.category)
+  .filter((i) => i.id !== item.id)
+  .slice(0, 8);
+
+const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-scale: ${item.crop.scale};`;
+---
+
+<BaseLayout
+  title={`${item.title} | ${site.name}`}
+  description={`${item.title} — ${item.alt} Available at Shri Varasiddhi Shopping Mall, Adilabad.`}
+  canonicalPath={`/products/${item.id}`}
+>
+  <Header />
+  <main id="main-content">
+    <nav class="pdp-breadcrumb container" aria-label="Breadcrumb">
+      <ol>
+        {breadcrumb.map((crumb, i) => (
+          <li>
+            {crumb.href ? (
+              <a href={crumb.href}>{crumb.label}</a>
+            ) : (
+              <span aria-current="page">{crumb.label}</span>
+            )}
+            {i < breadcrumb.length - 1 && <ChevronRight size={12} aria-hidden="true" />}
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <section class="pdp" data-reveal-section>
+      <div class="pdp__inner container">
+        <figure class="pdp__image-wrap">
+          <span class="asset-frame asset-frame--fashion-crop pdp__image" data-image-reveal data-parallax style={cropStyle}>
+            <Image
+              class="asset-frame__image"
+              src={item.image}
+              alt={item.alt}
+              widths={[480, 720, 1040, 1440]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={86}
+              loading="eager"
+              fetchpriority="high"
+            />
+          </span>
+          <figcaption>
+            <span>{item.category}</span>
+            <strong>{item.title}</strong>
+          </figcaption>
+        </figure>
+
+        <div class="pdp__details">
+          <p class="pdp__eyebrow" data-reveal="eyebrow">{groupLabel} · {item.category}</p>
+          <h1 class="pdp__title" data-reveal="title">{item.title}</h1>
+
+          <p class="pdp__price" data-reveal="copy">Price on WhatsApp</p>
+          <p class="pdp__cod" data-reveal="copy">Cash on Delivery available</p>
+
+          <div class="pdp__actions" data-reveal="copy">
+            <button type="button" class="pdp__add button-primary" data-cart-add={item.id}>
+              Add to cart
+              <ArrowDownRight size={15} stroke-width={1.5} aria-hidden="true" />
+            </button>
+          </div>
+
+          <div class="pdp__info" data-reveal="copy">
+            <details class="pdp__accordion">
+              <summary>Store pickup — Adilabad</summary>
+              <p>Visit Shri Varasiddhi Shopping Mall in Adilabad, Telangana to see this piece in person. Our team will help you find the right fit.</p>
+            </details>
+            <details class="pdp__accordion">
+              <summary>Delivery &amp; payment</summary>
+              <p>Cash on Delivery is available across India. Prepaid (UPI / card) is being integrated and launches after client approval.</p>
+            </details>
+            <details class="pdp__accordion">
+              <summary>WhatsApp order</summary>
+              <p>Add items to your cart, then tap "Order via WhatsApp" to send your selection directly to our team. We'll confirm availability and delivery details.</p>
+            </details>
+          </div>
+
+          <div class="pdp__payment-note" data-reveal="copy">
+            <p>{site.payments.prepaidNote}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <ProductRail
+        title={`More ${item.category}`}
+        items={related}
+        viewAllHref={item.group === "Women" ? "/women" : "/men"}
+      />
+    )}
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .pdp-breadcrumb {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pdp-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pdp-breadcrumb a {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    text-decoration: none;
+    transition: color 180ms var(--ease-out);
+  }
+
+  .pdp-breadcrumb a:hover {
+    color: var(--color-ink);
+  }
+
+  .pdp-breadcrumb span {
+    color: var(--color-muted-gold);
+  }
+
+  .pdp-breadcrumb svg {
+    color: color-mix(in srgb, currentColor 35%, transparent);
+    margin: 0 0.15rem;
+  }
+
+  .pdp {
+    padding-block: clamp(2rem, 5vw, 4.5rem);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .pdp__inner {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+  }
+
+  .pdp__image-wrap {
+    position: relative;
+    margin: 0;
+  }
+
+  .pdp__image {
+    --asset-ratio: 3 / 4;
+  }
+
+  .pdp__image-wrap figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 14rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--color-paper);
+    color: var(--color-espresso);
+  }
+
+  .pdp__image-wrap figcaption span {
+    color: var(--color-muted-gold);
+    font-size: 0.65rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .pdp__image-wrap figcaption strong {
+    display: block;
+    margin-top: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 460;
+    line-height: 1.05;
+  }
+
+  .pdp__details {
+    display: grid;
+    gap: 0.85rem;
+    align-content: start;
+    padding-top: 1rem;
+  }
+
+  .pdp__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.68rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .pdp__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .pdp__price {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .pdp__cod {
+    color: var(--color-muted-gold);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .pdp__actions {
+    margin-top: 1rem;
+  }
+
+  .pdp__add {
+    width: 100%;
+    max-width: 22rem;
+    min-height: 3rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .pdp__info {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.5rem;
+  }
+
+  .pdp__accordion {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pdp__accordion summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    list-style: none;
+  }
+
+  .pdp__accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pdp__accordion summary::after {
+    content: "+";
+    font-size: 1.1rem;
+    font-weight: 400;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .pdp__accordion[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .pdp__accordion p {
+    padding-bottom: 1rem;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+
+  .pdp__payment-note {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .pdp__payment-note p {
+    margin: 0;
+    color: color-mix(in srgb, currentColor 70%, transparent);
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 64rem) {
+    .pdp__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .pdp__image {
+      max-height: 70vh;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .pdp__image-wrap {
+      margin-inline: calc(var(--gutter) * -1);
+    }
+
+    .pdp__image-wrap figcaption {
+      right: auto;
+      left: var(--gutter);
+    }
+  }
+</style>

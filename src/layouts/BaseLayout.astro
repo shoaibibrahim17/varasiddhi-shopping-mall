@@ -1,5 +1,9 @@
 ---
 import "../styles/global.css";
+import { getImage } from "astro:assets";
+import { catalogue } from "../data/catalogue";
+import { site } from "../data/site";
+import CartDrawer from "../components/global/CartDrawer.astro";
 
 interface Props {
   title: string;
@@ -8,6 +12,17 @@ interface Props {
 }
 
 const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
+
+const productMap: Record<string, { title: string; category: string; group: string; thumb: string }> = {};
+for (const item of catalogue) {
+  const thumb = await getImage({ src: item.image, width: 128, quality: 72 });
+  productMap[item.id] = {
+    title: item.title,
+    category: item.category,
+    group: item.group,
+    thumb: thumb.src,
+  };
+}
 ---
 
 <!doctype html>
@@ -26,20 +41,45 @@ const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_IN" />
-    <meta property="og:site_name" content="Shri Varasiddhi Shopping Mall" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <link rel="canonical" href={canonicalPath} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <div class="announcement-bar" role="banner">
+      <p>{site.announcement}</p>
+    </div>
+
     <slot />
+
+    <CartDrawer />
+
+    <script is:inline type="application/json" data-catalogue-data set:html={JSON.stringify(productMap)} />
     <script>
       import "../scripts/smooth-scroll";
       import "../scripts/animations";
       import "../scripts/carousels";
+      import "../scripts/cart";
     </script>
   </body>
 </html>
 
+<style>
+  .announcement-bar {
+    background: var(--color-espresso);
+    color: var(--color-paper);
+    padding: 0.55rem var(--gutter);
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
 
+  .announcement-bar p {
+    margin: 0;
+  }
+</style>

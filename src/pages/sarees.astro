@@ -2,75 +2,87 @@
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import CatalogueHero from "../components/catalogue/CatalogueHero.astro";
-import CategoryNav from "../components/catalogue/CategoryNav.astro";
-import CatalogueLook from "../components/catalogue/CatalogueLook.astro";
-import EditorialBreak from "../components/catalogue/EditorialBreak.astro";
+import ProductCard from "../components/global/ProductCard.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
-import { getCatalogueItem } from "../data/catalogue";
+import { getCatalogueByCategory } from "../data/catalogue";
 
-const festiveEdit = [
-  getCatalogueItem("festive-red-saree"),
-  getCatalogueItem("designer-brocade-saree"),
-  getCatalogueItem("maroon-silk-saree"),
-];
-const cottonCraft = [
-  getCatalogueItem("kalamkari-cotton-saree"),
-  getCatalogueItem("indigo-blockprint-saree"),
-];
+const sarees = getCatalogueByCategory("Sarees");
 ---
 
 <BaseLayout
-  title="Saree Catalogue | Shri Varasiddhi Shopping Mall"
-  description="Explore the editorial saree edit from Shri Varasiddhi Shopping Mall, including festive red, brocade, silk, blockprint and Kalamkari cotton sarees."
+  title="Saree Collection | Shri Varasiddhi Shopping Mall"
+  description="Explore the saree collection from Shri Varasiddhi Shopping Mall — festive, brocade, silk, blockprint and Kalamkari cotton sarees."
   canonicalPath="/sarees"
 >
   <Header />
   <main id="main-content">
-    <CatalogueHero
-      eyebrow="Sarees"
-      title="The saree edit, built around border, weave and colour."
-      copy="A focused saree page for festive, brocade, silk and cotton craft directions, arranged as a lookbook rather than inventory."
-      item={getCatalogueItem("designer-brocade-saree")}
-      cta={{ label: "Browse the edit", href: "#festive" }}
-      tone="paper"
-      imageLabel="Brocade lead"
-      reverse
-    />
-    <CategoryNav items={[
-      { label: "Festive Edit", href: "#festive", detail: "Red, brocade, silk" },
-      { label: "Cotton & Craft", href: "#craft", detail: "Blockprint and Kalamkari" },
-      { label: "Kalamkari Moment", href: "#kalamkari", detail: "Large craft crop" },
-      { label: "Visit", href: "#visit", detail: "Adilabad" },
-    ]} />
-    <CatalogueLook
-      id="festive"
-      eyebrow="The Festive Edit"
-      title="Festive sarees with controlled colour and textile scale."
-      copy="The red, brocade and silk looks are cropped differently from the homepage so the page feels curated, not repeated."
-      items={festiveEdit}
-      tone="ivory"
-      layout="feature"
-    />
-    <EditorialBreak
-      id="craft"
-      eyebrow="Cotton & Craft"
-      title="Blockprint and Kalamkari create the quieter counterpoint."
-      copy="Cotton sarees bring a craft-led pause between the richer festive plates."
-      item={getCatalogueItem("indigo-blockprint-saree")}
-      tone="paper"
-      imageMode="wide"
-    />
-    <CatalogueLook
-      id="kalamkari"
-      eyebrow="Kalamkari Moment"
-      title="A single craft image gets room to lead."
-      copy="Kalamkari appears as a large textile moment with supporting sarees kept compact."
-      items={cottonCraft}
-      tone="espresso"
-      layout="mosaic"
-    />
+    <section class="collection-hero">
+      <div class="container">
+        <p class="collection-hero__eyebrow">Sarees</p>
+        <h1 class="collection-hero__title">The saree edit, built around border, weave and colour.</h1>
+        <p class="collection-hero__copy">Browse the full saree collection. Add pieces to your cart, then order via WhatsApp.</p>
+      </div>
+    </section>
+
+    <section class="collection-section">
+      <div class="container">
+        <div class="collection-grid">
+          {sarees.map((item, i) => (
+            <ProductCard item={item} eager={i < 2} />
+          ))}
+        </div>
+      </div>
+    </section>
+
     <VisitCta />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .collection-hero {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-hero__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.72rem;
+    font-weight: 720;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .collection-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 460;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    max-width: 32rem;
+    margin-bottom: 1rem;
+  }
+
+  .collection-hero__copy {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 28rem;
+  }
+
+  .collection-section {
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+</style>
