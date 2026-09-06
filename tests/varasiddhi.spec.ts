@@ -274,3 +274,22 @@ test.describe('Sticky header', () => {
     expect(stickyAfter).toBe('sticky');
   });
 });
+
+test.describe('Typography', () => {
+  test('headings use Playfair Display', async ({ page }) => {
+    await page.goto(BASE);
+
+    const fontFamily = await page.evaluate(() => {
+      const heading = document.querySelector('h2');
+      if (!heading) {
+        return null;
+      }
+      return window.getComputedStyle(heading).fontFamily;
+    });
+
+    expect(fontFamily).toBeTruthy();
+    if (fontFamily) {
+      expect(fontFamily.toLowerCase()).toContain('playfair display');
+    }
+  });
+});
