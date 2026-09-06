@@ -1,0 +1,45 @@
+<div id="splash-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950 transition-opacity duration-700 ease-out">
+  <video
+    id="splash-video"
+    autoplay
+    muted
+    playsinline
+    preload="auto"
+    class="h-full w-full object-cover md:object-contain max-h-screen"
+  >
+    <source src="/videos/varasiddhi-splash-video.mp4" type="video/mp4" />
+  </video>
+
+  <button
+    id="skip-splash"
+    class="absolute bottom-8 right-8 z-10 px-5 py-2 text-xs uppercase tracking-widest text-white/80 border border-white/30 backdrop-blur-md rounded-full hover:text-white hover:border-white transition-all"
+  >
+    Enter Store &rarr;
+  </button>
+</div>
+
+<script>
+  const overlay = document.getElementById("splash-overlay");
+  const video = document.getElementById("splash-video") as HTMLVideoElement;
+  const skipBtn = document.getElementById("skip-splash");
+
+  const dismissSplash = () => {
+    if (!overlay) return;
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    setTimeout(() => {
+      overlay.remove();
+    }, 700);
+    sessionStorage.setItem("varasiddhi_splash_seen", "true");
+  };
+
+  if (sessionStorage.getItem("varasiddhi_splash_seen") === "true") {
+    overlay?.remove();
+  } else {
+    if (video) {
+      video.addEventListener("ended", dismissSplash);
+      setTimeout(dismissSplash, 6000);
+    }
+    skipBtn?.addEventListener("click", dismissSplash);
+  }
+</script>

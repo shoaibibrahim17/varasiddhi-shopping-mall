@@ -141,6 +141,10 @@ test.describe('Mobile navigation drawer', () => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
 
+    await page.evaluate(() => sessionStorage.setItem('varasiddhi_splash_seen', 'true'));
+    await page.reload();
+    await page.waitForTimeout(200);
+
     await page.locator('[data-menu-open]').click();
     await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
     await expect(page.locator('.mobile-drawer__nav')).toBeVisible();
@@ -153,6 +157,10 @@ test.describe('Mobile navigation drawer', () => {
   test('closes on Escape', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
+
+    await page.evaluate(() => sessionStorage.setItem('varasiddhi_splash_seen', 'true'));
+    await page.reload();
+    await page.waitForTimeout(200);
 
     await page.locator('[data-menu-open]').click();
     await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
@@ -291,5 +299,31 @@ test.describe('Typography', () => {
     if (fontFamily) {
       expect(fontFamily.toLowerCase()).toContain('playfair display');
     }
+  });
+});
+
+test.describe('Splash screen', () => {
+  test('video autoplays and skip button dismisses overlay', async ({ page }) => {
+    await page.goto(BASE);
+
+    const splashOverlay = page.locator('#splash-overlay');
+    await expect(splashOverlay).toBeVisible();
+
+    const video = page.locator('#splash-video');
+    await expect(video).toBeVisible();
+
+    const skipBtn = page.locator('#skip-splash');
+    await expect(skipBtn).toBeVisible();
+
+    await page.evaluate(() => {
+      const btn = document.getElementById('skip-splash');
+      btn?.click();
+    });
+    await page.waitForTimeout(750);
+
+    const overlayExists = await page.evaluate(() => {
+      return document.getElementById('splash-overlay') !== null;
+    });
+    expect(overlayExists).toBe(false);
   });
 });

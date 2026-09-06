@@ -5,6 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductRail from "../components/global/ProductRail.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
 import StoryBubbles from "../components/home/StoryBubbles.astro";
+import SplashScreen from "../components/SplashScreen.astro";
 import { Image } from "astro:assets";
 import {
   catalogue,
@@ -44,6 +45,7 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
   title="Shri Varasiddhi Shopping Mall | Fashion in Adilabad"
   description="Explore sarees, women's fashion, men's fashion and occasion wear from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
 >
+  <SplashScreen />
   <Header />
   <main id="main-content">
     <!-- ─── Story Bubbles ─── -->
