@@ -1,171 +1,117 @@
 ---
 import { Image } from "astro:assets";
-import { Menu, X, ShoppingBag } from "lucide-astro";
+import { Menu, X, Search, Heart, ShoppingBag } from "lucide-astro";
 
 import logo from "../../assets/brand/logo/varasiddhi-logo-primary.png";
 
 const navigation = [
-  { label: "Women", href: "/women" },
+  { label: "Home", href: "/" },
   { label: "Sarees", href: "/sarees" },
-  { label: "Men", href: "/men" },
-  { label: "Occasion", href: "/occasion" },
-  { label: "Catalogue", href: "/catalogue" },
-  { label: "Visit Us", href: "/visit" },
+  { label: "Suit Sets", href: "/occasion" },
+  { label: "Men's Edit", href: "/men" },
+  { label: "Festive", href: "/occasion" },
+  { label: "Contact", href: "/visit" },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isActive = (href: string) => currentPath === href;
 ---
 
-<header class="site-header">
-  <div class="header-inner">
-    <nav class="desktop-nav desktop-nav--left" aria-label="Primary">
-      {
-        navigation.slice(0, 3).map((item) => (
-          <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
-        ))
-      }
-    </nav>
+<header class="site-header" role="banner">
+  <div class="site-header__inner">
+    <div class="site-header__left">
+      <button type="button" class="icon-btn" data-menu-open aria-label="Open menu">
+        <Menu size={20} stroke-width={1.5} aria-hidden="true" />
+      </button>
+    </div>
 
     <a class="brand" href="/" aria-label="Shri Varasiddhi Shopping Mall home">
-      <span class="brand-viewport">
-        <Image
-          class="brand-image"
-          src={logo}
-          alt="Shri Varasiddhi Shopping Mall"
-          width={256}
-          quality={90}
-          loading="eager"
-        />
-      </span>
+      <span class="brand-name">SHRI VARASIDDHI</span>
+      <span class="brand-sub">SHOPPING MALL · ADILABAD</span>
     </a>
 
-    <nav class="desktop-nav desktop-nav--right" aria-label="Shop">
+    <nav class="desktop-nav" aria-label="Primary">
       {
-        navigation.slice(3).map((item) => (
+        navigation.map((item) => (
           <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>
         ))
       }
     </nav>
 
-    <button type="button" class="header-cart" data-cart-open aria-label="Open shopping cart">
-      <ShoppingBag size={20} stroke-width={1.5} aria-hidden="true" />
-      <span class="header-cart__badge" data-cart-count hidden>0</span>
-    </button>
-
-    <button type="button" class="header-cart" data-cart-open aria-label="Open shopping cart">
-      <ShoppingBag size={20} stroke-width={1.5} aria-hidden="true" />
-      <span class="header-cart__badge" data-cart-count hidden>0</span>
-    </button>
-
-    <details class="mobile-menu" data-mobile-menu>
-      <summary aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Menu">
-        <span aria-hidden="true">Menu</span>
-        <Menu class="menu-icon menu-icon--open" size={20} stroke-width={1.5} aria-hidden="true" />
-        <X class="menu-icon menu-icon--close" size={20} stroke-width={1.5} aria-hidden="true" />
-      </summary>
-      <div class="mobile-panel" id="mobile-nav-panel" data-mobile-panel>
-        <nav aria-label="Mobile navigation">
-          {
-            navigation.map((item) => (
-              <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined} data-mobile-nav-item>{item.label}</a>
-            ))
-          }
-        </nav>
-        <p>Adilabad <span aria-hidden="true">·</span> Telangana</p>
-      </div>
-    </details>
+    <div class="site-header__right">
+      <button type="button" class="icon-btn" aria-label="Search">
+        <Search size={20} stroke-width={1.5} aria-hidden="true" />
+      </button>
+      <button type="button" class="icon-btn" aria-label="Wishlist">
+        <Heart size={20} stroke-width={1.5} aria-hidden="true" />
+      </button>
+      <button type="button" class="icon-btn icon-btn--cart" data-cart-open aria-label="Open shopping cart">
+        <ShoppingBag size={20} stroke-width={1.5} aria-hidden="true" />
+        <span class="header-cart__badge" data-cart-count hidden>0</span>
+      </button>
+    </div>
   </div>
 </header>
 
+<div class="mobile-drawer" data-mobile-drawer hidden>
+  <div class="mobile-drawer__overlay" data-mobile-overlay></div>
+  <aside class="mobile-drawer__panel" data-mobile-panel aria-label="Mobile navigation">
+    <div class="mobile-drawer__head">
+      <span class="mobile-drawer__title">Menu</span>
+      <button type="button" class="icon-btn" data-menu-close aria-label="Close menu">
+        <X size={20} stroke-width={1.5} aria-hidden="true" />
+      </button>
+    </div>
+    <nav class="mobile-drawer__nav" aria-label="Mobile">
+      {
+        navigation.map((item) => (
+          <a href={item.href} class:list={[isActive(item.href) && "is-active"]} aria-current={isActive(item.href) ? "page" : undefined} data-mobile-nav-item>{item.label}</a>
+        ))
+      }
+    </nav>
+    <div class="mobile-drawer__footer">
+      <a class="button-primary" href={"https://wa.me/8732223101"} target="_blank" rel="noopener">WhatsApp Adilabad</a>
+      <span class="mobile-drawer__timing">Open: 10:00 AM – 9:00 PM</span>
+    </div>
+  </aside>
+</div>
+
 <style>
   .site-header {
-    position: relative;
-    z-index: 20;
-    border-bottom: 1px solid var(--color-line);
-    background: var(--color-paper);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
-  .header-inner {
-    position: relative;
+  .site-header__inner {
     display: grid;
-    width: min(100%, var(--content-max));
-    min-height: 5.1rem;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
+    width: min(100%, var(--content-max));
+    min-height: 4.5rem;
     margin-inline: auto;
     padding-inline: var(--gutter);
-    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
   }
 
-  .desktop-nav {
+  .site-header__left {
     display: flex;
     align-items: center;
-    gap: clamp(1.5rem, 2.5vw, 2.75rem);
+    justify-self: start;
   }
 
-  .desktop-nav--right {
-    justify-content: flex-end;
+  .site-header__right {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    justify-self: end;
   }
 
-  .desktop-nav a {
-    position: relative;
-    padding-block: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 650;
-    letter-spacing: 0.105em;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  .desktop-nav a::after {
-    position: absolute;
-    right: 0;
-    bottom: 0.45rem;
-    left: 0;
-    height: 1px;
-    transform: scaleX(0);
-    transform-origin: right;
-    background: var(--color-muted-gold);
-    content: "";
-    transition: transform 280ms var(--ease-out);
-  }
-
-  .desktop-nav a:hover::after,
-  .desktop-nav a:focus-visible::after,
-  .desktop-nav a.is-active::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .brand {
-    display: grid;
-    justify-self: center;
-    text-decoration: none;
-  }
-
-  .brand-viewport {
-    position: relative;
-    display: block;
-    width: 6.35rem;
-    height: 3.7rem;
-    overflow: hidden;
-  }
-
-  .brand-image {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 7.55rem;
-    max-width: none;
-    transform: translate(-50%, -50%);
-  }
-
-  .mobile-menu {
-    display: none;
-  }
-
-  .header-cart {
-    position: relative;
+  .icon-btn {
     display: grid;
     place-items: center;
     width: 2.75rem;
@@ -177,8 +123,72 @@ const isActive = (href: string) => currentPath === href;
     transition: background-color 180ms var(--ease-out);
   }
 
-  .header-cart:hover {
-    background: color-mix(in srgb, var(--color-espresso) 8%, transparent);
+  .icon-btn:hover {
+    background: color-mix(in srgb, var(--color-title) 8%, transparent);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    text-decoration: none;
+    line-height: 1.1;
+  }
+
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--color-title);
+  }
+
+  .brand-sub {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-description);
+  }
+
+  .desktop-nav {
+    display: none;
+    align-items: center;
+    gap: clamp(1.2rem, 2vw, 2rem);
+    justify-self: center;
+  }
+
+  .desktop-nav a {
+    position: relative;
+    padding-block: 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: var(--color-title);
+    transition: color 180ms var(--ease-out);
+  }
+
+  .desktop-nav a::after {
+    position: absolute;
+    right: 0;
+    bottom: 0.45rem;
+    left: 0;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: right;
+    background: var(--color-maroon);
+    content: "";
+    transition: transform 280ms var(--ease-out);
+  }
+
+  .desktop-nav a:hover::after,
+  .desktop-nav a:focus-visible::after,
+  .desktop-nav a.is-active::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 
   .header-cart__badge {
@@ -191,186 +201,165 @@ const isActive = (href: string) => currentPath === href;
     height: 1.1rem;
     padding: 0 0.3rem;
     border-radius: 50%;
-    background: var(--color-gold);
-    color: var(--color-ink);
+    background: var(--color-crimson);
+    color: #fff;
     font-size: 0.55rem;
     font-weight: 700;
     line-height: 1;
   }
 
-  @media (max-width: 64rem) {
-    .desktop-nav {
-      gap: 1.2rem;
-    }
-
-    .desktop-nav a {
-      font-size: 0.68rem;
-    }
+  .icon-btn--cart {
+    position: relative;
   }
 
-  @media (max-width: 47.99rem) {
-    .header-inner {
-      min-height: 4rem;
-      grid-template-columns: 1fr auto auto;
+  @media (min-width: 64rem) {
+    .site-header__left .icon-btn {
+      display: none;
     }
 
     .desktop-nav {
-      display: none;
+      display: flex;
+    }
+
+    .site-header__inner {
+      grid-template-columns: 1fr auto 1fr;
     }
 
     .brand {
-      justify-self: start;
+      order: 2;
     }
 
-    .brand-viewport {
-      width: 6.45rem;
-      height: 3.65rem;
+    .site-header__left {
+      order: 1;
     }
 
-    .brand-image {
-      width: 7.9rem;
+    .site-header__right {
+      order: 3;
+    }
+  }
+
+  @media (max-width: 63.99rem) {
+    .site-header__inner {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
+
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    visibility: hidden;
+  }
+
+  .mobile-drawer[hidden] {
+    display: block;
+  }
+
+  .mobile-drawer.is-open {
+    visibility: visible;
+  }
+
+  .mobile-drawer__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: color-mix(in srgb, var(--color-title) 40%, transparent);
+    opacity: 0;
+    transition: opacity 260ms var(--ease-out);
+  }
+
+  .mobile-drawer.is-open .mobile-drawer__overlay {
+    opacity: 1;
+  }
+
+  .mobile-drawer__panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    width: min(86vw, 22rem);
+    background: var(--color-background);
+    color: var(--color-title);
+    border-right: 1px solid var(--color-border);
+    transform: translateX(-100%);
+    transition: transform 300ms var(--ease-out);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-drawer.is-open .mobile-drawer__panel {
+    transform: translateX(0);
+  }
+
+  .mobile-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem var(--gutter);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-drawer__title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+
+  .mobile-drawer__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+  }
+
+  .mobile-drawer__nav a {
+    display: flex;
+    align-items: center;
+    min-height: 3.75rem;
+    padding-inline: var(--gutter);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: var(--color-title);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 180ms var(--ease-out);
+  }
+
+  .mobile-drawer__nav a:hover,
+  .mobile-drawer__nav a:focus-visible {
+    background: color-mix(in srgb, var(--color-title) 4%, transparent);
+  }
+
+  .mobile-drawer__nav a.is-active {
+    color: var(--color-maroon);
+  }
+
+  .mobile-drawer__footer {
+    margin-top: auto;
+    padding: 1.25rem var(--gutter) calc(1.25rem + env(safe-area-inset-bottom));
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .mobile-drawer__timing {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-description);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__track {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
     }
 
-    .header-cart {
-      justify-self: end;
-    }
-
-    .mobile-menu {
-      display: block;
-      justify-self: end;
-    }
-
-    .mobile-menu summary {
-      display: flex;
-      min-width: 4.75rem;
-      min-height: 2.75rem;
-      cursor: pointer;
-      list-style: none;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.6rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .mobile-menu summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .menu-icon--close,
-    .mobile-menu[open] .menu-icon--open {
-      display: none;
-    }
-
-    .mobile-menu[open] .menu-icon--close {
-      display: block;
-    }
-
-    .mobile-panel {
-      position: absolute;
-      z-index: 30;
-      top: 100%;
-      right: 0;
-      left: 0;
-      padding: 1.5rem var(--gutter) 2rem;
-      border-top: 1px solid color-mix(in srgb, var(--color-paper) 16%, transparent);
-      background: var(--color-espresso);
-      color: var(--color-paper);
-    }
-
-    .mobile-panel nav {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .mobile-panel a {
-      display: flex;
-      min-height: 3.65rem;
-      align-items: center;
-      border-bottom: 1px solid
-        color-mix(in srgb, var(--color-paper) 18%, transparent);
-      font-family: var(--font-display);
-      font-size: 1.55rem;
-      line-height: 1;
-      text-decoration: none;
-    }
-
-    .mobile-panel a.is-active {
-      color: var(--color-gold);
-    }
-
-    .mobile-panel a:nth-child(even) {
-      padding-left: 1rem;
-      border-left: 1px solid
-        color-mix(in srgb, var(--color-paper) 18%, transparent);
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .mobile-menu[open] .mobile-panel {
-        animation: mobile-panel-enter 260ms var(--ease-out) both;
-      }
-
-      .mobile-menu[open] .mobile-panel a {
-        animation: mobile-link-enter 320ms var(--ease-out) both;
-      }
-
-      .mobile-menu[open] .mobile-panel a:nth-child(2) {
-        animation-delay: 35ms;
-      }
-
-      .mobile-menu[open] .mobile-panel a:nth-child(3) {
-        animation-delay: 70ms;
-      }
-
-      .mobile-menu[open] .mobile-panel a:nth-child(4) {
-        animation-delay: 105ms;
-      }
-
-      .mobile-menu[open] .mobile-panel a:nth-child(5) {
-        animation-delay: 140ms;
-      }
-
-      .mobile-menu[open] .mobile-panel a:nth-child(6) {
-        animation-delay: 175ms;
-      }
-
-      @keyframes mobile-panel-enter {
-        from {
-          opacity: 0;
-          transform: translateY(-0.6rem);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes mobile-link-enter {
-        from {
-          opacity: 0;
-          transform: translateY(0.55rem);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    }
-
-    .mobile-panel p {
-      margin-top: 1.5rem;
-      color: color-mix(in srgb, var(--color-paper) 66%, transparent);
-      font-size: 0.78rem;
-      font-weight: 650;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    .mobile-drawer__panel {
+      transition-duration: 0.01ms;
     }
   }
 </style>
-
-
-
-
-
-
