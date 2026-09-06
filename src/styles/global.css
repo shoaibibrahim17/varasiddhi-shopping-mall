@@ -1,40 +1,43 @@
-@import "@fontsource-variable/bodoni-moda";
-@import "@fontsource-variable/instrument-sans";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Bodoni Moda Variable", Georgia, serif;
-  --font-sans: "Instrument Sans Variable", "Helvetica Neue", Arial, sans-serif;
-  --color-ivory: #f7f3ea;
-  --color-paper: #fcfaf5;
-  --color-espresso: #3a2014;
-  --color-ink: #171512;
-  --color-gold: #c89a2b;
+  --font-serif: ['Playfair Display', serif];
+  --font-sans: ['Plus Jakarta Sans', sans-serif];
+  --color-background: #FFFFFF;
+  --color-card: #FBF9F7;
+  --color-title: #1C1917;
+  --color-description: #57534E;
+  --color-maroon: #800020;
+  --color-gold: #C5A880;
+  --color-crimson: #B91C1C;
+  --color-crimson-deep: #800020;
+  --color-border: #e7e5e4;
   --color-muted-gold: #8a6827;
 }
 
 :root {
   color-scheme: light;
-  --color-ivory: #f7f3ea;
-  --color-paper: #fcfaf5;
-  --color-espresso: #3a2014;
-  --color-ink: #171512;
-  --color-gold: #c89a2b;
+  --color-background: #FFFFFF;
+  --color-card: #FBF9F7;
+  --color-title: #1C1917;
+  --color-description: #57534E;
+  --color-maroon: #800020;
+  --color-gold: #C5A880;
+  --color-crimson: #B91C1C;
+  --color-crimson-deep: #800020;
+  --color-border: #e7e5e4;
   --color-muted-gold: #8a6827;
-  --color-crimson: #811f27;
-  --color-crimson-deep: #57151b;
-  --color-indigo: #12264a;
-  --color-indigo-soft: #dfe6ee;
-  --color-stone: #d9d0c1;
-  --color-line: color-mix(in srgb, var(--color-espresso) 20%, transparent);
-  --font-display: "Bodoni Moda Variable", Georgia, serif;
-  --font-sans: "Instrument Sans Variable", "Helvetica Neue", Arial, sans-serif;
+  --color-ink: #1C1917;
+  --font-display: ['Playfair Display', serif];
+  --font-sans: ['Plus Jakarta Sans', sans-serif];
   --gutter: clamp(1rem, 4vw, 4.5rem);
   --content-max: 90rem;
   --measure: 68ch;
   --section-space: clamp(4.75rem, 8vw, 8.5rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 180ms;
+  --duration-hover: 300ms;
   --duration-slow: 720ms;
 }
 
@@ -46,7 +49,7 @@
 
 html {
   min-width: 20rem;
-  background: var(--color-paper);
+  background: var(--color-background);
   scroll-padding-top: 5rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -57,8 +60,8 @@ body {
   min-width: 20rem;
   min-height: 100vh;
   overflow-x: clip;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-background);
+  color: var(--color-title);
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.6;
@@ -118,7 +121,7 @@ p {
 
 ::selection {
   background: var(--color-gold);
-  color: var(--color-ink);
+  color: var(--color-title);
 }
 
 :focus-visible {
@@ -133,8 +136,8 @@ p {
   left: 0.75rem;
   padding: 0.75rem 1rem;
   transform: translateY(-180%);
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-title);
+  color: var(--color-background);
   font-size: 0.8125rem;
   font-weight: 650;
   letter-spacing: 0.08em;
@@ -198,7 +201,7 @@ p {
 
 .section-copy {
   max-width: var(--measure);
-  color: color-mix(in srgb, currentColor 74%, transparent);
+  color: var(--color-description);
   font-size: clamp(1rem, 1.4vw, 1.125rem);
   line-height: 1.7;
 }
@@ -217,6 +220,11 @@ p {
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-hover) var(--ease-out);
 }
 
 .button-primary,
@@ -224,31 +232,31 @@ p {
   position: relative;
   padding: 0.95rem 1.2rem;
   border: 1px solid transparent;
-  transition:
-    background-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out);
 }
 
 .button-primary {
-  background: var(--color-espresso);
-  color: var(--color-paper);
+  background: var(--color-title);
+  color: var(--color-background);
+  border-color: var(--color-title);
 }
 
 .button-primary:hover {
   background: var(--color-gold);
-  color: var(--color-ink);
+  color: var(--color-title);
+  border-color: var(--color-gold);
+  transform: scale(1.02);
 }
 
 .button-light {
-  border-color: color-mix(in srgb, var(--color-paper) 40%, transparent);
-  color: var(--color-paper);
+  border-color: color-mix(in srgb, var(--color-background) 40%, transparent);
+  color: var(--color-background);
 }
 
 .button-light:hover {
   border-color: var(--color-gold);
   background: var(--color-gold);
-  color: var(--color-ink);
+  color: var(--color-title);
+  transform: scale(1.02);
 }
 
 .text-link {
@@ -273,6 +281,7 @@ p {
 .text-link:focus-visible::after {
   transform: scaleX(1);
 }
+
 .button-primary svg,
 .button-light svg,
 .text-link svg {
@@ -298,12 +307,11 @@ p {
   }
 }
 
-
 .asset-frame {
   position: relative;
   display: block;
   overflow: hidden;
-  background: var(--color-stone);
+  background: var(--color-border);
   aspect-ratio: var(--asset-ratio, 4 / 5);
 }
 
@@ -337,7 +345,7 @@ p {
   --asset-scale: 1;
   --asset-x: 50%;
   --asset-y: 78%;
-  background: var(--color-espresso);
+  background: var(--color-title);
 }
 
 .asset-frame--compact {
@@ -392,6 +400,3 @@ p {
     animation-iteration-count: 1 !important;
   }
 }
-
-
-

@@ -31,7 +31,9 @@ for (const item of catalogue) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#FCFAF5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#FFFFFF" />
     <meta name="robots" content="index, follow" />
     <meta
       name="format-detection"
@@ -49,8 +51,13 @@ for (const item of catalogue) {
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <div class="announcement-bar" role="banner">
-      <p>{site.announcement}</p>
+    <div class="topbar" role="banner">
+      <div class="topbar__marquee" aria-label="Store announcements">
+        <div class="topbar__track">
+          <span class="topbar__item">✨ Festive Collection Live · Free Shipping on Orders Across India · Cash on Delivery Available ✨</span>
+          <span class="topbar__item" aria-hidden="true">✨ Festive Collection Live · Free Shipping on Orders Across India · Cash on Delivery Available ✨</span>
+        </div>
+      </div>
     </div>
 
     <slot />
@@ -62,24 +69,48 @@ for (const item of catalogue) {
       import "../scripts/smooth-scroll";
       import "../scripts/animations";
       import "../scripts/carousels";
+      import "../scripts/navigation";
       import "../scripts/cart";
     </script>
   </body>
 </html>
 
 <style>
-  .announcement-bar {
-    background: var(--color-espresso);
-    color: var(--color-paper);
-    padding: 0.55rem var(--gutter);
-    text-align: center;
-    font-size: 0.68rem;
-    font-weight: 650;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+  .topbar {
+    background: var(--color-title);
+    color: var(--color-background);
+    height: 2rem;
+    line-height: 2rem;
+    overflow: hidden;
   }
 
-  .announcement-bar p {
-    margin: 0;
+  .topbar__marquee {
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  .topbar__track {
+    display: flex;
+    width: max-content;
+    animation: topbar-scroll 28s linear infinite;
+  }
+
+  .topbar__item {
+    flex-shrink: 0;
+    padding-inline: 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @keyframes topbar-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 </style>

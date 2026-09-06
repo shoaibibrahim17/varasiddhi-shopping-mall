@@ -9,30 +9,6 @@ type WatchedReveal = {
   threshold: number;
 };
 
-const setupMobileMenu = () => {
-  document.querySelectorAll<HTMLDetailsElement>("details[data-mobile-menu]").forEach((menu) => {
-    const summary = menu.querySelector<HTMLElement>("summary");
-    if (!summary) {
-      return;
-    }
-
-    const syncExpandedState = () => {
-      summary.setAttribute("aria-expanded", menu.open ? "true" : "false");
-    };
-
-    menu.addEventListener("toggle", syncExpandedState);
-    syncExpandedState();
-  });
-
-  document.querySelectorAll<HTMLAnchorElement>("[data-mobile-nav-item]").forEach((link) => {
-    link.addEventListener("click", () => {
-      link.closest("details")?.removeAttribute("open");
-    });
-  });
-};
-
-setupMobileMenu();
-
 if (!reducedMotionQuery.matches) {
   const isMobile = mobileQuery.matches;
   const distance = isMobile ? 14 : 26;
