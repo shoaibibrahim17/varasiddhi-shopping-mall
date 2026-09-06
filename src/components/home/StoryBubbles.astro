@@ -1,0 +1,124 @@
+---
+import { Image } from "astro:assets";
+import { getCatalogueByCategory } from "../../data/catalogue";
+
+const bubbles = [
+  { label: "Carnival Edit", href: "/occasion", items: getCatalogueByCategory("Wedding Wear") },
+  { label: "Kanjeevaram Sarees", href: "/sarees", items: getCatalogueByCategory("Sarees") },
+  { label: "Anarkalis", href: "/women", items: getCatalogueByCategory("Occasion Wear") },
+  { label: "Kurtas", href: "/men", items: getCatalogueByCategory("Ethnic Wear") },
+  { label: "Sherwanis", href: "/men", items: getCatalogueByCategory("Wedding Wear") },
+  { label: "Kids & Festive", href: "/occasion", items: getCatalogueByCategory("Fusion Wear") },
+];
+
+function bubbleImage(items: any[]) {
+  const item = items.find((entry) => entry.image?.src) ?? items[0];
+  return item?.image ?? null;
+}
+---
+
+<section class="story-bubbles" aria-label="Shop by story">
+  <div class="story-bubbles__track no-scrollbar">
+    {bubbles.map((bubble) => {
+      const image = bubbleImage(bubble.items);
+      return (
+        <a class="story-bubbles__item" href={bubble.href} aria-label={bubble.label}>
+          <span class="story-bubbles__ring">
+            {image && (
+              <Image
+                class="story-bubbles__img"
+                src={image}
+                alt=""
+                widths={[160, 240]}
+                sizes="(max-width: 640px) 68px, 84px"
+                width={160}
+                height={160}
+                quality={72}
+                loading="lazy"
+              />
+            )}
+          </span>
+          <span class="story-bubbles__label">{bubble.label}</span>
+        </a>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .story-bubbles {
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .story-bubbles__track {
+    display: flex;
+    gap: clamp(1.2rem, 3vw, 2.2rem);
+    padding-block: 1.1rem;
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .story-bubbles__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .story-bubbles__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  .story-bubbles__ring {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    transition:
+      border-color 180ms var(--ease-out),
+      transform 300ms var(--ease-out),
+      box-shadow 300ms var(--ease-out);
+  }
+
+  @media (min-width: 64rem) {
+    .story-bubbles__ring {
+      width: 84px;
+      height: 84px;
+    }
+  }
+
+  .story-bubbles__item:hover .story-bubbles__ring {
+    border-color: var(--color-maroon);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-maroon) 18%, transparent);
+    transform: scale(1.05);
+  }
+
+  .story-bubbles__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .story-bubbles__label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-align: center;
+    color: #44403c;
+    max-width: 7rem;
+    text-transform: uppercase;
+  }
+</style>

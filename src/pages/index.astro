@@ -4,6 +4,7 @@ import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductRail from "../components/global/ProductRail.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
+import StoryBubbles from "../components/home/StoryBubbles.astro";
 import { Image } from "astro:assets";
 import {
   catalogue,
@@ -45,31 +46,10 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
 >
   <Header />
   <main id="main-content">
-    <!-- ─── Category Circles ─── -->
-    <section class="circle-nav" aria-label="Shop by category">
-      <div class="circle-nav__inner container">
-        {categories.map((cat) => (
-          <a class="circle-nav__link" href={cat.href} aria-label={`Shop ${cat.label}`}>
-            <span class="circle-nav__circle">
-              {cat.items.length > 0 && (
-                <Image
-                  class="circle-nav__img"
-                  src={cat.items[0].image}
-                  alt=""
-                  widths={[160, 240]}
-                  sizes="96px"
-                  quality={72}
-                  loading="lazy"
-                />
-              )}
-            </span>
-            <span class="circle-nav__label">{cat.label}</span>
-          </a>
-        ))}
-      </div>
-    </section>
+    <!-- ─── Story Bubbles ─── -->
+    <StoryBubbles />
 
-    <!-- ─── Hero Slider ─── -->
+    <!-- ─── Hero Editorial Banner ─── -->
     <section class="hero" data-carousel aria-label="Featured collections">
       <div class="hero__track" data-carousel-track>
         {heroSlides.map((slide, i) => (
@@ -89,7 +69,7 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
             <div class="hero__content container">
               <p class="hero__eyebrow">{slide.eyebrow}</p>
               <h2 class="hero__title">{slide.title}</h2>
-              <a class="hero__cta button-primary" href={slide.href}>{slide.cta}</a>
+              <a class="hero__cta" href={slide.href}>{slide.cta}</a>
             </div>
           </div>
         ))}
@@ -171,12 +151,13 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     overflow: hidden;
     border: 1px solid var(--color-line);
     background: var(--color-stone);
-    transition: border-color 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
+    transition: border-color var(--duration-fast) var(--ease-out), transform var(--duration-hover) var(--ease-out);
   }
 
   .circle-nav__link:hover .circle-nav__circle {
     border-color: var(--color-gold);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold) 25%, transparent);
+    border-width: 2px;
+    transform: scale(1.05);
   }
 
   .circle-nav__img {
@@ -193,11 +174,11 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     white-space: nowrap;
   }
 
-  /* ─── Hero ─── */
+  /* ─── Hero Editorial Banner ─── */
   .hero {
     position: relative;
-    background: var(--color-espresso);
-    color: var(--color-paper);
+    background: var(--color-title);
+    color: var(--color-background);
     overflow: hidden;
   }
 
@@ -210,7 +191,7 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     position: relative;
     flex: 0 0 100%;
     scroll-snap-align: start;
-    min-height: clamp(55vh, 70vw, 80vh);
+    min-height: clamp(60vh, 72vw, 82vh);
   }
 
   .hero__bg {
@@ -225,50 +206,63 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(23, 18, 18, 0.55) 0%,
-      rgba(23, 18, 18, 0.25) 50%,
-      rgba(23, 18, 18, 0.7) 100%
+      color-mix(in srgb, var(--color-title) 45%, transparent) 0%,
+      color-mix(in srgb, var(--color-title) 20%, transparent) 45%,
+      color-mix(in srgb, var(--color-title) 65%, transparent) 100%
     );
   }
 
   .hero__content {
     position: absolute;
-    bottom: clamp(2rem, 8vw, 5rem);
+    bottom: clamp(2.5rem, 8vw, 6rem);
     left: var(--gutter);
     right: var(--gutter);
     z-index: 2;
+    max-width: 52rem;
   }
 
   .hero__eyebrow {
     color: var(--color-gold);
-    font-size: 0.68rem;
-    font-weight: 720;
-    letter-spacing: 0.14em;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.9rem;
   }
 
   .hero__title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 460;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 1.5rem;
+    font-size: clamp(2.6rem, 5.6vw, 4.8rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
   }
 
   .hero__cta {
     display: inline-flex;
     min-height: 2.75rem;
-    padding: 0.85rem 1.8rem;
-    background: var(--color-gold);
-    color: var(--color-ink);
-    border-color: var(--color-gold);
+    padding: 0.7rem 1.6rem;
+    background: var(--color-background);
+    color: var(--color-title);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--color-background);
+    transition:
+      background-color 180ms var(--ease-out),
+      color 180ms var(--ease-out),
+      border-color 180ms var(--ease-out),
+      transform 300ms var(--ease-out);
   }
 
   .hero__cta:hover {
-    background: var(--color-paper);
-    border-color: var(--color-paper);
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-title);
+    transform: translateY(-1px);
   }
 
   .hero__controls {
@@ -277,8 +271,8 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     justify-content: center;
     gap: 1rem;
     padding: 1rem var(--gutter);
-    background: var(--color-espresso);
-    color: var(--color-paper);
+    background: var(--color-title);
+    color: var(--color-background);
   }
 
   .hero__controls button {
@@ -286,23 +280,24 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     place-items: center;
     width: 2.25rem;
     height: 2.25rem;
-    border: 1px solid rgba(252, 250, 245, 0.25);
+    border: 1px solid color-mix(in srgb, var(--color-background) 22%, transparent);
     border-radius: 50%;
     background: transparent;
     color: inherit;
     font-size: 1rem;
     cursor: pointer;
-    transition: border-color 180ms var(--ease-out);
+    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out);
   }
 
   .hero__controls button:hover {
     border-color: var(--color-gold);
+    color: var(--color-gold);
   }
 
   .hero__counter {
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted-gold);
   }

@@ -3,20 +3,23 @@ import { test, expect } from '@playwright/test';
 const BASE = 'http://localhost:4321';
 
 test.describe('Homepage', () => {
-  test('renders announcement bar + header + hero + product rails', async ({ page }) => {
+  test('renders topbar + header + story bubbles + hero + product rails', async ({ page }) => {
     await page.goto(BASE);
-    await expect(page.locator('.announcement-bar')).toBeVisible();
+    await expect(page.locator('.topbar')).toBeVisible();
     await expect(page.locator('.site-header')).toBeVisible();
+    await expect(page.locator('.story-bubbles')).toBeVisible();
+    await expect(page.locator('.story-bubbles__item')).toHaveCount(6);
     await expect(page.locator('.hero')).toBeVisible();
-    await expect(page.locator('.circle-nav')).toBeVisible();
+    await expect(page.locator('.circle-nav')).toBeHidden();
     await expect(page.locator('.product-rail').first()).toBeVisible();
   });
 
-  test('category circles have correct links', async ({ page }) => {
+  test('story bubbles have correct links', async ({ page }) => {
     await page.goto(BASE);
-    const circles = page.locator('.circle-nav__link');
-    await expect(circles).toHaveCount(8);
-    await expect(circles.first()).toHaveAttribute('href', '/sarees');
+    const bubbles = page.locator('.story-bubbles__item');
+    await expect(bubbles).toHaveCount(6);
+    await expect(bubbles.nth(0)).toHaveAttribute('href', '/occasion');
+    await expect(bubbles.nth(1)).toHaveAttribute('href', '/sarees');
   });
 });
 
@@ -27,7 +30,6 @@ test.describe('Cart flow', () => {
     await expect(addBtn).toBeVisible();
     await expect(addBtn).toHaveText('Add to cart');
     await addBtn.click();
-    // Button text should change briefly to "Added ✓" — wait for cart state update
     await page.waitForFunction(() => {
       const badge = document.querySelector('[data-cart-count]');
       return badge && !badge.hidden;
@@ -37,9 +39,7 @@ test.describe('Cart flow', () => {
   test('cart count badge updates after add', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     const badge = page.locator('[data-cart-count]').first();
-    // Badge starts hidden
     await page.locator('[data-cart-add]').first().click();
-    // Wait for cart store to update
     await page.waitForFunction(() => {
       const el = document.querySelector('[data-cart-count]');
       return el && !el.hidden;
@@ -50,19 +50,16 @@ test.describe('Cart flow', () => {
   test('qty increment/decrement in drawer', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     await page.locator('[data-cart-add]').first().click();
-    // Wait for drawer to open
     await page.waitForFunction(() => {
       const drawer = document.querySelector('[data-cart-drawer]');
       return drawer && !drawer.hidden;
     }, { timeout: 5000 });
     await page.waitForSelector('.cart-line');
 
-    // Increment
     await page.locator('[data-cart-inc]').first().click();
     const qty = page.locator('.cart-line__qty span').first();
     await expect(qty).toHaveText('2');
 
-    // Decrement
     await page.locator('[data-cart-dec]').first().click();
     await expect(qty).toHaveText('1');
   });
@@ -122,17 +119,158 @@ test.describe('Collection pages', () => {
 });
 
 test.describe('Viewports', () => {
-  test('mobile: header shows cart + menu', async ({ page }) => {
+  test('mobile: menu + cart visible, desktop nav hidden', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
-    await expect(page.locator('.header-cart').first()).toBeVisible();
-    await expect(page.locator('.mobile-menu')).toBeVisible();
+    await expect(page.locator('[data-menu-open]')).toBeVisible();
+    await expect(page.locator('.icon-btn--cart')).toBeVisible();
+    await expect(page.locator('.desktop-nav')).toBeHidden();
   });
 
-  test('desktop: full nav + cart visible', async ({ page }) => {
+  test('desktop: full nav + cart visible, menu hidden', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE);
-    await expect(page.locator('.desktop-nav--left')).toBeVisible();
-    await expect(page.locator('.header-cart').first()).toBeVisible();
+    await expect(page.locator('.desktop-nav')).toBeVisible();
+    await expect(page.locator('.icon-btn--cart')).toBeVisible();
+    await expect(page.locator('[data-menu-open]')).toBeHidden();
+  });
+});
+
+test.describe('Mobile navigation drawer', () => {
+  test('opens on menu button click and closes on overlay/close button', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+
+    await page.locator('[data-menu-open]').click();
+    await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
+    await expect(page.locator('.mobile-drawer__nav')).toBeVisible();
+
+    await page.locator('[data-menu-close]').click();
+    await page.waitForTimeout(350);
+    await expect(page.locator('.mobile-drawer')).not.toHaveClass(/is-open/);
+  });
+
+  test('closes on Escape', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+
+    await page.locator('[data-menu-open]').click();
+    await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
+
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(350);
+    await expect(page.locator('.mobile-drawer')).not.toHaveClass(/is-open/);
+  });
+});
+
+test.describe('Hero editorial banner', () => {
+  test('hero CTAs are sharp rectangular with inverted contrast', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(BASE);
+
+    const cta = page.locator('.hero__cta').first();
+    await expect(cta).toBeVisible();
+
+    const bg = await cta.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+    expect(bg).not.toBe('rgba(0, 0, 0, 0)');
+  });
+
+  test('hero image maintains aspect ratio on mobile and desktop', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+    const mobileImg = page.locator('.hero__bg .asset-frame__image').first();
+    await expect(mobileImg).toBeVisible();
+    const mobileRatio = await mobileImg.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.width / rect.height;
+    });
+    expect(mobileRatio).toBeGreaterThan(0.5);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(BASE);
+    const desktopImg = page.locator('.hero__bg .asset-frame__image').first();
+    await expect(desktopImg).toBeVisible();
+    const desktopRatio = await desktopImg.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.width / rect.height;
+    });
+    expect(desktopRatio).toBeGreaterThan(0.5);
+  });
+});
+
+test.describe('Story bubbles touch-swipe fluidity', () => {
+  test('story bubbles are horizontally scrollable on mobile', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+
+    const track = page.locator('.story-bubbles__track');
+    await expect(track).toBeVisible();
+
+    const firstBubble = page.locator('.story-bubbles__item').first();
+    const lastBubble = page.locator('.story-bubbles__item').last();
+
+    await firstBubble.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(100);
+
+    const initialVisible = await firstBubble.isVisible();
+    expect(initialVisible).toBe(true);
+
+    await track.evaluate((el) => {
+      el.scrollTo({ left: el.scrollWidth, behavior: 'instant' });
+    });
+    await page.waitForTimeout(100);
+
+    const lastVisible = await lastBubble.isVisible();
+    expect(lastVisible).toBe(true);
+  });
+
+  test('story bubbles have correct circle sizes', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+    const mobileRing = page.locator('.story-bubbles__ring').first();
+    const mobileBox = await mobileRing.boundingBox();
+    expect(mobileBox?.width).toBeCloseTo(68, 0);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(BASE);
+    const desktopRing = page.locator('.story-bubbles__ring').first();
+    const desktopBox = await desktopRing.boundingBox();
+    expect(desktopBox?.width).toBeCloseTo(84, 0);
+  });
+});
+
+test.describe('Announcement marquee', () => {
+  test('marquee text is present and scrolls', async ({ page }) => {
+    await page.goto(BASE);
+    const marquee = page.locator('.topbar__track');
+    await expect(marquee).toBeVisible();
+
+    const text = await marquee.locator('.topbar__item').first().textContent();
+    expect(text).toContain('Festive Collection Live');
+  });
+});
+
+test.describe('Sticky header', () => {
+  test('header remains sticky on scroll', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(BASE);
+
+    const header = page.locator('.site-header');
+    await expect(header).toBeVisible();
+
+    const stickyBefore = await header.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return style.position;
+    });
+    expect(stickyBefore).toBe('sticky');
+
+    await page.evaluate(() => window.scrollBy(0, 600));
+    await page.waitForTimeout(100);
+
+    const stickyAfter = await header.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return style.position;
+    });
+    expect(stickyAfter).toBe('sticky');
   });
 });
