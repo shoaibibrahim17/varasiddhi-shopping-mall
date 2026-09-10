@@ -23,7 +23,7 @@ const occasion = [
       <div class="container">
         <p class="collection-hero__eyebrow">Occasion</p>
         <h1 class="collection-hero__title">Celebration dressing across the family.</h1>
-        <p class="collection-hero__copy">Browse occasion and wedding wear. Add pieces to your cart, then order via WhatsApp.</p>
+        <p class="collection-hero__copy">Browse occasion and wedding wear. Add pieces to your enquiry bag, then send them on WhatsApp.</p>
       </div>
     </section>
 
@@ -85,7 +85,20 @@ const occasion = [
 
   .collection-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
-    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.85rem, 2vw, 1.35rem);
+  }
+  @media (min-width: 48rem) {
+    .collection-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .collection-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 </style>
+
+

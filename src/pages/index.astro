@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -6,112 +7,160 @@ import ProductRail from "../components/global/ProductRail.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
 import StoryBubbles from "../components/home/StoryBubbles.astro";
 import SplashScreen from "../components/SplashScreen.astro";
-import { Image } from "astro:assets";
 import {
   catalogue,
   getCatalogueByCategory,
   getCatalogueByGroup,
+  getCatalogueItem,
 } from "../data/catalogue";
 
 const heroSlides = [
-  { id: "festive-red-saree", eyebrow: "New arrivals", title: "The Saree Edit", cta: "Shop Sarees", href: "/sarees" },
-  { id: "mustard-sharara-set", eyebrow: "Celebration dressing", title: "Occasion & Festive", cta: "Explore", href: "/occasion" },
-  { id: "classic-white-kurta", eyebrow: "Sharp tailoring", title: "The Men's Edit", cta: "Shop Men", href: "/men" },
+  {
+    id: "festive-red-saree",
+    eyebrow: "Catalogue preview",
+    title: "Shri Varasiddhi Shopping Mall",
+    copy: "A mobile-first fashion catalogue for sarees, occasion wear and menswear in Adilabad.",
+    cta: "Browse catalogue",
+    href: "/catalogue",
+  },
+  {
+    id: "mustard-sharara-set",
+    eyebrow: "Occasion edit",
+    title: "Celebration dressing, selected by look.",
+    copy: "Save pieces to your enquiry bag and share the selection on WhatsApp.",
+    cta: "Open occasion",
+    href: "/occasion",
+  },
+  {
+    id: "classic-white-kurta",
+    eyebrow: "Menswear",
+    title: "Ethnic, formal and everyday menswear.",
+    copy: "The current catalogue is structured for future online ordering without showing a checkout too early.",
+    cta: "Open men",
+    href: "/men",
+  },
 ].map((slide) => ({
   ...slide,
   item: catalogue.find((c) => c.id === slide.id)!,
 }));
 
-const categories = [
-  { label: "Sarees", href: "/sarees", items: getCatalogueByCategory("Sarees") },
-  { label: "Occasion Wear", href: "/occasion", items: getCatalogueByCategory("Occasion Wear") },
-  { label: "Wedding Wear", href: "/occasion", items: getCatalogueByCategory("Wedding Wear") },
-  { label: "Fusion Wear", href: "/women", items: getCatalogueByCategory("Fusion Wear") },
-  { label: "Ethnic Wear", href: "/men", items: getCatalogueByCategory("Ethnic Wear") },
-  { label: "Casual Wear", href: "/men", items: getCatalogueByCategory("Casual Wear") },
-  { label: "Shirts", href: "/men", items: getCatalogueByCategory("Shirts") },
-  { label: "Formal Wear", href: "/men", items: getCatalogueByCategory("Formal Wear") },
+const categoryTiles = [
+  { label: "Sarees", href: "/sarees", item: getCatalogueItem("designer-brocade-saree"), detail: "Silk, brocade and festive colour" },
+  { label: "Women", href: "/women", item: getCatalogueItem("blush-pink-anarkali"), detail: "Occasion and fusion previews" },
+  { label: "Men", href: "/men", item: getCatalogueItem("navy-embroidered-jacket-kurta"), detail: "Ethnic, shirts and formalwear" },
+  { label: "Wedding", href: "/occasion", item: getCatalogueItem("ivory-sherwani"), detail: "Ceremonial looks across the family" },
 ];
 
-const sareeEdit = getCatalogueByCategory("Sarees").slice(0, 6);
+const sareeEdit = [
+  ...getCatalogueByCategory("Sarees"),
+  ...getCatalogueByCategory("Cotton Sarees"),
+].slice(0, 7);
 const occasionEdit = [
   ...getCatalogueByCategory("Occasion Wear"),
   ...getCatalogueByCategory("Wedding Wear"),
-].slice(0, 6);
-const menEdit = getCatalogueByGroup("Men").slice(0, 6);
+].slice(0, 7);
+const menEdit = getCatalogueByGroup("Men").slice(0, 8);
+const newIn = [
+  getCatalogueItem("sparkle-pink-coord"),
+  getCatalogueItem("maroon-silk-saree"),
+  getCatalogueItem("sky-blue-button-down-shirt"),
+  getCatalogueItem("black-bandhgala"),
+  getCatalogueItem("kalamkari-cotton-saree"),
+  getCatalogueItem("champagne-sherwani-set"),
+];
 ---
 
 <BaseLayout
-  title="Shri Varasiddhi Shopping Mall | Fashion in Adilabad"
-  description="Explore sarees, women's fashion, men's fashion and occasion wear from Shri Varasiddhi Shopping Mall in Adilabad, Telangana."
+  title="Shri Varasiddhi Shopping Mall | Fashion Catalogue in Adilabad"
+  description="Browse the Shri Varasiddhi Shopping Mall catalogue for sarees, women's fashion, men's fashion and occasion wear. Send selected pieces by WhatsApp enquiry."
 >
   <SplashScreen />
   <Header />
   <main id="main-content">
-    <!-- ─── Story Bubbles ─── -->
     <StoryBubbles />
 
-    <!-- ─── Hero Editorial Banner ─── -->
     <section class="hero" data-carousel aria-label="Featured collections">
       <div class="hero__track" data-carousel-track>
         {heroSlides.map((slide, i) => (
-          <div class="hero__slide" data-carousel-item>
-            <span class="hero__bg asset-frame asset-frame--fashion-crop" style={`--crop-x: ${slide.item.crop.x}%; --crop-y: ${slide.item.crop.y}%; --crop-scale: ${slide.item.crop.scale};`}>
-              <Image
-                class="asset-frame__image"
-                src={slide.item.image}
-                alt=""
-                widths={[720, 1080, 1440, 1920]}
-                sizes="100vw"
-                quality={80}
-                loading={i === 0 ? "eager" : "lazy"}
-                fetchpriority={i === 0 ? "high" : undefined}
-              />
-            </span>
+          <article class="hero__slide" data-carousel-item>
+            <div class="hero__media" aria-hidden="true">
+              <span class="hero__image asset-frame asset-frame--fashion-crop" style={`--crop-x: ${slide.item.crop.x}%; --crop-y: ${slide.item.crop.y}%; --crop-scale: ${slide.item.crop.scale};`}>
+                <Image
+                  class="asset-frame__image"
+                  src={slide.item.image}
+                  alt=""
+                  widths={[720, 1080, 1440, 1920]}
+                  sizes="100vw"
+                  quality={82}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  fetchpriority={i === 0 ? "high" : undefined}
+                />
+              </span>
+            </div>
             <div class="hero__content container">
               <p class="hero__eyebrow">{slide.eyebrow}</p>
-              <h2 class="hero__title font-serif">{slide.title}</h2>
-              <a class="hero__cta" href={slide.href}>{slide.cta}</a>
+              {i === 0 ? (
+                <h1 class="hero__title">{slide.title}</h1>
+              ) : (
+                <h2 class="hero__title">{slide.title}</h2>
+              )}
+              <p class="hero__copy">{slide.copy}</p>
+              <div class="hero__actions">
+                <a class="hero__cta" href={slide.href}>{slide.cta}</a>
+                <a class="hero__link" href="/visit">Visit store</a>
+              </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
       <div class="hero__controls">
-        <button type="button" data-carousel-prev aria-label="Previous slide">&larr;</button>
-        <span data-carousel-counter class="hero__counter">01 — 03</span>
-        <button type="button" data-carousel-next aria-label="Next slide">&rarr;</button>
+        <button type="button" data-carousel-prev aria-label="Previous featured collection">&larr;</button>
+        <span data-carousel-counter class="hero__counter">01 - 03</span>
+        <button type="button" data-carousel-next aria-label="Next featured collection">&rarr;</button>
       </div>
     </section>
 
-    <!-- ─── Saree Edit ─── -->
-    <ProductRail
-      title="The Saree Edit"
-      items={sareeEdit}
-      viewAllHref="/sarees"
-    />
-
-    <!-- ─── Promo Strip ─── -->
-    <section class="promo-strip" aria-label="Store promotion">
-      <div class="promo-strip__inner container">
-        <p class="promo-strip__title">Visit us in Adilabad</p>
-        <p class="promo-strip__text">See the full collection in person. Our team will help you find the right piece for every occasion.</p>
-        <a class="button-primary promo-strip__cta" href="/visit">Plan your visit</a>
+    <section class="category-shop" aria-labelledby="category-shop-title">
+      <div class="category-shop__head container">
+        <p class="category-shop__eyebrow">Shop by department</p>
+        <h2 id="category-shop-title">Compact routes into the catalogue.</h2>
+      </div>
+      <div class="category-shop__grid container">
+        {categoryTiles.map((tile) => (
+          <a class="category-tile" href={tile.href}>
+            <span class="category-tile__media asset-frame asset-frame--fashion-crop" style={`--crop-x: ${tile.item.crop.x}%; --crop-y: ${tile.item.crop.y}%; --crop-scale: ${tile.item.crop.scale};`}>
+              <Image
+                class="asset-frame__image"
+                src={tile.item.image}
+                alt=""
+                widths={[260, 420, 620]}
+                sizes="(max-width: 768px) 47vw, 23vw"
+                quality={78}
+                loading="lazy"
+              />
+            </span>
+            <span class="category-tile__text">
+              <strong>{tile.label}</strong>
+              <span>{tile.detail}</span>
+            </span>
+          </a>
+        ))}
       </div>
     </section>
 
-    <!-- ─── Occasion & Festive ─── -->
-    <ProductRail
-      title="Occasion & Festive"
-      items={occasionEdit}
-      viewAllHref="/occasion"
-    />
+    <ProductRail title="New catalogue picks" items={newIn} viewAllHref="/catalogue" />
 
-    <!-- ─── Men's Edit ─── -->
-    <ProductRail
-      title="The Men's Edit"
-      items={menEdit}
-      viewAllHref="/men"
-    />
+    <section class="catalogue-note" aria-label="Ordering roadmap">
+      <div class="catalogue-note__inner container">
+        <p>WhatsApp enquiry now</p>
+        <h2>Built for online ordering later, without pretending checkout is live today.</h2>
+        <a href="/catalogue">Open full catalogue</a>
+      </div>
+    </section>
+
+    <ProductRail title="The saree edit" items={sareeEdit} viewAllHref="/sarees" />
+    <ProductRail title="Occasion and wedding" items={occasionEdit} viewAllHref="/occasion" />
+    <ProductRail title="Menswear edit" items={menEdit} viewAllHref="/men" />
 
     <VisitCta />
   </main>
@@ -119,221 +168,262 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
 </BaseLayout>
 
 <style>
-  /* ─── Category Circles ─── */
-  .circle-nav {
-    padding-block: clamp(1.5rem, 3vw, 2.5rem);
-    border-bottom: 1px solid var(--color-line);
-    background: var(--color-paper);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .circle-nav__inner {
-    display: flex;
-    gap: clamp(1.2rem, 3vw, 2.5rem);
-    justify-content: center;
-  }
-
-  .circle-nav__link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
-    text-decoration: none;
-    color: inherit;
-    flex-shrink: 0;
-  }
-
-  .circle-nav__circle {
-    display: grid;
-    place-items: center;
-    width: clamp(3.5rem, 8vw, 5rem);
-    height: clamp(3.5rem, 8vw, 5rem);
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid var(--color-line);
-    background: var(--color-stone);
-    transition: border-color var(--duration-fast) var(--ease-out), transform var(--duration-hover) var(--ease-out);
-  }
-
-  .circle-nav__link:hover .circle-nav__circle {
-    border-color: var(--color-gold);
-    border-width: 2px;
-    transform: scale(1.05);
-  }
-
-  .circle-nav__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .circle-nav__label {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  /* ─── Hero Editorial Banner ─── */
   .hero {
     position: relative;
-    background: var(--color-title);
-    color: var(--color-background);
     overflow: hidden;
+    background: var(--color-espresso);
+    color: var(--color-paper);
   }
 
   .hero__track {
     display: flex;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .hero__track::-webkit-scrollbar {
+    display: none;
   }
 
   .hero__slide {
     position: relative;
+    display: grid;
+    min-height: clamp(31rem, 82vh, 44rem);
     flex: 0 0 100%;
     scroll-snap-align: start;
-    min-height: clamp(60vh, 72vw, 82vh);
   }
 
-  .hero__bg {
+  .hero__media,
+  .hero__image {
     position: absolute;
     inset: 0;
-    --asset-ratio: 3 / 4;
   }
 
-  .hero__bg::after {
+  .hero__image {
+    --asset-ratio: auto;
+  }
+
+  .hero__media::after {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-espresso) 18%, transparent), var(--color-espresso) 94%),
+      linear-gradient(to right, color-mix(in srgb, var(--color-espresso) 70%, transparent), transparent 65%);
     content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-title) 45%, transparent) 0%,
-      color-mix(in srgb, var(--color-title) 20%, transparent) 45%,
-      color-mix(in srgb, var(--color-title) 65%, transparent) 100%
-    );
   }
 
   .hero__content {
-    position: absolute;
-    bottom: clamp(2.5rem, 8vw, 6rem);
-    left: var(--gutter);
-    right: var(--gutter);
+    position: relative;
     z-index: 2;
-    max-width: 52rem;
+    display: grid;
+    align-content: end;
+    gap: 0.85rem;
+    padding-block: clamp(4rem, 13vh, 7rem) clamp(3.8rem, 10vh, 6rem);
   }
 
-  .hero__eyebrow {
+  .hero__eyebrow,
+  .category-shop__eyebrow,
+  .catalogue-note p {
     color: var(--color-gold);
     font-size: 0.66rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
+    font-weight: 760;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
     text-transform: uppercase;
-    margin-bottom: 0.9rem;
   }
 
   .hero__title {
+    max-width: 10.5ch;
     font-family: var(--font-display);
-    font-size: clamp(2.6rem, 5.6vw, 4.8rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin-bottom: 1.25rem;
+    font-size: clamp(3.05rem, 11vw, 6.7rem);
+    font-weight: 520;
+    letter-spacing: 0;
+    line-height: 0.88;
+  }
+
+  .hero__copy {
+    max-width: 31rem;
+    color: color-mix(in srgb, var(--color-paper) 78%, transparent);
+    font-size: clamp(0.96rem, 1.4vw, 1.12rem);
+    line-height: 1.55;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+    align-items: center;
+    margin-top: 0.3rem;
+  }
+
+  .hero__cta,
+  .hero__link {
+    display: inline-flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 760;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
   }
 
   .hero__cta {
-    display: inline-flex;
-    min-height: 2.75rem;
-    padding: 0.7rem 1.6rem;
-    background: var(--color-background);
-    color: var(--color-title);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1px solid var(--color-background);
-    transition:
-      background-color 180ms var(--ease-out),
-      color 180ms var(--ease-out),
-      border-color 180ms var(--ease-out),
-      transform 300ms var(--ease-out);
+    padding: 0.8rem 1.05rem;
+    border: 1px solid var(--color-paper);
+    background: var(--color-paper);
+    color: var(--color-espresso);
   }
 
-  .hero__cta:hover {
-    background: var(--color-gold);
-    border-color: var(--color-gold);
-    color: var(--color-title);
-    transform: translateY(-1px);
+  .hero__link {
+    color: var(--color-paper);
+    text-decoration: underline;
+    text-underline-offset: 0.35em;
   }
 
   .hero__controls {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 1.05rem;
+    z-index: 3;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem var(--gutter);
-    background: var(--color-title);
-    color: var(--color-background);
+    gap: 0.8rem;
   }
 
   .hero__controls button {
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid color-mix(in srgb, var(--color-background) 22%, transparent);
-    border-radius: 50%;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid color-mix(in srgb, var(--color-paper) 35%, transparent);
+    border-radius: 999px;
     background: transparent;
     color: inherit;
-    font-size: 1rem;
     cursor: pointer;
-    transition: border-color 180ms var(--ease-out), color 180ms var(--ease-out);
-  }
-
-  .hero__controls button:hover {
-    border-color: var(--color-gold);
-    color: var(--color-gold);
   }
 
   .hero__counter {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted-gold);
+    color: color-mix(in srgb, var(--color-paper) 72%, transparent);
+    font-size: 0.66rem;
+    font-weight: 760;
+    letter-spacing: 0.1em;
   }
 
-  /* ─── Promo Strip ─── */
-  .promo-strip {
-    padding-block: clamp(3rem, 6vw, 5rem);
-    background: var(--color-stone);
-    color: var(--color-ink);
-    text-align: center;
+  .category-shop {
+    padding-block: clamp(2.4rem, 5vw, 4.5rem);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-paper);
   }
 
-  .promo-strip__inner {
+  .category-shop__head {
     display: grid;
-    gap: 1rem;
-    justify-items: center;
+    gap: 0.55rem;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
   }
 
-  .promo-strip__title {
+  .category-shop__head h2,
+  .catalogue-note h2 {
+    max-width: 18ch;
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
-    font-weight: 460;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
+    font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 0.98;
   }
 
-  .promo-strip__text {
-    max-width: 32rem;
-    color: color-mix(in srgb, currentColor 65%, transparent);
-    font-size: 0.95rem;
-    line-height: 1.65;
+  .category-shop__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.8vw, 1.25rem);
   }
 
-  .promo-strip__cta {
-    margin-top: 0.5rem;
+  .category-tile {
+    display: grid;
+    gap: 0.62rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .category-tile__media {
+    --asset-ratio: 3 / 4;
+  }
+
+  .category-tile__text {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .category-tile__text strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    font-weight: 520;
+    line-height: 1;
+  }
+
+  .category-tile__text span {
+    color: var(--color-description);
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+
+  .catalogue-note {
+    padding-block: clamp(2.8rem, 6vw, 5.6rem);
+    background: var(--color-maroon);
+    color: var(--color-paper);
+  }
+
+  .catalogue-note__inner {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .catalogue-note h2 {
+    max-width: 24ch;
+  }
+
+  .catalogue-note a {
+    width: fit-content;
+    color: var(--color-paper);
+    font-size: 0.72rem;
+    font-weight: 760;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-underline-offset: 0.35em;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__controls {
+      left: var(--gutter);
+      right: auto;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .hero__content {
+      align-content: center;
+    }
+
+    .hero__media::after {
+      background:
+        linear-gradient(to right, var(--color-espresso), color-mix(in srgb, var(--color-espresso) 70%, transparent) 42%, transparent),
+        linear-gradient(to top, color-mix(in srgb, var(--color-espresso) 34%, transparent), transparent 40%);
+    }
+
+    .category-shop__head {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: end;
+    }
+
+    .category-shop__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .catalogue-note__inner {
+      grid-template-columns: 0.42fr 1fr auto;
+      align-items: end;
+    }
   }
 </style>

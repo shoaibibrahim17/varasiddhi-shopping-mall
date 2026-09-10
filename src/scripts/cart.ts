@@ -94,14 +94,14 @@ export const buildWhatsAppUrl = (paymentMethod: string): string => {
     .join("\n");
 
   const method =
-    paymentMethod === "cod" ? "Cash on Delivery" : "Prepaid (UPI/Card)";
+    paymentMethod === "online" ? "Online checkout when available" : "WhatsApp confirmation";
 
   const message = [
-    `Namaste ${site.shortName}! I would like to place an order:`,
+    `Namaste ${site.shortName}! I would like to enquire about these catalogue pieces:`,
     "",
     linesText,
     "",
-    `Payment: ${method}`,
+    `Next step: ${method}`,
     "",
     "(Sent from the Varasiddhi website)",
   ].join("\n");
@@ -194,7 +194,7 @@ const render = () => {
               <button type="button" data-cart-inc="${l.id}" aria-label="Increase quantity of ${p.title}">+</button>
             </div>
           </div>
-          <button type="button" class="cart-line__remove" data-cart-remove="${l.id}" aria-label="Remove ${p.title} from cart">&times;</button>
+          <button type="button" class="cart-line__remove" data-cart-remove="${l.id}" aria-label="Remove ${p.title} from enquiry bag">&times;</button>
         </div>`;
       })
       .join("");
@@ -226,10 +226,10 @@ document.addEventListener("click", (e) => {
 
     const btn = addBtn as HTMLButtonElement;
     const orig = btn.textContent;
-    btn.textContent = "Added \u2713";
+    btn.textContent = "Added";
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = orig ?? "Add to cart";
+      btn.textContent = orig ?? "Add to enquiry";
       btn.disabled = false;
     }, 900);
 
@@ -262,7 +262,7 @@ document.addEventListener("click", (e) => {
     const method =
       (document.querySelector(
         'input[name="cart-payment"]:checked',
-      ) as HTMLInputElement)?.value ?? "cod";
+      ) as HTMLInputElement)?.value ?? "whatsapp";
     const url = buildWhatsAppUrl(method);
     if (url !== "#") window.open(url, "_blank", "noopener");
   }
@@ -297,3 +297,5 @@ if (document.readyState === "loading") {
 } else {
   boot();
 }
+
+

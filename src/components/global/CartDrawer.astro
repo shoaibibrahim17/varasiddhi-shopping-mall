@@ -3,35 +3,38 @@ import { site } from "../../data/site";
 ---
 
 <div data-cart-overlay class="cart-overlay" hidden></div>
-<aside data-cart-drawer class="cart-drawer" hidden role="dialog" aria-modal="true" aria-label="Shopping cart">
+<aside data-cart-drawer class="cart-drawer" hidden role="dialog" aria-modal="true" aria-label="Enquiry bag">
   <header class="cart-drawer__head">
-    <h2>Your cart</h2>
-    <button type="button" data-cart-close aria-label="Close cart">&times;</button>
+    <div>
+      <p>WhatsApp</p>
+      <h2>Enquiry bag</h2>
+    </div>
+    <button type="button" data-cart-close aria-label="Close enquiry bag">&times;</button>
   </header>
 
   <div data-cart-empty class="cart-drawer__empty">
-    <p>Your cart is empty.</p>
-    <a href="/catalogue" class="button-primary" data-cart-close>Browse the catalogue</a>
+    <p>Your enquiry bag is empty.</p>
+    <a href="/catalogue" class="button-primary" data-cart-close>Browse catalogue</a>
   </div>
 
   <div data-cart-filled class="cart-drawer__filled" hidden>
     <div data-cart-lines class="cart-drawer__lines"></div>
 
     <div class="cart-drawer__payment">
-      <p class="cart-drawer__payment-label">Payment method</p>
+      <p class="cart-drawer__payment-label">Next step</p>
       <label class="cart-drawer__radio">
-        <input type="radio" name="cart-payment" value="cod" checked />
-        <span class="cart-drawer__radio-label">Cash on Delivery</span>
+        <input type="radio" name="cart-payment" value="whatsapp" checked />
+        <span class="cart-drawer__radio-label">Confirm availability on WhatsApp</span>
       </label>
       <label class="cart-drawer__radio cart-drawer__radio--disabled">
-        <input type="radio" name="cart-payment" value="prepaid" disabled />
-        <span class="cart-drawer__radio-label">Prepaid (UPI / Card)</span>
-        <span class="cart-drawer__badge">Coming soon</span>
+        <input type="radio" name="cart-payment" value="online" disabled />
+        <span class="cart-drawer__radio-label">Online checkout</span>
+        <span class="cart-drawer__badge">Planned</span>
       </label>
     </div>
 
     <button type="button" data-cart-checkout class="cart-drawer__checkout button-primary">
-      Order via WhatsApp
+      Send WhatsApp enquiry
     </button>
 
     <p class="cart-drawer__note">{site.payments.cod}</p>
@@ -62,7 +65,7 @@ import { site } from "../../data/site";
     bottom: 0;
     display: flex;
     flex-direction: column;
-    width: min(100%, 26rem);
+    width: min(100%, 25.5rem);
     background: var(--color-paper);
     color: var(--color-ink);
     transform: translateX(100%);
@@ -78,25 +81,34 @@ import { site } from "../../data/site";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem var(--gutter);
+    padding: 1.05rem var(--gutter);
     border-bottom: 1px solid var(--color-line);
+  }
+
+  .cart-drawer__head p {
+    margin-bottom: 0.28rem;
+    color: var(--color-muted-gold);
+    font-size: 0.62rem;
+    font-weight: 760;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   .cart-drawer__head h2 {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 460;
-    letter-spacing: -0.02em;
+    font-size: clamp(1.65rem, 4vw, 2.2rem);
+    font-weight: 500;
+    letter-spacing: 0;
     line-height: 1;
   }
 
   .cart-drawer__head button {
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border: none;
-    border-radius: 50%;
     background: transparent;
     color: inherit;
     font-size: 1.6rem;
@@ -105,12 +117,12 @@ import { site } from "../../data/site";
   }
 
   .cart-drawer__head button:hover {
-    background: color-mix(in srgb, var(--color-espresso) 10%, transparent);
+    background: color-mix(in srgb, var(--color-espresso) 9%, transparent);
   }
 
   .cart-drawer__empty {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.35rem;
     align-content: center;
     justify-items: center;
     flex: 1;
@@ -119,21 +131,21 @@ import { site } from "../../data/site";
   }
 
   .cart-drawer__empty p {
-    color: color-mix(in srgb, currentColor 60%, transparent);
+    color: color-mix(in srgb, currentColor 62%, transparent);
     font-size: 1rem;
   }
 
   .cart-drawer__filled {
     display: flex;
-    flex-direction: column;
     flex: 1;
     min-height: 0;
+    flex-direction: column;
   }
 
   .cart-drawer__lines {
     flex: 1;
     overflow-y: auto;
-    padding: var(--gutter);
+    padding: 0.6rem var(--gutter);
   }
 
   .cart-drawer__payment {
@@ -142,20 +154,21 @@ import { site } from "../../data/site";
   }
 
   .cart-drawer__payment-label {
-    color: var(--color-muted-gold);
-    font-size: 0.68rem;
-    font-weight: 720;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
     margin-bottom: 0.6rem;
+    color: var(--color-muted-gold);
+    font-size: 0.64rem;
+    font-weight: 760;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .cart-drawer__radio {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.55rem 0;
-    font-size: 0.875rem;
+    min-height: 2.5rem;
+    padding-block: 0.35rem;
+    font-size: 0.86rem;
     cursor: pointer;
   }
 
@@ -171,30 +184,30 @@ import { site } from "../../data/site";
   .cart-drawer__badge {
     margin-left: auto;
     color: var(--color-muted-gold);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 0.6rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
   }
 
   .cart-drawer__checkout {
+    width: calc(100% - var(--gutter) * 2);
     margin: 0.75rem var(--gutter);
+    border-color: var(--color-gold);
     background: var(--color-gold);
     color: var(--color-ink);
-    border-color: var(--color-gold);
-    width: calc(100% - var(--gutter) * 2);
     justify-self: center;
   }
 
   .cart-drawer__checkout:hover {
+    border-color: var(--color-espresso);
     background: var(--color-espresso);
     color: var(--color-paper);
-    border-color: var(--color-espresso);
   }
 
   .cart-drawer__note {
-    padding: 0.5rem var(--gutter) 1rem;
-    color: color-mix(in srgb, currentColor 55%, transparent);
+    padding: 0.35rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+    color: color-mix(in srgb, currentColor 58%, transparent);
     font-size: 0.75rem;
     line-height: 1.5;
     text-align: center;
@@ -230,17 +243,17 @@ import { site } from "../../data/site";
 
   .cart-line__cat {
     color: var(--color-muted-gold);
-    font-size: 0.62rem;
-    font-weight: 720;
-    letter-spacing: 0.14em;
+    font-size: 0.6rem;
+    font-weight: 760;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
   .cart-line__name {
     font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 470;
-    line-height: 1.2;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.13;
   }
 
   .cart-line__qty {
@@ -249,16 +262,16 @@ import { site } from "../../data/site";
     gap: 0.5rem;
     margin-top: 0.3rem;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 650;
   }
 
   .cart-line__qty button {
     display: grid;
     place-items: center;
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.8rem;
+    height: 1.8rem;
     border: 1px solid var(--color-line);
-    border-radius: 50%;
+    border-radius: 999px;
     background: transparent;
     color: inherit;
     font-size: 1rem;
@@ -267,15 +280,16 @@ import { site } from "../../data/site";
     transition: border-color 180ms var(--ease-out);
   }
 
-  .cart-line__qty button:hover {
+  .cart-line__qty button:hover,
+  .cart-line__qty button:focus-visible {
     border-color: var(--color-espresso);
   }
 
   .cart-line__remove {
     display: grid;
     place-items: center;
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 2rem;
+    height: 2rem;
     border: none;
     background: transparent;
     color: color-mix(in srgb, currentColor 50%, transparent);
@@ -284,7 +298,8 @@ import { site } from "../../data/site";
     transition: color 180ms var(--ease-out);
   }
 
-  .cart-line__remove:hover {
+  .cart-line__remove:hover,
+  .cart-line__remove:focus-visible {
     color: var(--color-ink);
   }
 </style>

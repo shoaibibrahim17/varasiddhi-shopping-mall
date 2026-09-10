@@ -14,11 +14,12 @@ export const site = {
    */
   whatsappNumber: "8732223101",
 
-  announcement: "Cash on Delivery available · Order on WhatsApp",
+  announcement: "Catalogue preview now live | WhatsApp enquiry enabled | Online ordering integration planned",
 
-  /** Payment notes shown in the cart and on product pages. */
+  /** Payment notes shown in the enquiry bag and on product pages. */
   payments: {
-    cod: "Cash on Delivery — pay when your order arrives.",
-    prepaidNote: "Prepaid (UPI / card) is being integrated and launches after client approval.",
+    cod: "Payment and availability are confirmed by the store team on WhatsApp.",
+    prepaidNote: "Online payment integration is planned for a later release after store approval.",
   },
 } as const;
+

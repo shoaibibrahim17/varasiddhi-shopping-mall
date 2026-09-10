@@ -1,44 +1,180 @@
-<div id="splash-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-stone-950 transition-opacity duration-700 ease-out">
+---
+import splashVideo from "../assets/brand/splash/varasiddhi-spash-video.mp4";
+
+const SPLASH_POSTER = "/videos/varasiddhi-splash-poster.jpg";
+---
+
+<div
+  id="splash-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Shri Varasiddhi Shopping Mall introduction"
+>
   <video
     id="splash-video"
     autoplay
     muted
     playsinline
-    preload="auto"
-    class="h-full w-full object-cover md:object-contain max-h-screen"
-  >
-    <source src="/videos/varasiddhi-splash-video.mp4" type="video/mp4" />
-  </video>
+    preload="metadata"
+    poster={SPLASH_POSTER}
+    aria-hidden="true"
+    src={splashVideo}
+  />
 
   <button
     id="skip-splash"
-    class="absolute bottom-8 right-8 z-10 px-5 py-2 text-xs uppercase tracking-widest text-white/80 border border-white/30 backdrop-blur-md rounded-full hover:text-white hover:border-white transition-all"
+    type="button"
   >
     Enter Store &rarr;
   </button>
 </div>
 
+<style>
+  #splash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #050505;
+    opacity: 1;
+    transition: opacity 700ms ease-out;
+  }
+
+  #splash-overlay.is-dismissing {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #splash-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+    object-position: center;
+    background: #050505;
+  }
+
+  /* Skip control sits clear of the letterboxed video frame. */
+  #skip-splash {
+    position: absolute;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1.35rem, env(safe-area-inset-bottom));
+    z-index: 2;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background: rgba(23, 21, 18, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.85);
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color 200ms ease-out,
+      border-color 200ms ease-out,
+      background-color 200ms ease-out;
+  }
+
+  #skip-splash:hover,
+  #skip-splash:focus-visible {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.85);
+    background: rgba(23, 21, 18, 0.55);
+  }
+
+  #skip-splash:focus-visible {
+    outline: 2px solid var(--color-gold, #c89a2b);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 47.9375rem) {
+    #splash-overlay {
+      background: #000;
+    }
+
+    #splash-video {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+
+    #skip-splash {
+      right: 0.9rem;
+      bottom: calc(0.9rem + env(safe-area-inset-bottom));
+      padding: 0.58rem 0.9rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+    }
+  }
+
+  @media (min-width: 48rem) and (max-width: 79.9375rem) {
+    #splash-video {
+      object-fit: contain;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #splash-overlay {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
   const overlay = document.getElementById("splash-overlay");
-  const video = document.getElementById("splash-video") as HTMLVideoElement;
+  const video = document.getElementById("splash-video") as HTMLVideoElement | null;
   const skipBtn = document.getElementById("skip-splash");
+  const SEEN_KEY = "varasiddhi_splash_seen";
+  const VIDEO_TIMEOUT_MS = 9000;
 
-  const dismissSplash = () => {
-    if (!overlay) return;
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
-    setTimeout(() => {
-      overlay.remove();
-    }, 700);
-    sessionStorage.setItem("varasiddhi_splash_seen", "true");
+  const getPlaybackRate = () => {
+    if (window.innerWidth < 768) return 1.9;
+    if (window.innerWidth < 1024) return 1.7;
+    return 1.5;
   };
 
-  if (sessionStorage.getItem("varasiddhi_splash_seen") === "true") {
+  const dismissSplash = () => {
+    if (!overlay || overlay.dataset.dismissed === "true") return;
+    overlay.dataset.dismissed = "true";
+    overlay.classList.add("is-dismissing");
+    video?.pause();
+    window.setTimeout(() => overlay.remove(), 700);
+    try {
+      sessionStorage.setItem(SEEN_KEY, "true");
+    } catch {
+      /* storage unavailable — splash simply repeats next visit */
+    }
+  };
+
+  let alreadySeen = false;
+  try {
+    alreadySeen = sessionStorage.getItem(SEEN_KEY) === "true";
+  } catch {
+    /* ignore */
+  }
+
+  if (!overlay || alreadySeen) {
     overlay?.remove();
   } else {
     if (video) {
+      video.playsInline = true;
+      video.muted = true;
+      video.playbackRate = getPlaybackRate();
+      video.addEventListener("loadedmetadata", () => {
+        video.playbackRate = getPlaybackRate();
+      });
       video.addEventListener("ended", dismissSplash);
-      setTimeout(dismissSplash, 6000);
+      video.addEventListener("error", () => dismissSplash());
+      window.setTimeout(dismissSplash, VIDEO_TIMEOUT_MS);
     }
     skipBtn?.addEventListener("click", dismissSplash);
   }

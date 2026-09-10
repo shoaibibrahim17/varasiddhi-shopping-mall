@@ -20,8 +20,8 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
         class="asset-frame__image"
         src={item.image}
         alt={item.alt}
-        widths={[320, 480, 680]}
-        sizes="(max-width: 768px) 46vw, 22vw"
+        widths={[260, 360, 520, 680]}
+        sizes="(max-width: 768px) 45vw, 18vw"
         quality={82}
         loading={eager ? "eager" : "lazy"}
         fetchpriority={eager ? "high" : undefined}
@@ -32,8 +32,8 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     <p class="product-card__cat">{item.category}</p>
     <h3 class="product-card__name"><a href={`/products/${item.id}`}>{item.title}</a></h3>
     <p class="product-card__price">Price on WhatsApp</p>
-    <button type="button" class="product-card__add button-primary" data-cart-add={item.id}>
-      Add to cart
+    <button type="button" class="product-card__add" data-cart-add={item.id}>
+      Add to enquiry
     </button>
   </div>
 </article>
@@ -41,14 +41,15 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
 <style>
   .product-card {
     display: grid;
-    gap: 0;
     min-width: 0;
+    background: var(--color-paper);
   }
 
   .product-card__link {
     display: block;
     overflow: hidden;
     background: var(--color-stone);
+    text-decoration: none;
   }
 
   .product-card__frame {
@@ -69,52 +70,80 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
   }
 
   .product-card__link:hover .product-card__frame :global(img) {
-    transform: translateY(var(--parallax-y, 0px)) scale(calc(var(--asset-scale, 1.4) * 1.04));
+    transform: translateY(var(--parallax-y, 0px)) scale(calc(var(--asset-scale, 1.4) * 1.035));
   }
 
   .product-card__info {
     display: grid;
-    gap: 0.25rem;
-    padding: 0.85rem 0;
+    gap: 0.24rem;
+    padding: 0.72rem 0 0;
   }
 
   .product-card__cat {
     color: var(--color-muted-gold);
-    font-size: 0.62rem;
-    font-weight: 720;
-    letter-spacing: 0.14em;
+    font-size: 0.59rem;
+    font-weight: 740;
+    letter-spacing: 0.1em;
+    line-height: 1.25;
     text-transform: uppercase;
   }
 
   .product-card__name {
     font-family: var(--font-display);
-    font-size: clamp(1rem, 1.2vw, 1.2rem);
-    font-weight: 470;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    font-size: clamp(0.98rem, 1.1vw, 1.16rem);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.12;
   }
 
   .product-card__name a {
     text-decoration: none;
   }
 
-  .product-card__name a:hover {
+  .product-card__name a:hover,
+  .product-card__name a:focus-visible {
     text-decoration: underline;
     text-decoration-color: var(--color-muted-gold);
-    text-underline-offset: 0.15em;
+    text-underline-offset: 0.16em;
   }
 
   .product-card__price {
-    color: color-mix(in srgb, currentColor 60%, transparent);
-    font-size: 0.82rem;
-    margin-top: 0.15rem;
+    color: color-mix(in srgb, currentColor 62%, transparent);
+    font-size: 0.76rem;
+    line-height: 1.3;
   }
 
   .product-card__add {
-    margin-top: 0.5rem;
-    min-height: 2.2rem;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.68rem;
+    display: inline-flex;
+    min-height: 2.45rem;
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.34rem;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    font-size: 0.64rem;
+    font-weight: 760;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+    transition:
+      background-color 180ms var(--ease-out),
+      border-color 180ms var(--ease-out),
+      color 180ms var(--ease-out);
+  }
+
+  .product-card__add:hover,
+  .product-card__add:focus-visible {
+    border-color: var(--color-espresso);
+    background: var(--color-espresso);
+    color: var(--color-paper);
+  }
+
+  .product-card__add:disabled {
+    cursor: default;
+    opacity: 0.72;
   }
 </style>

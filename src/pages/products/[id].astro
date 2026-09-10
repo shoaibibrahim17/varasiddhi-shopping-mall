@@ -80,11 +80,11 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
           <h1 class="pdp__title" data-reveal="title">{item.title}</h1>
 
           <p class="pdp__price" data-reveal="copy">Price on WhatsApp</p>
-          <p class="pdp__cod" data-reveal="copy">Cash on Delivery available</p>
+          <p class="pdp__cod" data-reveal="copy">Availability confirmed on WhatsApp</p>
 
           <div class="pdp__actions" data-reveal="copy">
             <button type="button" class="pdp__add button-primary" data-cart-add={item.id}>
-              Add to cart
+              Add to enquiry
               <ArrowDownRight size={15} stroke-width={1.5} aria-hidden="true" />
             </button>
           </div>
@@ -95,12 +95,12 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
               <p>Visit Shri Varasiddhi Shopping Mall in Adilabad, Telangana to see this piece in person. Our team will help you find the right fit.</p>
             </details>
             <details class="pdp__accordion">
-              <summary>Delivery &amp; payment</summary>
-              <p>Cash on Delivery is available across India. Prepaid (UPI / card) is being integrated and launches after client approval.</p>
+              <summary>Availability &amp; payment</summary>
+              <p>The store team confirms availability, payment options and delivery details on WhatsApp. Online payment integration is planned for a later release.</p>
             </details>
             <details class="pdp__accordion">
-              <summary>WhatsApp order</summary>
-              <p>Add items to your cart, then tap "Order via WhatsApp" to send your selection directly to our team. We'll confirm availability and delivery details.</p>
+              <summary>WhatsApp enquiry</summary>
+              <p>Add items to your enquiry bag, then tap "Send WhatsApp enquiry" to share your selection with the store team.</p>
             </details>
           </div>
 
@@ -336,3 +336,4 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     }
   }
 </style>
+

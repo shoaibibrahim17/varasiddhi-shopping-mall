@@ -12,11 +12,12 @@ interface Props {
 }
 
 const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
+const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
 ---
 
-<section class="product-rail" data-carousel data-carousel-manual aria-labelledby={`rail-${title.replace(/\s+/g, "-").toLowerCase()}`}>
+<section class="product-rail" data-carousel data-carousel-manual aria-labelledby={headingId}>
   <div class="product-rail__header container">
-    <h2 class="product-rail__title" id={`rail-${title.replace(/\s+/g, "-").toLowerCase()}`}>{title}</h2>
+    <h2 class="product-rail__title" id={headingId}>{title}</h2>
     <div class="product-rail__controls">
       {viewAllHref && (
         <a class="product-rail__viewall" href={viewAllHref}>
@@ -26,7 +27,7 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
       )}
       <div class="product-rail__arrows">
         <button type="button" data-carousel-prev aria-label={`Previous ${title}`}>&larr;</button>
-        <span data-carousel-counter class="product-rail__counter">01 — 04</span>
+        <span data-carousel-counter class="product-rail__counter">01 - {String(items.length).padStart(2, "0")}</span>
         <button type="button" data-carousel-next aria-label={`Next ${title}`}>&rarr;</button>
       </div>
     </div>
@@ -43,7 +44,7 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
 
 <style>
   .product-rail {
-    padding-block: var(--section-space);
+    padding-block: clamp(2.4rem, 5vw, 4.6rem);
     border-top: 1px solid var(--color-line);
     background: var(--color-paper);
     color: var(--color-ink);
@@ -53,22 +54,22 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1.5rem;
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    gap: 1rem;
+    margin-bottom: clamp(1rem, 2.4vw, 1.8rem);
   }
 
   .product-rail__title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 3.8vw, 3.5rem);
-    font-weight: 460;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.65rem, 3vw, 2.65rem);
+    font-weight: 500;
+    letter-spacing: 0;
     line-height: 1;
   }
 
   .product-rail__controls {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .product-rail__viewall {
@@ -76,15 +77,16 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
     align-items: center;
     gap: 0.4rem;
     color: var(--color-muted-gold);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.68rem;
+    font-weight: 740;
+    letter-spacing: 0.08em;
     text-decoration: none;
+    text-transform: uppercase;
     transition: color 180ms var(--ease-out);
   }
 
-  .product-rail__viewall:hover {
+  .product-rail__viewall:hover,
+  .product-rail__viewall:focus-visible {
     color: var(--color-espresso);
   }
 
@@ -103,51 +105,62 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
     border-radius: 50%;
     background: transparent;
     color: inherit;
-    font-size: 1rem;
     cursor: pointer;
+    font-size: 1rem;
     transition: border-color 180ms var(--ease-out), background-color 180ms var(--ease-out);
   }
 
-  .product-rail__arrows button:hover {
+  .product-rail__arrows button:hover,
+  .product-rail__arrows button:focus-visible {
     border-color: var(--color-espresso);
     background: color-mix(in srgb, var(--color-espresso) 5%, transparent);
   }
 
   .product-rail__counter {
     color: var(--color-muted-gold);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+    font-weight: 740;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
   .product-rail__track {
     display: flex;
-    gap: 1px;
+    gap: clamp(0.75rem, 1.5vw, 1.2rem);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-inline: var(--gutter);
     padding-bottom: 0.5rem;
-    background: color-mix(in srgb, currentColor 12%, transparent);
+    background: transparent;
   }
 
   .product-rail__slide {
-    flex: 0 0 min(62vw, 16rem);
+    flex: 0 0 min(45vw, 13.5rem);
     scroll-snap-align: start;
     background: var(--color-paper);
-    padding: 0;
+  }
+
+  @media (max-width: 47.99rem) {
+    .product-rail__header {
+      align-items: start;
+      flex-direction: column;
+    }
+
+    .product-rail__arrows {
+      display: none;
+    }
   }
 
   @media (min-width: 48rem) {
     .product-rail__slide {
-      flex: 0 0 min(23vw, 19rem);
+      flex: 0 0 min(23vw, 16rem);
     }
   }
 
   @media (min-width: 80rem) {
     .product-rail__slide {
-      flex: 0 0 19rem;
+      flex-basis: 16.5rem;
     }
   }
 </style>

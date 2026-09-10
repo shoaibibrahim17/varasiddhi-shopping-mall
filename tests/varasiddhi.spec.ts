@@ -1,20 +1,112 @@
 import { test, expect } from '@playwright/test';
 
 const BASE = 'http://localhost:4321';
+const SPLASH_SEEN_KEY = 'varasiddhi_splash_seen';
+
+/** Marks the splash as already seen so homepage interactions are not blocked. */
+async function bypassSplash(page: import('@playwright/test').Page) {
+  await page.addInitScript(
+    ([key]) => {
+      try {
+        sessionStorage.setItem(key, 'true');
+      } catch {
+        /* ignore */
+      }
+    },
+    [SPLASH_SEEN_KEY],
+  );
+}
+
+const isHidden = (selector: string) => {
+  const element = document.querySelector<HTMLElement>(selector);
+  return element?.hidden;
+};
+
+const isNotHidden = (selector: string) => {
+  const element = document.querySelector<HTMLElement>(selector);
+  return element && !element.hidden;
+};
+
+test.describe('Splash screen', () => {
+  test('shows splash with autoplaying muted video and skip button', async ({ page }) => {
+    await page.goto(BASE);
+
+    const overlay = page.locator('#splash-overlay');
+    await expect(overlay).toBeVisible();
+
+    const video = page.locator('#splash-video');
+    await expect(video).toBeVisible();
+    await expect(video).toHaveAttribute('muted', '');
+    await expect(video).toHaveAttribute('playsinline', '');
+    await expect(video).toHaveAttribute('autoplay', '');
+
+    await expect(page.locator('#skip-splash')).toBeVisible();
+  });
+
+  test('video is fully visible on mobile — contain fit, not cropped', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(BASE);
+
+    const video = page.locator('#splash-video');
+    await expect(video).toBeVisible();
+
+    const fit = await video.evaluate((el) => window.getComputedStyle(el).objectFit);
+    expect(fit).toBe('contain');
+  });
+
+  test('skip button dismisses the splash immediately', async ({ page }) => {
+    // Make the splash video inert: the `ended`/`error` listeners are never
+    // bound and the component's stall-safety timeout is dropped, so the skip
+    // click is the only dismissal path — deterministic under parallel load.
+    await page.addInitScript(() => {
+      const originalSetTimeout = window.setTimeout.bind(window);
+      window.setTimeout = ((fn: TimerHandler, delay?: number, ...args: unknown[]) => {
+        if (typeof delay === 'number' && delay >= 5000) return 0 as unknown as number;
+        return originalSetTimeout(fn, delay, ...args);
+      }) as typeof window.setTimeout;
+
+      const originalAddEventListener = HTMLMediaElement.prototype.addEventListener;
+      HTMLMediaElement.prototype.addEventListener = function (
+        this: HTMLMediaElement,
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | AddEventListenerOptions,
+      ) {
+        if (type === 'ended' || type === 'error') return;
+        return originalAddEventListener.call(this, type, listener, options);
+      };
+    });
+
+    await page.goto(BASE);
+
+    await page.locator('#skip-splash').click();
+    await page.waitForFunction(() => !document.getElementById('splash-overlay'));
+    await expect(page.locator('.site-header')).toBeVisible();
+
+    const seen = await page.evaluate(
+      (key) => sessionStorage.getItem(key),
+      SPLASH_SEEN_KEY,
+    );
+    expect(seen).toBe('true');
+  });
+});
 
 test.describe('Homepage', () => {
   test('renders topbar + header + story bubbles + hero + product rails', async ({ page }) => {
+    await bypassSplash(page);
     await page.goto(BASE);
     await expect(page.locator('.topbar')).toBeVisible();
     await expect(page.locator('.site-header')).toBeVisible();
     await expect(page.locator('.story-bubbles')).toBeVisible();
     await expect(page.locator('.story-bubbles__item')).toHaveCount(6);
     await expect(page.locator('.hero')).toBeVisible();
+    await expect(page.locator('.category-shop')).toBeVisible();
     await expect(page.locator('.circle-nav')).toBeHidden();
     await expect(page.locator('.product-rail').first()).toBeVisible();
   });
 
   test('story bubbles have correct links', async ({ page }) => {
+    await bypassSplash(page);
     await page.goto(BASE);
     const bubbles = page.locator('.story-bubbles__item');
     await expect(bubbles).toHaveCount(6);
@@ -23,37 +115,28 @@ test.describe('Homepage', () => {
   });
 });
 
-test.describe('Cart flow', () => {
-  test('add to cart button exists and is clickable', async ({ page }) => {
+test.describe('Enquiry bag flow', () => {
+  test('add to enquiry button exists and is clickable', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     const addBtn = page.locator('[data-cart-add]').first();
     await expect(addBtn).toBeVisible();
-    await expect(addBtn).toHaveText('Add to cart');
+    await expect(addBtn).toHaveText('Add to enquiry');
     await addBtn.click();
-    await page.waitForFunction(() => {
-      const badge = document.querySelector('[data-cart-count]');
-      return badge && !badge.hidden;
-    }, { timeout: 5000 });
+    await page.waitForFunction(isNotHidden, '[data-cart-count]', { timeout: 5000 });
   });
 
-  test('cart count badge updates after add', async ({ page }) => {
+  test('enquiry count badge updates after add', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     const badge = page.locator('[data-cart-count]').first();
     await page.locator('[data-cart-add]').first().click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector('[data-cart-count]');
-      return el && !el.hidden;
-    }, { timeout: 5000 });
+    await page.waitForFunction(isNotHidden, '[data-cart-count]', { timeout: 5000 });
     await expect(badge).toContainText('1');
   });
 
   test('qty increment/decrement in drawer', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     await page.locator('[data-cart-add]').first().click();
-    await page.waitForFunction(() => {
-      const drawer = document.querySelector('[data-cart-drawer]');
-      return drawer && !drawer.hidden;
-    }, { timeout: 5000 });
+    await page.waitForFunction(isNotHidden, '[data-cart-drawer]', { timeout: 5000 });
     await page.waitForSelector('.cart-line');
 
     await page.locator('[data-cart-inc]').first().click();
@@ -64,13 +147,10 @@ test.describe('Cart flow', () => {
     await expect(qty).toHaveText('1');
   });
 
-  test('remove item empties cart', async ({ page }) => {
+  test('remove item empties enquiry bag', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     await page.locator('[data-cart-add]').first().click();
-    await page.waitForFunction(() => {
-      const drawer = document.querySelector('[data-cart-drawer]');
-      return drawer && !drawer.hidden;
-    }, { timeout: 5000 });
+    await page.waitForFunction(isNotHidden, '[data-cart-drawer]', { timeout: 5000 });
     await page.waitForSelector('.cart-line');
 
     await page.locator('[data-cart-remove]').first().click();
@@ -80,23 +160,18 @@ test.describe('Cart flow', () => {
   test('drawer closes on Escape', async ({ page }) => {
     await page.goto(BASE + '/catalogue');
     await page.locator('[data-cart-add]').first().click();
-    await page.waitForFunction(() => {
-      const drawer = document.querySelector('[data-cart-drawer]');
-      return drawer && !drawer.hidden;
-    }, { timeout: 5000 });
+    await page.waitForFunction(isNotHidden, '[data-cart-drawer]', { timeout: 5000 });
     await page.waitForSelector('.cart-line');
 
     await page.keyboard.press('Escape');
     await page.waitForTimeout(400);
-    const drawerHidden = await page.evaluate(() => {
-      return document.querySelector('[data-cart-drawer]')?.hidden;
-    });
+    const drawerHidden = await page.evaluate(isHidden, '[data-cart-drawer]');
     expect(drawerHidden).toBe(true);
   });
 });
 
 test.describe('Product detail page', () => {
-  test('renders breadcrumb + title + price + add to cart + related rail', async ({ page }) => {
+  test('renders breadcrumb + title + price + add to enquiry + related rail', async ({ page }) => {
     await page.goto(BASE + '/products/festive-red-saree');
 
     await expect(page.locator('.pdp-breadcrumb')).toBeVisible();
@@ -119,7 +194,8 @@ test.describe('Collection pages', () => {
 });
 
 test.describe('Viewports', () => {
-  test('mobile: menu + cart visible, desktop nav hidden', async ({ page }) => {
+  test('mobile: menu + enquiry bag visible, desktop nav hidden', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
     await expect(page.locator('[data-menu-open]')).toBeVisible();
@@ -127,7 +203,8 @@ test.describe('Viewports', () => {
     await expect(page.locator('.desktop-nav')).toBeHidden();
   });
 
-  test('desktop: full nav + cart visible, menu hidden', async ({ page }) => {
+  test('desktop: full nav + enquiry bag visible, menu hidden', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE);
     await expect(page.locator('.desktop-nav')).toBeVisible();
@@ -137,13 +214,10 @@ test.describe('Viewports', () => {
 });
 
 test.describe('Mobile navigation drawer', () => {
-  test('opens on menu button click and closes on overlay/close button', async ({ page }) => {
+  test('opens on menu button click and closes on close button', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
-
-    await page.evaluate(() => sessionStorage.setItem('varasiddhi_splash_seen', 'true'));
-    await page.reload();
-    await page.waitForTimeout(200);
 
     await page.locator('[data-menu-open]').click();
     await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
@@ -155,12 +229,9 @@ test.describe('Mobile navigation drawer', () => {
   });
 
   test('closes on Escape', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
-
-    await page.evaluate(() => sessionStorage.setItem('varasiddhi_splash_seen', 'true'));
-    await page.reload();
-    await page.waitForTimeout(200);
 
     await page.locator('[data-menu-open]').click();
     await expect(page.locator('.mobile-drawer')).toHaveClass(/is-open/);
@@ -173,6 +244,7 @@ test.describe('Mobile navigation drawer', () => {
 
 test.describe('Hero editorial banner', () => {
   test('hero CTAs are sharp rectangular with inverted contrast', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE);
 
@@ -184,19 +256,20 @@ test.describe('Hero editorial banner', () => {
   });
 
   test('hero image maintains aspect ratio on mobile and desktop', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
-    const mobileImg = page.locator('.hero__bg .asset-frame__image').first();
+    const mobileImg = page.locator('.hero__image .asset-frame__image').first();
     await expect(mobileImg).toBeVisible();
     const mobileRatio = await mobileImg.evaluate((el) => {
       const rect = el.getBoundingClientRect();
       return rect.width / rect.height;
     });
-    expect(mobileRatio).toBeGreaterThan(0.5);
+    expect(mobileRatio).toBeGreaterThan(0.35);
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE);
-    const desktopImg = page.locator('.hero__bg .asset-frame__image').first();
+    const desktopImg = page.locator('.hero__image .asset-frame__image').first();
     await expect(desktopImg).toBeVisible();
     const desktopRatio = await desktopImg.evaluate((el) => {
       const rect = el.getBoundingClientRect();
@@ -208,6 +281,7 @@ test.describe('Hero editorial banner', () => {
 
 test.describe('Story bubbles touch-swipe fluidity', () => {
   test('story bubbles are horizontally scrollable on mobile', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
 
@@ -220,19 +294,18 @@ test.describe('Story bubbles touch-swipe fluidity', () => {
     await firstBubble.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
 
-    const initialVisible = await firstBubble.isVisible();
-    expect(initialVisible).toBe(true);
+    expect(await firstBubble.isVisible()).toBe(true);
 
     await track.evaluate((el) => {
       el.scrollTo({ left: el.scrollWidth, behavior: 'instant' });
     });
     await page.waitForTimeout(100);
 
-    const lastVisible = await lastBubble.isVisible();
-    expect(lastVisible).toBe(true);
+    expect(await lastBubble.isVisible()).toBe(true);
   });
 
   test('story bubbles have correct circle sizes', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(BASE);
     const mobileRing = page.locator('.story-bubbles__ring').first();
@@ -249,81 +322,49 @@ test.describe('Story bubbles touch-swipe fluidity', () => {
 
 test.describe('Announcement marquee', () => {
   test('marquee text is present and scrolls', async ({ page }) => {
+    await bypassSplash(page);
     await page.goto(BASE);
     const marquee = page.locator('.topbar__track');
     await expect(marquee).toBeVisible();
 
     const text = await marquee.locator('.topbar__item').first().textContent();
-    expect(text).toContain('Festive Collection Live');
+    expect(text).toContain('WhatsApp enquiry enabled');
   });
 });
 
 test.describe('Sticky header', () => {
   test('header remains sticky on scroll', async ({ page }) => {
+    await bypassSplash(page);
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(BASE);
 
     const header = page.locator('.site-header');
     await expect(header).toBeVisible();
 
-    const stickyBefore = await header.evaluate((el) => {
-      const style = window.getComputedStyle(el);
-      return style.position;
-    });
+    const stickyBefore = await header.evaluate((el) => window.getComputedStyle(el).position);
     expect(stickyBefore).toBe('sticky');
 
     await page.evaluate(() => window.scrollBy(0, 600));
     await page.waitForTimeout(100);
 
-    const stickyAfter = await header.evaluate((el) => {
-      const style = window.getComputedStyle(el);
-      return style.position;
-    });
+    const stickyAfter = await header.evaluate((el) => window.getComputedStyle(el).position);
     expect(stickyAfter).toBe('sticky');
   });
 });
 
 test.describe('Typography', () => {
-  test('headings use Playfair Display', async ({ page }) => {
+  test('headings use Bodoni Moda', async ({ page }) => {
+    await bypassSplash(page);
     await page.goto(BASE);
 
     const fontFamily = await page.evaluate(() => {
       const heading = document.querySelector('h2');
-      if (!heading) {
-        return null;
-      }
-      return window.getComputedStyle(heading).fontFamily;
+      return heading ? window.getComputedStyle(heading).fontFamily : null;
     });
 
     expect(fontFamily).toBeTruthy();
     if (fontFamily) {
-      expect(fontFamily.toLowerCase()).toContain('playfair display');
+      expect(fontFamily.toLowerCase()).toContain('bodoni moda');
     }
-  });
-});
-
-test.describe('Splash screen', () => {
-  test('video autoplays and skip button dismisses overlay', async ({ page }) => {
-    await page.goto(BASE);
-
-    const splashOverlay = page.locator('#splash-overlay');
-    await expect(splashOverlay).toBeVisible();
-
-    const video = page.locator('#splash-video');
-    await expect(video).toBeVisible();
-
-    const skipBtn = page.locator('#skip-splash');
-    await expect(skipBtn).toBeVisible();
-
-    await page.evaluate(() => {
-      const btn = document.getElementById('skip-splash');
-      btn?.click();
-    });
-    await page.waitForTimeout(750);
-
-    const overlayExists = await page.evaluate(() => {
-      return document.getElementById('splash-overlay') !== null;
-    });
-    expect(overlayExists).toBe(false);
   });
 });

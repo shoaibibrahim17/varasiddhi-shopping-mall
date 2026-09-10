@@ -1,39 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..900&family=Instrument+Sans:wght@400..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-serif: ['Playfair Display', serif];
-  --font-sans: ['Plus Jakarta Sans', sans-serif];
-  --color-background: #FFFFFF;
-  --color-card: #FBF9F7;
-  --color-title: #1C1917;
-  --color-description: #57534E;
-  --color-maroon: #800020;
-  --color-gold: #C5A880;
-  --color-crimson: #B91C1C;
-  --color-crimson-deep: #800020;
-  --color-border: #e7e5e4;
-  --color-muted-gold: #8a6827;
+  --font-serif: ['Bodoni Moda', serif];
+  --font-sans: ['Instrument Sans', sans-serif];
+  --color-background: #FCFAF5;
+  --color-card: #F7F3EA;
+  --color-title: #171512;
+  --color-description: #5E554D;
+  --color-maroon: #7A1E25;
+  --color-gold: #C89A2B;
+  --color-crimson: #9D1F2B;
+  --color-crimson-deep: #6F141E;
+  --color-border: #E4DACB;
+  --color-muted-gold: #A78035;
 }
 
 :root {
   color-scheme: light;
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
-  --color-background: #FFFFFF;
-  --color-card: #FBF9F7;
-  --color-title: #1C1917;
-  --color-description: #57534E;
-  --color-maroon: #800020;
-  --color-gold: #C5A880;
-  --color-crimson: #B91C1C;
-  --color-crimson-deep: #800020;
-  --color-border: #e7e5e4;
-  --color-muted-gold: #8a6827;
-  --color-ink: #1C1917;
-  --font-display: ['Playfair Display', serif];
-  --font-sans: ['Plus Jakarta Sans', sans-serif];
-  --gutter: clamp(1rem, 4vw, 4.5rem);
+  --font-serif: 'Bodoni Moda', serif;
+  --font-sans: 'Instrument Sans', sans-serif;
+  --color-background: #FCFAF5;
+  --color-card: #F7F3EA;
+  --color-title: #171512;
+  --color-description: #5E554D;
+  --color-maroon: #7A1E25;
+  --color-gold: #C89A2B;
+  --color-crimson: #9D1F2B;
+  --color-crimson-deep: #6F141E;
+  --color-border: #E4DACB;
+  --color-muted-gold: #A78035;
+  --font-display: 'Bodoni Moda', serif;
+  --color-paper: #FCFAF5;
+  --color-stone: #EEE4D4;
+  --color-ink: #171512;
+  --color-espresso: #3A2014;
+  --color-line: #E4DACB;
+    --gutter: clamp(1rem, 4vw, 4.5rem);
   --content-max: 90rem;
   --measure: 68ch;
   --section-space: clamp(4.75rem, 8vw, 8.5rem);
@@ -62,8 +65,8 @@ body {
   min-width: 20rem;
   min-height: 100vh;
   overflow-x: clip;
-  background-color: #ffffff;
-  color: #1c1917;
+  background-color: var(--color-background);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.6;
@@ -72,7 +75,7 @@ body {
 
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif) !important;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 main {
@@ -224,7 +227,7 @@ p {
   gap: 0.65rem;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
@@ -408,3 +411,4 @@ p {
     animation-iteration-count: 1 !important;
   }
 }
+
