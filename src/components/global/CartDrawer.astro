@@ -3,14 +3,14 @@ import { site } from "../../data/site";
 ---
 
 <div data-cart-overlay class="cart-overlay" hidden></div>
-<aside data-cart-drawer class="cart-drawer" hidden role="dialog" aria-modal="true" aria-label="Shopping cart">
+<aside data-cart-drawer class="cart-drawer" hidden role="dialog" aria-modal="true" aria-label="WhatsApp enquiry bag">
   <header class="cart-drawer__head">
-    <h2>Your cart</h2>
+    <h2>Your enquiry bag</h2>
     <button type="button" data-cart-close aria-label="Close cart">&times;</button>
   </header>
 
   <div data-cart-empty class="cart-drawer__empty">
-    <p>Your cart is empty.</p>
+    <p>Your enquiry bag is empty.</p>
     <a href="/catalogue" class="button-primary" data-cart-close>Browse the catalogue</a>
   </div>
 
@@ -18,20 +18,12 @@ import { site } from "../../data/site";
     <div data-cart-lines class="cart-drawer__lines"></div>
 
     <div class="cart-drawer__payment">
-      <p class="cart-drawer__payment-label">Payment method</p>
-      <label class="cart-drawer__radio">
-        <input type="radio" name="cart-payment" value="cod" checked />
-        <span class="cart-drawer__radio-label">Cash on Delivery</span>
-      </label>
-      <label class="cart-drawer__radio cart-drawer__radio--disabled">
-        <input type="radio" name="cart-payment" value="prepaid" disabled />
-        <span class="cart-drawer__radio-label">Prepaid (UPI / Card)</span>
-        <span class="cart-drawer__badge">Coming soon</span>
-      </label>
+      <label class="cart-drawer__payment-label" for="enquiry-note">Add a note for the store</label>
+      <textarea id="enquiry-note" data-enquiry-note rows="3" placeholder="Size, colour, occasion, or anything you would like us to check"></textarea>
     </div>
 
     <button type="button" data-cart-checkout class="cart-drawer__checkout button-primary">
-      Order via WhatsApp
+      Send enquiry via WhatsApp
     </button>
 
     <p class="cart-drawer__note">{site.payments.cod}</p>
@@ -142,12 +134,30 @@ import { site } from "../../data/site";
   }
 
   .cart-drawer__payment-label {
+    display: block;
     color: var(--color-muted-gold);
     font-size: 0.68rem;
     font-weight: 720;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 0.6rem;
+  }
+
+  .cart-drawer__payment textarea {
+    display: block;
+    width: 100%;
+    resize: vertical;
+    border: 1px solid var(--color-line);
+    border-radius: 0;
+    background: transparent;
+    padding: 0.75rem;
+    color: inherit;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .cart-drawer__payment textarea::placeholder {
+    color: color-mix(in srgb, currentColor 48%, transparent);
   }
 
   .cart-drawer__radio {

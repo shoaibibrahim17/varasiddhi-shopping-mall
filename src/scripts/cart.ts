@@ -10,6 +10,7 @@ export interface ClientProduct {
   category: string;
   group: string;
   thumb: string;
+  url: string;
 }
 
 declare global {
@@ -81,7 +82,7 @@ export const remove = (id: string) => {
   writeLines(readLines().filter((l) => l.id !== id));
 };
 
-export const buildWhatsAppUrl = (paymentMethod: string): string => {
+export const buildWhatsAppUrl = (): string => {
   const products = window.__varasiddhiProducts ?? {};
   const lines = readLines();
   if (!lines.length) return "#";
@@ -89,21 +90,23 @@ export const buildWhatsAppUrl = (paymentMethod: string): string => {
   const linesText = lines
     .map((l) => {
       const p = products[l.id];
-      return `\u2022 ${l.qty} \u00D7 ${p?.title ?? l.id} (${p?.category ?? ""})`;
+      const path = p?.url ? `${window.location.origin}${p.url}` : "";
+      return `\u2022 ${l.qty} × ${p?.title ?? l.id} (${p?.category ?? ""})${path ? `\n  ${path}` : ""}`;
     })
     .join("\n");
 
-  const method =
-    paymentMethod === "cod" ? "Cash on Delivery" : "Prepaid (UPI/Card)";
+  const note =
+    document.querySelector<HTMLTextAreaElement>("[data-enquiry-note]")?.value.trim() ?? "";
 
   const message = [
-    `Namaste ${site.shortName}! I would like to place an order:`,
+    `Namaste ${site.shortName}! I would like to enquire about these pieces:`,
     "",
     linesText,
     "",
-    `Payment: ${method}`,
+    note ? `Note for the store: ${note}` : "",
     "",
-    "(Sent from the Varasiddhi website)",
+    "Please confirm availability, pricing, and next steps.",
+    "(Sent from the Varasiddhi catalogue)",
   ].join("\n");
 
   return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -229,7 +232,7 @@ document.addEventListener("click", (e) => {
     btn.textContent = "Added \u2713";
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = orig ?? "Add to cart";
+      btn.textContent = orig ?? "Add to enquiry";
       btn.disabled = false;
     }, 900);
 
@@ -259,11 +262,7 @@ document.addEventListener("click", (e) => {
   const checkoutBtn = target.closest("[data-cart-checkout]");
   if (checkoutBtn) {
     e.preventDefault();
-    const method =
-      (document.querySelector(
-        'input[name="cart-payment"]:checked',
-      ) as HTMLInputElement)?.value ?? "cod";
-    const url = buildWhatsAppUrl(method);
+    const url = buildWhatsAppUrl();
     if (url !== "#") window.open(url, "_blank", "noopener");
   }
 });

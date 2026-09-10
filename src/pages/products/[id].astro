@@ -79,12 +79,12 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
           <p class="pdp__eyebrow" data-reveal="eyebrow">{groupLabel} · {item.category}</p>
           <h1 class="pdp__title" data-reveal="title">{item.title}</h1>
 
-          <p class="pdp__price" data-reveal="copy">Price on WhatsApp</p>
-          <p class="pdp__cod" data-reveal="copy">Cash on Delivery available</p>
+          <p class="pdp__price" data-reveal="copy">Availability on WhatsApp</p>
+          <p class="pdp__cod" data-reveal="copy">Ask the store team about size, colour, and current availability.</p>
 
           <div class="pdp__actions" data-reveal="copy">
             <button type="button" class="pdp__add button-primary" data-cart-add={item.id}>
-              Add to cart
+              Add to enquiry
               <ArrowDownRight size={15} stroke-width={1.5} aria-hidden="true" />
             </button>
           </div>
@@ -96,11 +96,11 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
             </details>
             <details class="pdp__accordion">
               <summary>Delivery &amp; payment</summary>
-              <p>Cash on Delivery is available across India. Prepaid (UPI / card) is being integrated and launches after client approval.</p>
+              <p>Availability, pricing, and delivery details are confirmed by the store team after your enquiry.</p>
             </details>
             <details class="pdp__accordion">
               <summary>WhatsApp order</summary>
-              <p>Add items to your cart, then tap "Order via WhatsApp" to send your selection directly to our team. We'll confirm availability and delivery details.</p>
+              <p>Add this piece to your enquiry bag, then send the selection to our team on WhatsApp. We will confirm the next steps.</p>
             </details>
           </div>
 

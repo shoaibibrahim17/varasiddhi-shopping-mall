@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-serif: ['Playfair Display', serif];
-  --font-sans: ['Plus Jakarta Sans', sans-serif];
+  --font-serif: ['Bodoni Moda', serif];
+  --font-sans: ['Instrument Sans', sans-serif];
   --color-background: #FFFFFF;
   --color-card: #FBF9F7;
   --color-title: #1C1917;
@@ -18,8 +18,8 @@
 
 :root {
   color-scheme: light;
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Bodoni Moda', serif;
+  --font-sans: 'Instrument Sans', sans-serif;
   --color-background: #FFFFFF;
   --color-card: #FBF9F7;
   --color-title: #1C1917;
@@ -31,8 +31,8 @@
   --color-border: #e7e5e4;
   --color-muted-gold: #8a6827;
   --color-ink: #1C1917;
-  --font-display: ['Playfair Display', serif];
-  --font-sans: ['Plus Jakarta Sans', sans-serif];
+  --font-display: 'Bodoni Moda', serif;
+  --font-sans: 'Instrument Sans', sans-serif;
   --gutter: clamp(1rem, 4vw, 4.5rem);
   --content-max: 90rem;
   --measure: 68ch;
@@ -66,13 +66,25 @@ body {
   color: #1c1917;
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif) !important;
   letter-spacing: -0.01em;
+}
+
+button,
+input,
+textarea,
+select,
+summary,
+nav,
+.button-primary,
+.button-light,
+.text-link {
+  font-family: var(--font-sans);
 }
 
 main {

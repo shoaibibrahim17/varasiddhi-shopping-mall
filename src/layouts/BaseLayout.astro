@@ -13,7 +13,7 @@ interface Props {
 
 const { title, description, canonicalPath = Astro.url.pathname } = Astro.props;
 
-const productMap: Record<string, { title: string; category: string; group: string; thumb: string }> = {};
+const productMap: Record<string, { title: string; category: string; group: string; thumb: string; url: string }> = {};
 for (const item of catalogue) {
   const thumb = await getImage({ src: item.image, width: 128, quality: 72 });
   productMap[item.id] = {
@@ -21,6 +21,7 @@ for (const item of catalogue) {
     category: item.category,
     group: item.group,
     thumb: thumb.src,
+    url: `/products/${item.id}`,
   };
 }
 ---
@@ -33,7 +34,7 @@ for (const item of catalogue) {
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" rel="stylesheet" />
     <meta name="theme-color" content="#FFFFFF" />
     <meta name="robots" content="index, follow" />
     <meta
@@ -55,8 +56,8 @@ for (const item of catalogue) {
     <div class="topbar" role="banner">
       <div class="topbar__marquee" aria-label="Store announcements">
         <div class="topbar__track">
-          <span class="topbar__item">✨ Festive Collection Live · Free Shipping on Orders Across India · Cash on Delivery Available ✨</span>
-          <span class="topbar__item" aria-hidden="true">✨ Festive Collection Live · Free Shipping on Orders Across India · Cash on Delivery Available ✨</span>
+          <span class="topbar__item">{site.announcement}</span>
+          <span class="topbar__item" aria-hidden="true">{site.announcement}</span>
         </div>
       </div>
     </div>
