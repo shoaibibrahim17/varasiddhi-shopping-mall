@@ -27,7 +27,7 @@ const heroSlides = [
     href: "/catalogue",
   },
   {
-    id: "mustard-sharara-set",
+    id: "sparkle-pink-coord",
     campaign: "Occasion Edit",
     edition: "Celebration dressing",
     eyebrow: "Occasion edit",
@@ -63,9 +63,10 @@ const sareeEdit = [
   ...getCatalogueByCategory("Cotton Sarees"),
 ].slice(0, 7);
 const occasionEdit = [
-  ...getCatalogueByCategory("Occasion Wear"),
-  ...getCatalogueByCategory("Wedding Wear"),
-].slice(0, 7);
+  getCatalogueItem("royal-blue-anarkali"),
+  getCatalogueItem("champagne-sherwani-set"),
+  getCatalogueItem("mustard-sharara-set"),
+];
 const menEdit = getCatalogueByGroup("Men").slice(0, 8);
 const newIn = [
   getCatalogueItem("sparkle-pink-coord"),

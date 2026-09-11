@@ -50,6 +50,9 @@ export interface CatalogueItem {
   title: string;
   group: CatalogueGroup;
   category: CatalogueCategory;
+  material: string;
+  tag: string;
+  priceRange: "₹₹" | "₹₹₹" | "₹₹₹₹";
   image: ImageMetadata;
   alt: string;
   crop: CatalogueCrop;
@@ -58,7 +61,9 @@ export interface CatalogueItem {
 const posterCrop = { x: 19, y: 48, scale: 2.04 } satisfies CatalogueCrop;
 const cleanCrop = { x: 50, y: 50, scale: 1.04 } satisfies CatalogueCrop;
 
-export const catalogue: CatalogueItem[] = [
+type CatalogueSourceItem = Omit<CatalogueItem, "material" | "tag" | "priceRange">;
+
+const catalogueItems: CatalogueSourceItem[] = [
   {
     id: "festive-red-saree",
     title: "Festive Red Saree",
@@ -285,6 +290,39 @@ export const catalogue: CatalogueItem[] = [
     crop: cleanCrop,
   },
 ];
+
+const catalogueDetails: Record<string, Pick<CatalogueItem, "material" | "tag" | "priceRange">> = {
+  "festive-red-saree": { material: "Silk blend", tag: "Festive", priceRange: "₹₹₹" },
+  "designer-brocade-saree": { material: "Brocade silk", tag: "Statement", priceRange: "₹₹₹₹" },
+  "maroon-silk-saree": { material: "Silk blend", tag: "Heritage", priceRange: "₹₹₹" },
+  "indigo-blockprint-saree": { material: "Cotton", tag: "Handloom edit", priceRange: "₹₹" },
+  "kalamkari-cotton-saree": { material: "Kalamkari cotton", tag: "New", priceRange: "₹₹" },
+  "royal-blue-anarkali": { material: "Embroidered georgette", tag: "Occasion", priceRange: "₹₹₹" },
+  "blush-pink-anarkali": { material: "Embroidered net", tag: "New", priceRange: "₹₹₹" },
+  "mustard-sharara-set": { material: "Embroidered georgette", tag: "Wedding edit", priceRange: "₹₹₹" },
+  "sparkle-pink-coord": { material: "Sequin fabric", tag: "Fusion", priceRange: "₹₹₹" },
+  "classic-white-kurta": { material: "Cotton blend", tag: "Classic", priceRange: "₹₹" },
+  "pink-blue-printed-kurta": { material: "Printed cotton", tag: "Colour story", priceRange: "₹₹" },
+  "taupe-pathani-suit": { material: "Cotton blend", tag: "Everyday", priceRange: "₹₹" },
+  "navy-embroidered-jacket-kurta": { material: "Textured blend", tag: "Statement", priceRange: "₹₹₹" },
+  "navy-nehru-jacket-kurta": { material: "Cotton silk blend", tag: "Festive", priceRange: "₹₹₹" },
+  "white-overshirt": { material: "Cotton twill", tag: "New", priceRange: "₹₹" },
+  "beige-cargo-pants": { material: "Cotton twill", tag: "Everyday", priceRange: "₹₹" },
+  "green-tee-white-shorts": { material: "Cotton jersey", tag: "Casual", priceRange: "₹₹" },
+  "sky-blue-button-down-shirt": { material: "Cotton", tag: "New", priceRange: "₹₹" },
+  "mandarin-white-cotton-shirt": { material: "Cotton", tag: "Essential", priceRange: "₹₹" },
+  "pink-shirt": { material: "Cotton blend", tag: "New", priceRange: "₹₹" },
+  "black-bandhgala": { material: "Textured suiting", tag: "Formal", priceRange: "₹₹₹" },
+  "navy-pinstripe-suit": { material: "Wool blend", tag: "Formal", priceRange: "₹₹₹₹" },
+  "ivory-sherwani": { material: "Jacquard blend", tag: "Ceremonial", priceRange: "₹₹₹₹" },
+  "champagne-sherwani-set": { material: "Brocade blend", tag: "Wedding edit", priceRange: "₹₹₹₹" },
+  "grey-loungewear-set": { material: "Cotton jersey", tag: "Lounge", priceRange: "₹₹" },
+};
+
+export const catalogue: CatalogueItem[] = catalogueItems.map((item) => ({
+  ...item,
+  ...catalogueDetails[item.id],
+}));
 
 export function getCatalogueItem(id: string): CatalogueItem {
   const item = catalogue.find((entry) => entry.id === id);
