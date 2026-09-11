@@ -4,9 +4,30 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <a href="/" aria-label="Shri Varasiddhi Shopping Mall home">Shri Varasiddhi Shopping Mall</a>
-    <p>Adilabad, Telangana</p>
+    <div class="footer-brand">
+      <a href="/" aria-label="Shri Varasiddhi Shopping Mall home">Shri Varasiddhi</a>
+      <p>Family fashion, sarees and occasion dressing in Adilabad.</p>
+      <span>Adilabad · Telangana</span>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <div>
+        <h2>Explore</h2>
+        <a href="/catalogue">Catalogue</a>
+        <a href="/sarees">Sarees</a>
+        <a href="/women">Women</a>
+        <a href="/men">Men</a>
+      </div>
+      <div>
+        <h2>Visit</h2>
+        <a href="/occasion">Occasion wear</a>
+        <a href="/visit">Store visit</a>
+        <a href="https://wa.me/8732223101" target="_blank" rel="noopener">WhatsApp enquiry</a>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-bottom">
     <small>© {year} Shri Varasiddhi Shopping Mall.</small>
+    <small>Catalogue first · Enquire directly</small>
   </div>
 </footer>
 
@@ -20,25 +41,32 @@ const year = new Date().getFullYear();
   .footer-inner {
     display: grid;
     width: min(100%, var(--content-max));
-    min-height: 9rem;
-    align-items: center;
-    gap: 1rem;
+    gap: 2.5rem;
     margin-inline: auto;
-    padding: 2rem var(--gutter);
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    padding: clamp(2.75rem, 7vw, 5.5rem) var(--gutter) 3rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(15rem, 0.9fr);
   }
 
-  .footer-inner a {
+  .footer-brand > a {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-size: clamp(2rem, 4vw, 3.8rem);
     font-weight: 460;
     letter-spacing: -0.02em;
     line-height: 1;
     text-decoration: none;
   }
 
-  .footer-inner p,
-  .footer-inner small {
+  .footer-brand p {
+    max-width: 26rem;
+    margin-top: 1rem;
+    color: color-mix(in srgb, var(--color-paper) 72%, transparent);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .footer-brand span {
+    display: block;
+    margin-top: 1.25rem;
     color: color-mix(in srgb, var(--color-paper) 70%, transparent);
     font-size: 0.7rem;
     font-weight: 700;
@@ -47,14 +75,67 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
   }
 
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-nav div {
+    display: grid;
+    align-content: start;
+    gap: 0.7rem;
+  }
+
+  .footer-nav h2 {
+    margin-bottom: 0.35rem;
+    color: var(--color-gold);
+    font-family: var(--font-sans);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .footer-nav a {
+    width: fit-content;
+    color: var(--color-paper);
+    font-size: 0.82rem;
+    text-decoration: none;
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-gold);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-paper) 18%, transparent);
+    padding: 1rem var(--gutter) 1.25rem;
+  }
+
+  .footer-bottom small {
+    color: color-mix(in srgb, var(--color-paper) 62%, transparent);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
   @media (max-width: 47.99rem) {
     .footer-inner {
-      align-items: start;
       grid-template-columns: 1fr;
     }
-    .footer-inner p,
-    .footer-inner small {
-      font-size: 0.75rem;
+
+    .footer-nav {
+      gap: 1.5rem;
+    }
+
+    .footer-bottom {
+      align-items: flex-start;
+      flex-direction: column;
     }
   }
 </style>

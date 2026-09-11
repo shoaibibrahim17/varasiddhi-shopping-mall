@@ -8,6 +8,8 @@ const initCarousel = (carousel: HTMLElement) => {
   const prev = carousel.querySelector<HTMLButtonElement>("[data-carousel-prev]");
   const next = carousel.querySelector<HTMLButtonElement>("[data-carousel-next]");
   const counter = carousel.querySelector<HTMLElement>("[data-carousel-counter]");
+  const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"));
+  const pause = carousel.querySelector<HTMLButtonElement>("[data-carousel-pause]");
 
   if (!track || items.length < 2) {
     return;
@@ -19,6 +21,7 @@ const initCarousel = (carousel: HTMLElement) => {
   let isPointerInside = false;
   let isFocusInside = false;
   let isInteracting = false;
+  let isPaused = false;
   let scrollRaf = 0;
 
   const updateCounter = () => {
@@ -27,6 +30,9 @@ const initCarousel = (carousel: HTMLElement) => {
     }
 
     counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} — ${String(items.length).padStart(2, "0")}`;
+    dots.forEach((dot, index) => {
+      dot.setAttribute("aria-selected", String(index === activeIndex));
+    });
   };
 
   const getNearestIndex = () => {
@@ -65,7 +71,7 @@ const initCarousel = (carousel: HTMLElement) => {
   };
 
   const startAutoplay = () => {
-    if (reducedMotionQuery.matches || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
+    if (isPaused || reducedMotionQuery.matches || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
       return;
     }
 
@@ -96,6 +102,30 @@ const initCarousel = (carousel: HTMLElement) => {
     isInteracting = true;
     pauseAutoplay();
     scrollToIndex(activeIndex + 1);
+  });
+
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const index = Number(dot.dataset.carouselDot);
+      if (!Number.isInteger(index)) return;
+      isInteracting = true;
+      pauseAutoplay();
+      scrollToIndex(index);
+    });
+  });
+
+  pause?.addEventListener("click", () => {
+    isPaused = !isPaused;
+    if (isPaused) {
+      pauseAutoplay(false);
+      pause.textContent = "Play";
+      pause.setAttribute("aria-label", "Resume campaign autoplay");
+    } else {
+      pause.textContent = "Pause";
+      pause.setAttribute("aria-label", "Pause campaign autoplay");
+      isInteracting = false;
+      startAutoplay();
+    }
   });
 
   track.addEventListener("scroll", () => {

@@ -52,10 +52,10 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     <StoryBubbles />
 
     <!-- ─── Hero Editorial Banner ─── -->
-    <section class="hero" data-carousel aria-label="Featured collections">
+    <section class="hero" data-carousel aria-roledescription="carousel" aria-label="Featured campaigns">
       <div class="hero__track" data-carousel-track>
         {heroSlides.map((slide, i) => (
-          <div class="hero__slide" data-carousel-item>
+          <article class="hero__slide" data-carousel-item aria-roledescription="slide" aria-label={`${i + 1} of ${heroSlides.length}: ${slide.title}`}>
             <span class="hero__bg asset-frame asset-frame--fashion-crop" style={`--crop-x: ${slide.item.crop.x}%; --crop-y: ${slide.item.crop.y}%; --crop-scale: ${slide.item.crop.scale};`}>
               <Image
                 class="asset-frame__image"
@@ -69,17 +69,29 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
               />
             </span>
             <div class="hero__content container">
-              <p class="hero__eyebrow">{slide.eyebrow}</p>
+              <p class="hero__eyebrow"><span>Campaign {String(i + 1).padStart(2, "0")}</span> {slide.eyebrow}</p>
               <h2 class="hero__title font-serif">{slide.title}</h2>
-              <a class="hero__cta" href={slide.href}>{slide.cta}</a>
+              <p class="hero__description">A considered edit for the moments that stay with you.</p>
+              <a class="hero__cta" href={slide.href}>{slide.cta}<span aria-hidden="true">↗</span></a>
             </div>
-          </div>
+            <p class="hero__caption">{slide.item.alt}</p>
+          </article>
         ))}
       </div>
       <div class="hero__controls">
-        <button type="button" data-carousel-prev aria-label="Previous slide">&larr;</button>
-        <span data-carousel-counter class="hero__counter">01 — 03</span>
-        <button type="button" data-carousel-next aria-label="Next slide">&rarr;</button>
+        <div class="hero__controls-main">
+          <button type="button" data-carousel-prev aria-label="Previous campaign">←</button>
+          <span data-carousel-counter class="hero__counter" aria-live="polite">01 — 03</span>
+          <button type="button" data-carousel-next aria-label="Next campaign">→</button>
+        </div>
+        <div class="hero__progress" role="tablist" aria-label="Choose campaign">
+          {heroSlides.map((slide, i) => (
+            <button type="button" data-carousel-dot={i} role="tab" aria-label={`Show ${slide.title}`} aria-selected={i === 0}>
+              <span>{String(i + 1).padStart(2, "0")}</span>
+            </button>
+          ))}
+        </div>
+        <button type="button" class="hero__pause" data-carousel-pause aria-label="Pause campaign autoplay">Pause</button>
       </div>
     </section>
 
@@ -182,6 +194,7 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     background: var(--color-title);
     color: var(--color-background);
     overflow: hidden;
+    isolation: isolate;
   }
 
   .hero__track {
@@ -193,7 +206,8 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     position: relative;
     flex: 0 0 100%;
     scroll-snap-align: start;
-    min-height: clamp(60vh, 72vw, 82vh);
+    min-height: clamp(34rem, 70svh, 48rem);
+    overflow: hidden;
   }
 
   .hero__bg {
@@ -208,9 +222,9 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     inset: 0;
     background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--color-title) 45%, transparent) 0%,
-      color-mix(in srgb, var(--color-title) 20%, transparent) 45%,
-      color-mix(in srgb, var(--color-title) 65%, transparent) 100%
+      color-mix(in srgb, var(--color-title) 12%, transparent) 0%,
+      color-mix(in srgb, var(--color-title) 15%, transparent) 38%,
+      color-mix(in srgb, var(--color-title) 82%, transparent) 100%
     );
   }
 
@@ -221,30 +235,47 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     right: var(--gutter);
     z-index: 2;
     max-width: 52rem;
+    padding-bottom: 2rem;
   }
 
   .hero__eyebrow {
-    color: var(--color-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-background);
     font-size: 0.66rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    margin-bottom: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero__eyebrow span {
+    color: var(--color-gold);
   }
 
   .hero__title {
     font-family: var(--font-display);
-    font-size: clamp(2.6rem, 5.6vw, 4.8rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    max-width: 9ch;
+    font-size: clamp(3rem, 7vw, 6.8rem);
+    font-weight: 450;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
     margin-bottom: 1.25rem;
+  }
+
+  .hero__description {
+    max-width: 29ch;
+    margin-bottom: 1.5rem;
+    color: color-mix(in srgb, var(--color-background) 76%, transparent);
+    font-size: clamp(0.82rem, 1.2vw, 0.98rem);
+    line-height: 1.55;
   }
 
   .hero__cta {
     display: inline-flex;
     min-height: 2.75rem;
-    padding: 0.7rem 1.6rem;
+    padding: 0.8rem 1rem 0.8rem 1.1rem;
     background: var(--color-background);
     color: var(--color-title);
     font-size: 0.7rem;
@@ -252,12 +283,18 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
+    gap: 1.5rem;
     border: 1px solid var(--color-background);
     transition:
       background-color 180ms var(--ease-out),
       color 180ms var(--ease-out),
       border-color 180ms var(--ease-out),
       transform 300ms var(--ease-out);
+  }
+
+  .hero__cta span {
+    font-size: 1rem;
+    transition: transform 240ms var(--ease-out);
   }
 
   .hero__cta:hover {
@@ -267,21 +304,49 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
     transform: translateY(-1px);
   }
 
+  .hero__cta:hover span,
+  .hero__cta:focus-visible span {
+    transform: translate(0.2rem, -0.2rem);
+  }
+
+  .hero__caption {
+    position: absolute;
+    top: 1.25rem;
+    right: var(--gutter);
+    max-width: 15rem;
+    color: color-mix(in srgb, var(--color-background) 62%, transparent);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
   .hero__controls {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem var(--gutter);
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 0.7rem var(--gutter);
     background: var(--color-title);
     color: var(--color-background);
+  }
+
+  .hero__controls-main,
+  .hero__progress {
+    display: flex;
+    align-items: center;
+  }
+
+  .hero__controls-main {
+    gap: 0.7rem;
   }
 
   .hero__controls button {
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2rem;
+    height: 2rem;
     border: 1px solid color-mix(in srgb, var(--color-background) 22%, transparent);
     border-radius: 50%;
     background: transparent;
@@ -297,11 +362,65 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
   }
 
   .hero__counter {
-    font-size: 0.72rem;
+    min-width: 3.5rem;
+    font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted-gold);
+  }
+
+  .hero__progress {
+    flex: 1;
+    gap: 0.35rem;
+    max-width: 20rem;
+  }
+
+  .hero__progress button {
+    position: relative;
+    flex: 1;
+    height: 1.6rem;
+    border: 0;
+    background: transparent;
+    color: color-mix(in srgb, var(--color-background) 38%, transparent);
+    cursor: pointer;
+    font-size: 0.58rem;
+    text-align: left;
+  }
+
+  .hero__progress button::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    content: "";
+  }
+
+  .hero__progress button[aria-selected="true"] {
+    color: var(--color-gold);
+  }
+
+  .hero__progress button span {
+    position: absolute;
+    top: 0.45rem;
+  }
+
+  .hero__pause {
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-background) 35%, transparent);
+    background: transparent;
+    color: color-mix(in srgb, var(--color-background) 70%, transparent);
+    cursor: pointer;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    padding: 0.2rem 0 0.3rem;
+    text-transform: uppercase;
+  }
+
+  .hero__pause:hover {
+    color: var(--color-gold);
   }
 
   /* ─── Promo Strip ─── */
@@ -335,5 +454,49 @@ const menEdit = getCatalogueByGroup("Men").slice(0, 6);
 
   .promo-strip__cta {
     margin-top: 0.5rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__slide {
+      min-height: clamp(31rem, 78svh, 43rem);
+    }
+
+    .hero__content {
+      bottom: 1rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .hero__title {
+      max-width: 7ch;
+      font-size: clamp(3rem, 15vw, 4.7rem);
+    }
+
+    .hero__description {
+      max-width: 24ch;
+      margin-bottom: 1.15rem;
+      font-size: 0.78rem;
+    }
+
+    .hero__caption {
+      top: 1rem;
+      right: var(--gutter);
+      max-width: 9rem;
+      font-size: 0.52rem;
+    }
+
+    .hero__controls {
+      flex-wrap: wrap;
+      padding-block: 0.7rem 0.8rem;
+    }
+
+    .hero__progress {
+      order: 3;
+      flex-basis: 100%;
+      max-width: none;
+    }
+
+    .hero__pause {
+      margin-left: auto;
+    }
   }
 </style>

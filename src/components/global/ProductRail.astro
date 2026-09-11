@@ -58,10 +58,10 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
   }
 
   .product-rail__title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.8vw, 3.5rem);
-    font-weight: 460;
-    letter-spacing: -0.03em;
+    font-family: var(--font-sans);
+    font-size: clamp(1.35rem, 3.8vw, 2.35rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
     line-height: 1;
   }
 
@@ -133,7 +133,7 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
   }
 
   .product-rail__slide {
-    flex: 0 0 min(62vw, 16rem);
+    flex: 0 0 min(47vw, 13.5rem);
     scroll-snap-align: start;
     background: var(--color-paper);
     padding: 0;
@@ -141,7 +141,7 @@ const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
 
   @media (min-width: 48rem) {
     .product-rail__slide {
-      flex: 0 0 min(23vw, 19rem);
+      flex: 0 0 min(22vw, 18rem);
     }
   }
 
