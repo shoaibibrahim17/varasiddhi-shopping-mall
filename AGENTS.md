@@ -148,3 +148,22 @@ Never hide important content permanently behind JavaScript animation.
 Respect `prefers-reduced-motion`.
 
 Lenis must not interfere with horizontal catalogue rails.
+
+## gstack
+
+This project uses the gstack skill suite. Use these instead of ad-hoc approaches where they fit:
+
+- `/design-review` — visual QA pass on pages; fixes findings within the existing design system (Bodoni Moda + Instrument Sans, current components, animation rules above).
+- `/qa` or `/qa-only` — browser-driven QA of pages and flows; complements the Playwright viewport checks.
+- `/investigate` — systematic root-cause debugging (e.g., Lenis/scroll issues).
+- `/review` — pre-commit review pass before landing changes.
+- `/spec` or `/office-hours` — before starting a new phase or feature.
+- `/cso` — security audit before public launch.
+- `/context-save` / `/context-restore` — snapshot and resume mid-feature work.
+- `/learn` — record durable design/product decisions (e.g., the ₹-tier price indicator system).
+
+Skip `/ship` and `/land-and-deploy` — this repo commits directly to `main` and deploys via Cloudflare Pages; their PR-train assumptions don't match. Skip the `ios-*` skills.
+
+Use `/browse` for browser inspection tasks rather than ad-hoc browser automation.
+
+All gstack skills operate within the constraints of this file — they never override the stack, scope, truthfulness, animation, or assets rules above.
