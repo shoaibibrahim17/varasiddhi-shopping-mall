@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-astro";
 import Header from "../components/global/Header.astro";
 import Footer from "../components/global/Footer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -79,7 +80,7 @@ const newIn = [
   <main id="main-content">
     <StoryBubbles />
 
-    <section class="hero" data-carousel aria-label="Featured collections">
+    <section class="hero" data-carousel aria-label="Featured campaigns">
       <div class="hero__track" data-carousel-track>
         {heroSlides.map((slide, i) => (
           <article class="hero__slide" data-carousel-item>
@@ -98,9 +99,15 @@ const newIn = [
               </span>
             </div>
             <div class="hero__content container">
-              <p class="hero__eyebrow">{slide.eyebrow}</p>
+              <div class="hero__campaign-tag">
+                <span class="hero__campaign-dot" aria-hidden="true"></span>
+                <p class="hero__eyebrow">{slide.eyebrow}</p>
+              </div>
               {i === 0 ? (
-                <h1 class="hero__title">{slide.title}</h1>
+                <h1 class="hero__title hero__title--brand">
+                  <span>Shri Varasiddhi</span>
+                  <em>Shopping Mall</em>
+                </h1>
               ) : (
                 <h2 class="hero__title">{slide.title}</h2>
               )}
@@ -114,9 +121,17 @@ const newIn = [
         ))}
       </div>
       <div class="hero__controls">
-        <button type="button" data-carousel-prev aria-label="Previous featured collection">&larr;</button>
-        <span data-carousel-counter class="hero__counter">01 - 03</span>
-        <button type="button" data-carousel-next aria-label="Next featured collection">&rarr;</button>
+        <button type="button" data-carousel-prev aria-label="Previous campaign">
+          <ArrowLeft size={17} stroke-width={1.5} aria-hidden="true" />
+        </button>
+        <span data-carousel-counter class="hero__counter">01 — 03</span>
+        <button type="button" data-carousel-next aria-label="Next campaign">
+          <ArrowRight size={17} stroke-width={1.5} aria-hidden="true" />
+        </button>
+        <button type="button" class="hero__pause" data-carousel-toggle aria-label="Pause campaign rotation" aria-pressed="false">
+          <Pause class="hero__pause-icon" size={15} stroke-width={1.7} aria-hidden="true" />
+          <Play class="hero__play-icon" size={15} stroke-width={1.7} aria-hidden="true" />
+        </button>
       </div>
     </section>
 
@@ -222,6 +237,20 @@ const newIn = [
     padding-block: clamp(4rem, 13vh, 7rem) clamp(3.8rem, 10vh, 6rem);
   }
 
+  .hero__campaign-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero__campaign-dot {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--color-gold);
+    box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-gold) 18%, transparent);
+  }
+
   .hero__eyebrow,
   .category-shop__eyebrow,
   .catalogue-note p {
@@ -237,9 +266,30 @@ const newIn = [
     max-width: 10.5ch;
     font-family: var(--font-display);
     font-size: clamp(3.05rem, 11vw, 6.7rem);
-    font-weight: 520;
-    letter-spacing: 0;
-    line-height: 0.88;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 0.84;
+  }
+
+  .hero__title--brand {
+    max-width: 8.5ch;
+  }
+
+  .hero__title--brand span,
+  .hero__title--brand em {
+    display: block;
+  }
+
+  .hero__title--brand em {
+    margin-top: 1.2rem;
+    color: var(--color-gold);
+    font-family: var(--font-sans);
+    font-size: clamp(0.62rem, 1.2vw, 0.88rem);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    line-height: 1.2;
+    text-transform: uppercase;
   }
 
   .hero__copy {
@@ -303,6 +353,28 @@ const newIn = [
     background: transparent;
     color: inherit;
     cursor: pointer;
+  }
+
+  .hero__controls button:hover,
+  .hero__controls button:focus-visible {
+    border-color: var(--color-paper);
+    background: color-mix(in srgb, var(--color-paper) 14%, transparent);
+  }
+
+  .hero__pause {
+    margin-left: 0.25rem;
+  }
+
+  .hero__play-icon {
+    display: none;
+  }
+
+  .hero.is-paused .hero__pause-icon {
+    display: none;
+  }
+
+  .hero.is-paused .hero__play-icon {
+    display: block;
   }
 
   .hero__counter {

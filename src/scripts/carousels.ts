@@ -8,6 +8,7 @@ const initCarousel = (carousel: HTMLElement) => {
   const prev = carousel.querySelector<HTMLButtonElement>("[data-carousel-prev]");
   const next = carousel.querySelector<HTMLButtonElement>("[data-carousel-next]");
   const counter = carousel.querySelector<HTMLElement>("[data-carousel-counter]");
+  const toggle = carousel.querySelector<HTMLButtonElement>("[data-carousel-toggle]");
 
   if (!track || items.length < 2) {
     return;
@@ -64,6 +65,12 @@ const initCarousel = (carousel: HTMLElement) => {
     }
   };
 
+  const setPausedState = (paused: boolean) => {
+    carousel.classList.toggle("is-paused", paused);
+    toggle?.setAttribute("aria-pressed", String(paused));
+    toggle?.setAttribute("aria-label", paused ? "Resume campaign rotation" : "Pause campaign rotation");
+  };
+
   const startAutoplay = () => {
     if (reducedMotionQuery.matches || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
       return;
@@ -96,6 +103,17 @@ const initCarousel = (carousel: HTMLElement) => {
     isInteracting = true;
     pauseAutoplay();
     scrollToIndex(activeIndex + 1);
+  });
+
+  toggle?.addEventListener("click", () => {
+    const isPaused = carousel.classList.contains("is-paused");
+    if (isPaused) {
+      setPausedState(false);
+      startAutoplay();
+    } else {
+      setPausedState(true);
+      pauseAutoplay(false);
+    }
   });
 
   track.addEventListener("scroll", () => {

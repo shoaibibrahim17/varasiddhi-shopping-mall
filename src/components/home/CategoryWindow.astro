@@ -51,65 +51,23 @@ function cropStyle(item: CatalogueItem) {
 <section class="category-window page-section" id="category-window" data-reveal-section aria-labelledby="category-window-title">
   <div class="category-window__inner container">
     <header class="category-window__heading">
-      <p class="folio-label" data-reveal="eyebrow">Catalogue categories</p>
+      <p class="folio-label" data-reveal="eyebrow">Shop by department</p>
       <div>
         <h2 class="section-title" id="category-window-title" data-reveal="title">
-          Browse by category, then open the catalogue page.
+          A curated wardrobe in four chapters.
         </h2>
-        <p class="section-copy" data-reveal="copy">
-          The category window borrows ecommerce browsing clarity while staying
-          catalogue-only: no prices, discounts, stock counts or checkout flows.
-        </p>
-        <a class="text-link" href="/catalogue" data-reveal="copy">
-          Browse the full catalogue
-          <ArrowDownRight size={15} stroke-width={1.5} aria-hidden="true" />
-        </a>
       </div>
     </header>
 
-    <div class="category-window__surface" aria-label="Catalogue category window">
-      <nav class="category-window__menu no-scrollbar" aria-label="Catalogue categories" data-lenis-prevent>
-        {
-          categories.map((category, index) => (
-            <a href={category.href} data-stagger-item>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{category.label}</strong>
-              <small>{category.detail}</small>
-            </a>
-          ))
-        }
-      </nav>
-
-      <div class="category-window__preview">
-        {
-          categories.map((category, index) => (
-            <article class:list={["category-panel", index === 0 && "category-panel--lead"]} data-stagger-item>
-              <a class="category-panel__image asset-frame asset-frame--fashion-crop" href={category.href} style={cropStyle(category.item)}>
-                <Image
-                  class="asset-frame__image"
-                  src={category.item.image}
-                  alt={category.item.alt}
-                  widths={[360, 520, 760, 960]}
-                  sizes={index === 0 ? "(max-width: 768px) 76vw, 32vw" : "(max-width: 768px) 46vw, 15vw"}
-                  quality={82}
-                />
-              </a>
-              <div class="category-panel__copy">
-                <p>{category.label}</p>
-                <h3>{category.item.title}</h3>
-                <ul aria-label={`${category.label} preview items`}>
-                  {category.support.map((item) => <li>{item.title}</li>)}
-                </ul>
-                <a class="text-link" href={category.href}>
-                  Open catalogue
-                  <ArrowDownRight size={15} stroke-width={1.5} aria-hidden="true" />
-                </a>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
+    <nav class="category-window__ribbon" aria-label="Catalogue categories" data-lenis-prevent>
+      <a href="/sarees" data-stagger-item>Sarees</a>
+      <span class="category-window__divider" aria-hidden="true">/</span>
+      <a href="/occasion" data-stagger-item>Occasion & Bridal</a>
+      <span class="category-window__divider" aria-hidden="true">/</span>
+      <a href="/men" data-stagger-item>Menswear</a>
+      <span class="category-window__divider" aria-hidden="true">/</span>
+      <a href="/women" data-stagger-item>Handloom Cottons</a>
+    </nav>
   </div>
 </section>
 
@@ -117,12 +75,12 @@ function cropStyle(item: CatalogueItem) {
   .category-window {
     overflow: hidden;
     border-top: 1px solid var(--color-line);
-    background: var(--color-ivory);
+    background: #F7F1EA;
   }
 
   .category-window__inner {
     display: grid;
-    gap: clamp(1.9rem, 4vw, 3.8rem);
+    gap: clamp(1.9rem, 4vw, 3.2rem);
   }
 
   .category-window__heading {
@@ -132,176 +90,40 @@ function cropStyle(item: CatalogueItem) {
     grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
   }
 
-  .category-window__heading .section-copy {
-    margin-top: 1.15rem;
-    max-width: 44rem;
-  }
-
-  .category-window__heading .text-link {
-    justify-self: start;
-    margin-top: 1.15rem;
-    font-size: 0.68rem;
-  }
-
-  .category-window__surface {
-    display: grid;
-    min-height: 37rem;
-    border: 1px solid var(--color-line);
-    background: var(--color-paper);
-    grid-template-columns: minmax(16rem, 0.34fr) minmax(0, 1fr);
-  }
-
-  .category-window__menu {
-    display: grid;
-    align-content: stretch;
-    border-right: 1px solid var(--color-line);
-    background: var(--color-paper);
-  }
-
-  .category-window__menu a {
-    display: grid;
-    min-height: 8.9rem;
-    align-content: center;
-    gap: 0.55rem;
-    padding: 1.1rem clamp(1rem, 2vw, 1.4rem);
-    border-bottom: 1px solid var(--color-line);
-    text-decoration: none;
-    transition:
-      background-color 220ms var(--ease-out),
-      color 220ms var(--ease-out);
-  }
-
-  .category-window__menu a:last-child {
-    border-bottom: 0;
-  }
-
-  .category-window__menu a:hover,
-  .category-window__menu a:focus-visible {
-    background: var(--color-espresso);
-    color: var(--color-paper);
-  }
-
-  .category-window__menu span,
-  .category-window__menu small,
-  .category-panel__copy p {
-    color: var(--color-muted-gold);
-    font-size: 0.68rem;
-    font-weight: 720;
-    letter-spacing: 0.14em;
-    line-height: 1.25;
+  .category-window__ribbon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem 1.25rem;
+    padding: 1.1rem 0 0;
+    color: #2E0B11;
+    font-family: var(--font-sans);
+    font-size: 0.74rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 
-  .category-window__menu strong {
-    font-family: var(--font-display);
-    font-size: clamp(1.42rem, 2.15vw, 2rem);
-    font-weight: 460;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .category-window__menu small {
-    max-width: 20ch;
-    color: color-mix(in srgb, currentColor 62%, transparent);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: none;
-  }
-
-  .category-window__preview {
-    display: grid;
-    gap: 1px;
-    background: var(--color-line);
-    grid-template-columns: minmax(0, 1.18fr) repeat(2, minmax(0, 0.78fr));
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-  }
-
-  .category-panel {
-    display: grid;
-    min-width: 0;
-    background: var(--color-paper);
-    grid-template-rows: minmax(0, 1fr) auto;
-  }
-
-  .category-panel--lead {
-    grid-row: 1 / span 2;
-  }
-
-  .category-panel__image {
-    --asset-ratio: 3 / 4;
-    min-height: 0;
+  .category-window__ribbon a {
+    color: #2E0B11;
     text-decoration: none;
+    transition: color 180ms var(--ease-out), opacity 180ms var(--ease-out);
   }
 
-  .category-panel--lead .category-panel__image {
-    --asset-ratio: 4 / 5;
+  .category-window__ribbon a:hover,
+  .category-window__ribbon a:focus-visible {
+    color: #7A1E25;
   }
 
-  .category-panel__copy {
-    display: grid;
-    gap: 0.55rem;
-    padding: 1rem 1.05rem 1.1rem;
-  }
-
-  .category-panel__copy h3 {
-    font-family: var(--font-display);
-    font-size: clamp(1.12rem, 1.65vw, 1.52rem);
-    font-weight: 460;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  .category-panel__copy ul {
-    display: grid;
-    gap: 0.2rem;
-    margin: 0.1rem 0 0;
-    padding: 0;
-    color: color-mix(in srgb, var(--color-ink) 68%, transparent);
-    font-size: 0.86rem;
-    line-height: 1.35;
-    list-style: none;
-  }
-
-  .category-panel__copy .text-link {
-    justify-self: start;
-    margin-top: 0.25rem;
-    font-size: 0.68rem;
+  .category-window__divider {
+    color: #A48A69;
+    opacity: 0.8;
   }
 
   @media (max-width: 64rem) {
-    .category-window__heading,
-    .category-window__surface {
+    .category-window__heading {
       grid-template-columns: 1fr;
-    }
-
-    .category-window__surface {
-      min-height: 0;
-    }
-
-    .category-window__menu {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      border-right: 0;
-      border-bottom: 1px solid var(--color-line);
-      grid-auto-columns: minmax(14rem, 34vw);
-      grid-auto-flow: column;
-      grid-template-columns: none;
-    }
-
-    .category-window__menu a {
-      scroll-snap-align: start;
-      min-height: 7.5rem;
-      border-right: 1px solid var(--color-line);
-      border-bottom: 0;
-    }
-
-    .category-window__preview {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .category-panel--lead {
-      grid-column: 1 / -1;
-      grid-row: auto;
     }
   }
 
@@ -310,14 +132,12 @@ function cropStyle(item: CatalogueItem) {
       padding-block: clamp(3.3rem, 10vw, 4.6rem);
     }
 
-    .category-window__surface {
-      margin-inline: calc(var(--gutter) * -1);
-      border-inline: 0;
+    .category-window__ribbon {
+      justify-content: flex-start;
+      gap: 0.5rem 0.8rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
     }
-
-    .category-window__menu {
-      padding-inline: var(--gutter);
-      background: var(--color-ivory);
       grid-auto-columns: minmax(12.75rem, 64vw);
     }
 

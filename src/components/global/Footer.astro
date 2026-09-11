@@ -4,8 +4,19 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <a href="/" aria-label="Shri Varasiddhi Shopping Mall home">Shri Varasiddhi Shopping Mall</a>
-    <p>Adilabad, Telangana</p>
+    <div class="footer-brand">
+      <a href="/" aria-label="Shri Varasiddhi Shopping Mall home">Shri Varasiddhi Shopping Mall</a>
+      <p>Adilabad, Telangana</p>
+    </div>
+
+    <div class="footer-links" aria-label="Social media links">
+      <span class="footer-label">Follow</span>
+      <div class="social-links">
+        <a href="https://www.instagram.com/varasiddhishoppingmall/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/ShriVaraSiddhiShoppingMall/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+
     <small>© {year} Shri Varasiddhi Shopping Mall.</small>
   </div>
 </footer>
@@ -13,7 +24,7 @@ const year = new Date().getFullYear();
 <style>
   .site-footer {
     border-top: 1px solid var(--color-line);
-    background: var(--color-espresso);
+    background: linear-gradient(180deg, var(--color-espresso) 0%, #261910 100%);
     color: var(--color-paper);
   }
 
@@ -25,10 +36,15 @@ const year = new Date().getFullYear();
     gap: 1rem;
     margin-inline: auto;
     padding: 2rem var(--gutter);
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1.4fr) auto auto;
   }
 
-  .footer-inner a {
+  .footer-brand {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .footer-brand a {
     font-family: var(--font-display);
     font-size: clamp(1.5rem, 3vw, 2.4rem);
     font-weight: 460;
@@ -37,9 +53,16 @@ const year = new Date().getFullYear();
     text-decoration: none;
   }
 
-  .footer-inner p,
+  .footer-links {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+
+  .footer-label,
+  .footer-brand p,
   .footer-inner small {
-    color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+    color: color-mix(in srgb, var(--color-paper) 72%, transparent);
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -47,12 +70,49 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
   }
 
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+    color: var(--color-paper);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 180ms var(--ease-out), border-color 180ms var(--ease-out), background 180ms var(--ease-out);
+  }
+
+  .social-links a:hover,
+  .social-links a:focus-visible {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--color-gold) 75%, transparent);
+    background: color-mix(in srgb, var(--color-gold) 20%, transparent);
+  }
+
   @media (max-width: 47.99rem) {
     .footer-inner {
       align-items: start;
       grid-template-columns: 1fr;
     }
-    .footer-inner p,
+
+    .footer-links {
+      justify-items: start;
+    }
+
+    .footer-brand p,
+    .footer-label,
     .footer-inner small {
       font-size: 0.75rem;
     }

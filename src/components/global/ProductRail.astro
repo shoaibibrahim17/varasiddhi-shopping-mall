@@ -61,8 +61,8 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
   .product-rail__title {
     font-family: var(--font-display);
     font-size: clamp(1.65rem, 3vw, 2.65rem);
-    font-weight: 500;
-    letter-spacing: 0;
+    font-weight: 400;
+    letter-spacing: -0.02em;
     line-height: 1;
   }
 
@@ -77,9 +77,10 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
     align-items: center;
     gap: 0.4rem;
     color: var(--color-muted-gold);
+    font-family: var(--font-sans);
     font-size: 0.68rem;
-    font-weight: 740;
-    letter-spacing: 0.08em;
+    font-weight: 400;
+    letter-spacing: 0.18em;
     text-decoration: none;
     text-transform: uppercase;
     transition: color 180ms var(--ease-out);
@@ -99,28 +100,28 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
   .product-rail__arrows button {
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid var(--color-line);
-    border-radius: 50%;
+    width: auto;
+    height: auto;
+    border: 0;
     background: transparent;
-    color: inherit;
+    color: var(--color-title);
     cursor: pointer;
-    font-size: 1rem;
-    transition: border-color 180ms var(--ease-out), background-color 180ms var(--ease-out);
+    font-size: 1.1rem;
+    line-height: 1;
+    border-radius: 0;
+    transition: color 180ms var(--ease-out);
   }
 
   .product-rail__arrows button:hover,
   .product-rail__arrows button:focus-visible {
-    border-color: var(--color-espresso);
-    background: color-mix(in srgb, var(--color-espresso) 5%, transparent);
+    color: var(--color-maroon);
   }
 
   .product-rail__counter {
-    color: var(--color-muted-gold);
-    font-size: 0.68rem;
-    font-weight: 740;
-    letter-spacing: 0.08em;
+    color: #726660;
+    font-family: var(--font-serif);
+    font-size: 0.74rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     white-space: nowrap;
   }
