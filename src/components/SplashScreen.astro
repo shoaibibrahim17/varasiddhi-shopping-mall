@@ -15,10 +15,10 @@ const SPLASH_POSTER = "/videos/varasiddhi-splash-poster.jpg";
     autoplay
     muted
     playsinline
-    preload="metadata"
+    preload="none"
     poster={SPLASH_POSTER}
+    data-video-src={splashVideo}
     aria-hidden="true"
-    src={splashVideo}
   />
 
   <button
@@ -135,6 +135,7 @@ const SPLASH_POSTER = "/videos/varasiddhi-splash-poster.jpg";
   const skipBtn = document.getElementById("skip-splash");
   const SEEN_KEY = "varasiddhi_splash_seen";
   const VIDEO_TIMEOUT_MS = 9000;
+  const videoSrc = video?.dataset.videoSrc;
 
   const getPlaybackRate = () => {
     if (window.innerWidth < 768) return 1.9;
@@ -168,12 +169,19 @@ const SPLASH_POSTER = "/videos/varasiddhi-splash-poster.jpg";
     if (video) {
       video.playsInline = true;
       video.muted = true;
+      if (videoSrc) video.src = videoSrc;
+      video.preload = "auto";
       video.playbackRate = getPlaybackRate();
       video.addEventListener("loadedmetadata", () => {
         video.playbackRate = getPlaybackRate();
+        video.play().catch(() => {
+          /* Autoplay can be blocked; the user can still skip manually. */
+        });
       });
-      video.addEventListener("ended", dismissSplash);
-      video.addEventListener("error", () => dismissSplash());
+      // Keep the intro overlay visible for the intended timeout and skip path.
+      // Auto-dismiss on `ended` is unreliable across browsers because slow page loads
+      // and aggressive playback rates can complete the video before the user has a chance
+      // to interact with the overlay.
       window.setTimeout(dismissSplash, VIDEO_TIMEOUT_MS);
     }
     skipBtn?.addEventListener("click", dismissSplash);

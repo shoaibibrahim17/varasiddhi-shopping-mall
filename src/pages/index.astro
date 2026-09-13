@@ -217,7 +217,7 @@ const newIn = [
   .hero__slide {
     position: relative;
     display: grid;
-    min-height: clamp(28rem, 58vw, 42rem);
+    min-height: clamp(28rem, 52vw, 38rem);
     flex: 0 0 100%;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--color-gold) 75%, transparent);
@@ -292,9 +292,9 @@ const newIn = [
     position: relative;
     z-index: 2;
     display: grid;
-    align-content: end;
+    align-content: center;
     gap: 0.85rem;
-    padding-block: clamp(4.5rem, 11vw, 8rem) clamp(4.7rem, 9vw, 7rem);
+    padding-block: clamp(4rem, 8vw, 6rem);
     padding-inline: clamp(1.5rem, 7vw, 8rem);
   }
 
@@ -326,14 +326,14 @@ const newIn = [
   .hero__title {
     max-width: 8.5ch;
     font-family: var(--font-display);
-    font-size: clamp(3.05rem, 11vw, 6.7rem);
+    font-size: clamp(2.2rem, 4.2vw, 4.1rem);
     font-weight: 500;
     letter-spacing: -0.035em;
     line-height: 0.84;
   }
 
   .hero__title--brand {
-    max-width: 8.5ch;
+    max-width: 6.4ch;
   }
 
   .hero__title--brand span,
@@ -342,10 +342,10 @@ const newIn = [
   }
 
   .hero__title--brand em {
-    margin-top: 1.2rem;
+    margin-top: 0.42rem;
     color: var(--color-gold);
     font-family: var(--font-sans);
-    font-size: clamp(0.62rem, 1.2vw, 0.88rem);
+    font-size: clamp(0.5rem, 0.9vw, 0.72rem);
     font-style: normal;
     font-weight: 600;
     letter-spacing: 0.22em;
@@ -564,10 +564,6 @@ const newIn = [
   }
 
   @media (min-width: 48rem) {
-    .hero__content {
-      align-content: center;
-    }
-
     .category-shop__head {
       grid-template-columns: 0.8fr 1.2fr;
       align-items: end;

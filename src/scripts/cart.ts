@@ -26,13 +26,11 @@ const readLines = (): CartLine[] => {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    const products = window.__varasiddhiProducts ?? {};
     return parsed.filter(
       (l: CartLine) =>
         typeof l.id === "string" &&
         typeof l.qty === "number" &&
-        l.qty > 0 &&
-        products[l.id],
+        l.qty > 0,
     );
   } catch {
     return [];
@@ -181,20 +179,24 @@ const render = () => {
     container.innerHTML = lines
       .map((l) => {
         const p = allProducts[l.id];
-        if (!p) return "";
+        const title = p?.title ?? l.id;
+        const category = p?.category ?? "Catalogue piece";
+        const thumb = p?.thumb ?? "";
+        const safeTitle = title.replace(/"/g, "&quot;");
+
         return `
         <div class="cart-line">
-          <img class="cart-line__img" src="${p.thumb}" alt="" width="64" height="80" loading="lazy" />
+          <img class="cart-line__img" src="${thumb}" alt="" width="64" height="80" loading="lazy" />
           <div class="cart-line__info">
-            <p class="cart-line__cat">${p.category}</p>
-            <p class="cart-line__name">${p.title}</p>
+            <p class="cart-line__cat">${category}</p>
+            <p class="cart-line__name">${safeTitle}</p>
             <div class="cart-line__qty">
-              <button type="button" data-cart-dec="${l.id}" aria-label="Decrease quantity of ${p.title}">−</button>
+              <button type="button" data-cart-dec="${l.id}" aria-label="Decrease quantity of ${safeTitle}">−</button>
               <span>${l.qty}</span>
-              <button type="button" data-cart-inc="${l.id}" aria-label="Increase quantity of ${p.title}">+</button>
+              <button type="button" data-cart-inc="${l.id}" aria-label="Increase quantity of ${safeTitle}">+</button>
             </div>
           </div>
-          <button type="button" class="cart-line__remove" data-cart-remove="${l.id}" aria-label="Remove ${p.title} from enquiry bag">&times;</button>
+          <button type="button" class="cart-line__remove" data-cart-remove="${l.id}" aria-label="Remove ${safeTitle} from enquiry bag">&times;</button>
         </div>`;
       })
       .join("");
