@@ -18,12 +18,12 @@ import {
 const heroSlides = [
   {
     id: "festive-red-saree",
-    campaign: "The Saree Edit",
-    edition: "Festive dressing",
-    eyebrow: "Catalogue preview",
-    title: "Shri Varasiddhi Shopping Mall",
-    copy: "A mobile-first fashion catalogue for sarees, occasion wear and menswear in Adilabad.",
-    cta: "Browse catalogue",
+    campaign: "Adilabad",
+    edition: "Store destination",
+    eyebrow: "Store destination",
+    title: "The wardrobe story starts in Adilabad.",
+    copy: "Explore the current edit from sarees to occasionwear, then visit the mall for the complete assortment and styling story.",
+    cta: "Explore collections",
     href: "/catalogue",
   },
   {
@@ -31,9 +31,9 @@ const heroSlides = [
     campaign: "Occasion Edit",
     edition: "Celebration dressing",
     eyebrow: "Occasion edit",
-    title: "Celebration dressing, selected by look.",
-    copy: "Save pieces to your enquiry bag and share the selection on WhatsApp.",
-    cta: "Open occasion",
+    title: "Dress for the moment, then visit the store.",
+    copy: "Browse occasion-led looks and continue to the store experience in Adilabad for the full wardrobe story.",
+    cta: "View occasion",
     href: "/occasion",
   },
   {
@@ -41,9 +41,9 @@ const heroSlides = [
     campaign: "Menswear Edit",
     edition: "Ethnic and formal",
     eyebrow: "Menswear",
-    title: "Ethnic, formal and everyday menswear.",
-    copy: "The current catalogue is structured for future online ordering without showing a checkout too early.",
-    cta: "Open men",
+    title: "Ethnic, formal and everyday dressing.",
+    copy: "The current catalogue brings together elevated essentials for the week, the wedding season and the family occasion.",
+    cta: "View menswear",
     href: "/men",
   },
 ].map((slide) => ({
@@ -55,7 +55,6 @@ const categoryTiles = [
   { label: "Sarees", href: "/sarees", item: getCatalogueItem("designer-brocade-saree"), detail: "Silk, brocade and festive colour" },
   { label: "Women", href: "/women", item: getCatalogueItem("blush-pink-anarkali"), detail: "Occasion and fusion previews" },
   { label: "Men", href: "/men", item: getCatalogueItem("navy-embroidered-jacket-kurta"), detail: "Ethnic, shirts and formalwear" },
-  { label: "Wedding", href: "/occasion", item: getCatalogueItem("ivory-sherwani"), detail: "Ceremonial looks across the family" },
 ];
 
 const sareeEdit = [
@@ -147,10 +146,12 @@ const newIn = [
       </div>
     </section>
 
+    <a class="skip-link" href="#category-shop" aria-label="Skip carousel">Skip carousel</a>
+
     <section class="category-shop" aria-labelledby="category-shop-title">
       <div class="category-shop__head container">
         <p class="category-shop__eyebrow">Shop by department</p>
-        <h2 id="category-shop-title">Compact routes into the catalogue.</h2>
+        <h2 id="category-shop-title">Find the wardrobe in three directions.</h2>
       </div>
       <div class="category-shop__grid container">
         {categoryTiles.map((tile) => (
@@ -175,20 +176,17 @@ const newIn = [
       </div>
     </section>
 
-    <ProductRail title="New catalogue picks" items={newIn} viewAllHref="/catalogue" />
+    <ProductRail title="The current edit" items={newIn} viewAllHref="/catalogue" />
 
-    <section class="catalogue-note" aria-label="Ordering roadmap">
+    <section class="catalogue-note" aria-label="Visit and browse prompt">
       <div class="catalogue-note__inner container">
-        <p>WhatsApp enquiry now</p>
-        <h2>Built for online ordering later, without pretending checkout is live today.</h2>
-        <a href="/catalogue">Open full catalogue</a>
+        <p>Visit the store</p>
+        <h2>See the full wardrobe story in person at the Adilabad mall.</h2>
+        <a href="/visit">Plan your visit</a>
       </div>
     </section>
 
-    <ProductRail title="The saree edit" items={sareeEdit} viewAllHref="/sarees" />
-    <ProductRail title="Occasion and wedding" items={occasionEdit} viewAllHref="/occasion" />
-    <ProductRail title="Menswear edit" items={menEdit} viewAllHref="/men" />
-
+    <ProductRail title="Saree selections" items={sareeEdit} viewAllHref="/sarees" />
     <VisitCta />
   </main>
   <Footer />
@@ -198,7 +196,7 @@ const newIn = [
   .hero {
     position: relative;
     overflow: hidden;
-    padding: clamp(0.75rem, 2vw, 1.6rem) var(--gutter) clamp(2.6rem, 5vw, 4.5rem);
+    padding: clamp(0.5rem, 1.5vw, 1.1rem) var(--gutter) clamp(2.2rem, 4vw, 3.8rem);
     background: var(--color-paper);
     color: var(--color-paper);
   }
@@ -217,7 +215,7 @@ const newIn = [
   .hero__slide {
     position: relative;
     display: grid;
-    min-height: clamp(28rem, 52vw, 38rem);
+    min-height: clamp(26rem, 43vw, 34rem);
     flex: 0 0 100%;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--color-gold) 75%, transparent);
@@ -293,9 +291,9 @@ const newIn = [
     z-index: 2;
     display: grid;
     align-content: center;
-    gap: 0.85rem;
-    padding-block: clamp(4rem, 8vw, 6rem);
-    padding-inline: clamp(1.5rem, 7vw, 8rem);
+    gap: 0.75rem;
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    padding-inline: clamp(1.25rem, 6vw, 6.25rem);
   }
 
   .hero__campaign-tag {
@@ -326,7 +324,7 @@ const newIn = [
   .hero__title {
     max-width: 8.5ch;
     font-family: var(--font-display);
-    font-size: clamp(2.2rem, 4.2vw, 4.1rem);
+    font-size: clamp(2.15rem, 4vw, 4rem);
     font-weight: 500;
     letter-spacing: -0.035em;
     line-height: 0.84;
@@ -410,7 +408,7 @@ const newIn = [
     width: 2.4rem;
     height: 2.4rem;
     border: 1px solid color-mix(in srgb, var(--color-paper) 35%, transparent);
-    border-radius: 999px;
+    border-radius: 0;
     background: transparent;
     color: inherit;
     cursor: pointer;
@@ -446,7 +444,7 @@ const newIn = [
   }
 
   .category-shop {
-    padding-block: clamp(2.4rem, 5vw, 4.5rem);
+    padding-block: clamp(2.2rem, 4.5vw, 4rem);
     border-bottom: 1px solid var(--color-line);
     background: var(--color-paper);
   }
@@ -459,9 +457,9 @@ const newIn = [
 
   .category-shop__head h2,
   .catalogue-note h2 {
-    max-width: 18ch;
+    max-width: 15ch;
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+    font-size: clamp(1.8rem, 3.2vw, 2.9rem);
     font-weight: 500;
     letter-spacing: 0;
     line-height: 0.98;
@@ -470,7 +468,13 @@ const newIn = [
   .category-shop__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.75rem, 1.8vw, 1.25rem);
+    gap: clamp(0.8rem, 2vw, 1.25rem);
+  }
+
+  @media (min-width: 48rem) {
+    .category-shop__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .category-tile {
@@ -478,6 +482,21 @@ const newIn = [
     gap: 0.62rem;
     color: inherit;
     text-decoration: none;
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 150ms var(--ease-out);
+  }
+
+  .category-tile:hover,
+  .category-tile:focus-visible {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+
+  .category-tile:active,
+  .category-tile:focus-visible:active {
+    opacity: 0.7;
+    transform: scale(0.98);
   }
 
   .category-tile__media {
@@ -567,10 +586,6 @@ const newIn = [
     .category-shop__head {
       grid-template-columns: 0.8fr 1.2fr;
       align-items: end;
-    }
-
-    .category-shop__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .catalogue-note__inner {
