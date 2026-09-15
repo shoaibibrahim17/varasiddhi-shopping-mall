@@ -33,13 +33,9 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     <p class="product-card__cat">{item.category}</p>
     <h3 class="product-card__name"><a href={`/products/${item.id}`}>{item.title}</a></h3>
     <span class="product-card__index">{item.tag}</span>
-    <div class="product-card__commerce">
-      <p class="product-card__price">Price on WhatsApp</p>
-      <span class="product-card__range" aria-label={`Indicative price range ${item.priceRange}`}>{item.priceRange}</span>
+    <div class="product-card__tag">
+      <span class="product-card__tag-text">{item.tag}</span>
     </div>
-    <button type="button" class="product-card__add" data-cart-add={item.id}>
-      Add to enquiry
-    </button>
   </div>
 </article>
 
@@ -68,7 +64,7 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--color-espresso);
+    background: var(--color-ink);
     opacity: 0.08;
   }
 
@@ -89,7 +85,7 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
   .product-card__meta,
   .product-card__index,
   .product-card__cat {
-    color: #7A675F;
+    color: var(--color-description);
     font-family: var(--font-sans);
     font-size: 0.6rem;
     font-weight: 400;
@@ -99,7 +95,7 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
   }
 
   .product-card__index {
-    color: #9F8F7D;
+    color: var(--color-muted-gold);
     font-size: 0.55rem;
     letter-spacing: 0.16em;
     margin-top: 0.12rem;
@@ -127,7 +123,7 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
   }
 
   .product-card__price {
-    color: #5A4E49;
+    color: var(--color-description);
     font-family: var(--font-serif);
     font-size: 0.86rem;
     font-style: italic;
@@ -150,36 +146,27 @@ const cropStyle = `--crop-x: ${item.crop.x}%; --crop-y: ${item.crop.y}%; --crop-
     white-space: nowrap;
   }
 
-  .product-card__add {
+  .product-card__tag {
     display: inline-flex;
-    min-height: 2.75rem;
-    width: 100%;
     align-items: center;
     justify-content: center;
-    margin-top: 0.42rem;
-    border: 1px solid #171512;
-    background: transparent;
-    color: #171512;
-    cursor: pointer;
+    margin-top: 0.3rem;
+    padding: 0.3rem 0.72rem;
+    background: rgba(167, 122, 70, 0.08);
+    color: var(--color-muted-gold);
     font-family: var(--font-sans);
-    font-size: 0.64rem;
-    font-weight: 400;
+    font-size: 0.6rem;
+    font-weight: 600;
     letter-spacing: 0.14em;
     line-height: 1;
     text-transform: uppercase;
     border-radius: 0;
-    transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out);
+    border: 1px solid rgba(167, 122, 70, 0.18);
   }
 
-  .product-card__add:hover,
-  .product-card__add:focus-visible {
-    border-color: #171512;
-    background: #171512;
-    color: #F5EFEB;
-  }
-
-  .product-card__add:disabled {
-    cursor: default;
-    opacity: 0.72;
+  .product-card__tag-text {
+    display: block;
+    text-align: center;
+    width: 100%;
   }
 </style>

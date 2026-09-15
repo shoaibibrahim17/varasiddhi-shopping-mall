@@ -90,8 +90,8 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     top: 0;
     z-index: 40;
     border-bottom: 1px solid rgba(109, 63, 62, 0.18);
-    background: linear-gradient(180deg, #F8F1EA 0%, #F2E8DF 100%);
-    color: #3E1F22;
+    background: linear-gradient(180deg, var(--color-paper) 0%, var(--color-stone) 100%);
+    color: var(--color-ink);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -116,7 +116,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     align-items: center;
     justify-self: center;
     min-width: 0;
-    color: #3E1F22;
+    color: var(--color-ink);
     text-decoration: none;
   }
 
@@ -137,7 +137,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
   .desktop-nav a {
     position: relative;
     padding-block: 0.7rem;
-    color: #3E1F22;
+    color: var(--color-ink);
     font-size: 0.7rem;
     font-weight: 650;
     letter-spacing: 0.08em;
@@ -155,7 +155,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     height: 1px;
     transform: scaleX(0);
     transform-origin: right;
-    background: #A77A46;
+    background: var(--color-muted-gold);
     content: "";
     transition: transform 260ms var(--ease-out);
   }
@@ -183,7 +183,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     padding: 0.7rem 0.85rem;
     border: 1px solid rgba(76, 42, 44, 0.25);
     background: rgba(255, 255, 255, 0.12);
-    color: #3E1F22;
+    color: var(--color-ink);
     border-radius: 0;
     text-decoration: none;
     cursor: pointer;
@@ -194,7 +194,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
   .icon-btn:focus-visible {
     border-color: rgba(167, 122, 70, 0.8);
     background: rgba(167, 122, 70, 0.08);
-    color: #3E1F22;
+    color: var(--color-ink);
   }
 
   .icon-btn__label {
@@ -224,7 +224,7 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     min-width: 1.08rem;
     height: 1.08rem;
     padding-inline: 0.28rem;
-    background: #A77A46;
+    background: var(--color-muted-gold);
     color: #fff;
     font-size: 0.56rem;
     font-weight: 750;
@@ -237,9 +237,9 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
     justify-content: center;
     min-height: 2.5rem;
     padding: 0.72rem 1rem;
-    border: 1px solid #A77A46;
+    border: 1px solid var(--color-muted-gold);
     background: rgba(167, 122, 70, 0.08);
-    color: #3E1F22;
+    color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 0.62rem;
     letter-spacing: 0.12em;
@@ -251,8 +251,8 @@ const whatsappHref = `https://wa.me/${site.whatsappNumber}`;
 
   .header-whatsapp:hover,
   .header-whatsapp:focus-visible {
-    background: #A77A46;
-    border-color: #A77A46;
+    background: var(--color-muted-gold);
+    border-color: var(--color-muted-gold);
     color: #fff;
   }
 

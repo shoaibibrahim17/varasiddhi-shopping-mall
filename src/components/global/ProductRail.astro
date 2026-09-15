@@ -36,6 +36,11 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
   <div class="product-rail__track no-scrollbar" data-carousel-track data-lenis-prevent>
     {items.map((item, i) => (
       <div class="product-rail__slide" data-carousel-item>
+        {i === 0 && (
+          <span class="product-rail__featured-badge">
+            <span class="visually-hidden">Featured edit</span>
+          </span>
+        )}
         <ProductCard item={item} eager={i === 0} />
       </div>
     ))}
@@ -118,10 +123,10 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
   }
 
   .product-rail__counter {
-    color: #726660;
-    font-family: var(--font-serif);
+    color: var(--color-description);
+    font-family: var(--font-sans);
     font-size: 0.74rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     white-space: nowrap;
   }

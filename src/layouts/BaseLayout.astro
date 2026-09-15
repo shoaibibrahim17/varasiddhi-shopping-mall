@@ -73,45 +73,55 @@ for (const item of catalogue) {
       import "../scripts/navigation";
       import "../scripts/cart";
     </script>
-  </body>
+  <!-- impeccable-live-start -->
+<script is:inline src="http://localhost:4321/live.js"></script>
+<!-- impeccable-live-end -->
+</body>
 </html>
 
 <style>
   .topbar {
     background: var(--color-espresso);
     color: var(--color-background);
-    height: 2rem;
-    line-height: 2rem;
+    min-height: 2.2rem;
+    line-height: 1.3;
     overflow: hidden;
   }
 
   .topbar__marquee {
-    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.2rem;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   }
 
   .topbar__track {
     display: flex;
-    width: max-content;
-    animation: topbar-scroll 22s linear infinite;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    width: 100%;
+    padding-block: 0.3rem;
+    animation: none;
   }
 
   .topbar__item {
     flex-shrink: 0;
-    padding-inline: 0.5rem;
+    padding-inline: 0.25rem;
     font-size: 0.67rem;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
+    opacity: 0.92;
   }
 
-  @keyframes topbar-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
+  @media (prefers-reduced-motion: reduce) {
+    .topbar__track {
+      animation: none;
     }
   }
 </style>
