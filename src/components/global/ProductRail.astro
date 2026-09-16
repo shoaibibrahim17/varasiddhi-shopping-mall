@@ -133,6 +133,7 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
 
   .product-rail__track {
     display: flex;
+    align-items: flex-start;
     gap: clamp(0.75rem, 1.5vw, 1.2rem);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -142,9 +143,17 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
   }
 
   .product-rail__slide {
+    display: grid;
+    align-items: stretch;
     flex: 0 0 min(45vw, 13.5rem);
+    min-width: 0;
     scroll-snap-align: start;
     background: var(--color-paper);
+  }
+
+  .product-rail__slide :global(.product-card) {
+    width: 100%;
+    align-self: flex-start;
   }
 
   @media (max-width: 47.99rem) {
