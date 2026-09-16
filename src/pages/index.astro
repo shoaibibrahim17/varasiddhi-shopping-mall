@@ -115,9 +115,9 @@ const newIn = [
                 <p class="hero__eyebrow">{slide.campaign} / {slide.edition}</p>
               </div>
               {i === 0 ? (
-                <h1 class="hero__title hero__title--brand">
-                  <span>Shri Varasiddhi</span>
-                  <em>Shopping Mall</em>
+                <h1 class="hero__title hero__title--brand" aria-label="Shri Varasiddhi Shopping Mall">
+                  <span class="hero__brand-main">Shri Varasiddhi</span>
+                  <em class="hero__brand-sub">Shopping Mall</em>
                 </h1>
               ) : (
                 <h2 class="hero__title">{slide.title}</h2>
@@ -331,22 +331,39 @@ const newIn = [
   }
 
   .hero__title--brand {
-    max-width: 6.4ch;
+    max-width: 6.8ch;
+    display: grid;
+    gap: 0.18rem;
   }
 
-  .hero__title--brand span,
-  .hero__title--brand em {
-    display: block;
+.hero__brand-main {
+    color: var(--color-paper);
+    font-family: 'Dancing Script', 'Great Vibes', 'Playfair Display', var(--font-display);
+    font-size: clamp(3.2rem, 5.5vw, 5.8rem);
+    font-weight: 500;
+    letter-spacing: -.065em;
+    line-height: 0.8;
+    text-shadow: 0 .75rem 2rem color-mix(in srgb, var(--color-espresso) 40%, transparent), 0 0 1rem var(--color-gold) 30%, 0 0 2rem var(--color-gold) 15%;
   }
 
-  .hero__title--brand em {
-    margin-top: 0.42rem;
-    color: var(--color-gold);
+  .hero__brand-main {
+    color: var(--color-paper);
+    font-family: var(--font-display);
+    font-size: clamp(2.9rem, 5vw, 5.2rem);
+    font-weight: 500;
+    letter-spacing: -0.065em;
+    line-height: 0.82;
+    text-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--color-espresso) 40%, transparent);
+  }
+
+  .hero__brand-sub {
+    margin-top: 0.12rem;
+    color: color-mix(in srgb, var(--color-gold) 88%, var(--color-paper) 12%);
     font-family: var(--font-sans);
-    font-size: clamp(0.5rem, 0.9vw, 0.72rem);
+    font-size: clamp(0.56rem, 0.9vw, 0.78rem);
     font-style: normal;
-    font-weight: 600;
-    letter-spacing: 0.22em;
+    font-weight: 700;
+    letter-spacing: 0.28em;
     line-height: 1.2;
     text-transform: uppercase;
   }
