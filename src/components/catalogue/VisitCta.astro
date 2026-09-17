@@ -14,10 +14,10 @@ interface Props {
 
 const {
   eyebrow = "Visit",
-  title = "See the full wardrobe story in person.",
-  copy = "The Adilabad mall houses the complete Shri Varasiddhi collection. Hours and contact will be published when verified.",
+  title = "See it properly in Adilabad.",
+  copy = "Visit the mall to see the collection beyond these previews.",
   href = "/visit",
-  ctaLabel = "Visit details",
+  ctaLabel = "See store details",
 } = Astro.props;
 ---
 
@@ -55,7 +55,7 @@ const {
 
 <style>
   .visit-cta {
-    padding-block: var(--section-space);
+    padding-block: clamp(3.5rem, 7vw, 6rem);
     border-top: 1px solid var(--color-line);
     background: var(--color-paper);
   }

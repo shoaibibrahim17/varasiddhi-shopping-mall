@@ -9,13 +9,14 @@ interface Props {
   items: CatalogueItem[];
   viewAllHref?: string;
   viewAllLabel?: string;
+  mobileHint?: boolean;
 }
 
-const { title, items, viewAllHref, viewAllLabel = "View all" } = Astro.props;
+const { title, items, viewAllHref, viewAllLabel = "View all", mobileHint = false } = Astro.props;
 const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
 ---
 
-<section class="product-rail" data-carousel data-carousel-manual aria-labelledby={headingId}>
+<section class="product-rail" data-carousel data-carousel-manual data-reveal-section aria-labelledby={headingId}>
   <div class="product-rail__header container">
     <h2 class="product-rail__title" id={headingId}>{title}</h2>
     <div class="product-rail__controls">
@@ -31,6 +32,7 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
         <button type="button" data-carousel-next aria-label={`Next ${title}`}>&rarr;</button>
       </div>
     </div>
+    {mobileHint && <span class="product-rail__mobile-hint">Swipe for more</span>}
   </div>
 
   <div class="product-rail__track no-scrollbar" data-carousel-track data-lenis-prevent>
@@ -49,7 +51,7 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
 
 <style>
   .product-rail {
-    padding-block: clamp(2.4rem, 5vw, 4.6rem);
+    padding-block: clamp(3rem, 6vw, 5rem);
     border-top: 1px solid var(--color-line);
     background: var(--color-paper);
     color: var(--color-ink);
@@ -60,21 +62,26 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: clamp(1rem, 2.4vw, 1.8rem);
+    margin-bottom: clamp(1.3rem, 2.8vw, 2rem);
   }
 
   .product-rail__title {
-    font-family: var(--font-display);
+    font-family: var(--font-heading) !important;
     font-size: clamp(1.65rem, 3vw, 2.65rem);
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.96;
+    text-transform: uppercase;
   }
 
   .product-rail__controls {
     display: flex;
     align-items: center;
     gap: 1rem;
+  }
+
+  .product-rail__mobile-hint {
+    display: none;
   }
 
   .product-rail__viewall {
@@ -138,22 +145,39 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-inline: var(--gutter);
+    padding-top: 1.05rem;
     padding-bottom: 0.5rem;
     background: transparent;
   }
 
   .product-rail__slide {
+    position: relative;
     display: grid;
     align-items: stretch;
-    flex: 0 0 min(45vw, 13.5rem);
+    flex: 0 0 min(42vw, 10.5rem);
     min-width: 0;
     scroll-snap-align: start;
     background: var(--color-paper);
   }
 
+  .product-rail__featured-badge {
+    position: absolute;
+    top: -0.95rem;
+    left: 0;
+    z-index: 1;
+    color: var(--color-muted-gold);
+    font-family: var(--font-sans);
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   .product-rail__slide :global(.product-card) {
     width: 100%;
-    align-self: flex-start;
+    height: 100%;
+    align-self: stretch;
   }
 
   @media (max-width: 47.99rem) {
@@ -164,6 +188,15 @@ const headingId = `rail-${title.replace(/\s+/g, "-").toLowerCase()}`;
 
     .product-rail__arrows {
       display: none;
+    }
+
+    .product-rail__mobile-hint {
+      display: block;
+      margin-top: -0.45rem;
+      color: var(--color-description);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
   }
 

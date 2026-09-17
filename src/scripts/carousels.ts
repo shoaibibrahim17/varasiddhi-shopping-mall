@@ -1,4 +1,5 @@
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+const mobileQuery = window.matchMedia("(max-width: 47.99rem)");
 const AUTOPLAY_INTERVAL = 5200;
 const RESUME_DELAY = 7000;
 
@@ -72,7 +73,7 @@ const initCarousel = (carousel: HTMLElement) => {
   };
 
   const startAutoplay = () => {
-    if (reducedMotionQuery.matches || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
+    if (reducedMotionQuery.matches || (carousel.hasAttribute("data-static-mobile") && mobileQuery.matches) || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
       return;
     }
 
@@ -170,6 +171,11 @@ const initCarousel = (carousel: HTMLElement) => {
     } else {
       startAutoplay();
     }
+  });
+
+  mobileQuery.addEventListener("change", () => {
+    stopAutoplay();
+    startAutoplay();
   });
 
   updateCounter();

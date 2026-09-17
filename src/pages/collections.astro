@@ -35,8 +35,8 @@ const menswearEdit = [
   <main id="main-content">
     <CatalogueHero
       eyebrow="Collections"
-      title="The current catalogue, organized as editorial chapters."
-      copy="A visual directory for the site’s major fashion directions: sarees, occasion, menswear, wedding and everyday casual."
+      title="Find your way through the collection."
+      copy="Start with sarees, occasionwear, menswear, wedding dressing or everyday layers, then follow the pieces that hold your attention."
       item={getCatalogueItem("kalamkari-cotton-saree")}
       cta={{ label: "Browse chapters", href: "#saree-edit" }}
       tone="paper"
@@ -44,7 +44,7 @@ const menswearEdit = [
     />
     <CategoryNav items={[
       { label: "The Saree Edit", href: "#saree-edit", detail: "Craft and festive" },
-      { label: "Occasion", href: "#occasion-edit", detail: "Celebration dressing" },
+      { label: "Occasion", href: "#occasion-edit", detail: "For family events" },
       { label: "Menswear", href: "#menswear-edit", detail: "Casual to formal" },
       { label: "Everyday", href: "#everyday-edit", detail: "Casual previews" },
       { label: "Visit", href: "#visit", detail: "Adilabad" },
@@ -52,8 +52,8 @@ const menswearEdit = [
     <CatalogueLook
       id="saree-edit"
       eyebrow="The Saree Edit"
-      title="Sarees remain the visual signature."
-      copy="A compact route into silk, brocade, festive and cotton saree directions."
+      title="Silk, brocade, cotton and colour."
+      copy="A closer look at the sarees, from festive borders to easy cotton weaves."
       items={sareeEdit}
       tone="ivory"
       layout="feature"
@@ -62,8 +62,8 @@ const menswearEdit = [
     <CatalogueLook
       id="occasion-edit"
       eyebrow="Occasion"
-      title="Celebrationwear across women and men."
-      copy="A combined chapter for dressed-up occasions without inventing campaigns or dates."
+      title="Clothes for the gathering on the calendar."
+      copy="Anarkalis, shararas, kurtas and sherwanis for the occasions that bring everyone together."
       items={occasionEdit}
       tone="paper"
       layout="mosaic"
@@ -72,8 +72,8 @@ const menswearEdit = [
     <CatalogueLook
       id="menswear-edit"
       eyebrow="Menswear"
-      title="Menswear moves from minimal to ceremonial."
-      copy="The men’s chapter uses the strongest expanded imagery without flattening it into a product grid."
+      title="From an easy shirt to a wedding layer."
+      copy="A considered mix of casual pieces, ethnic sets, tailoring and sherwanis."
       items={menswearEdit}
       tone="espresso"
       layout="feature"

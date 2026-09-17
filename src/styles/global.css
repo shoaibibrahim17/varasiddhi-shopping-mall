@@ -1,9 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Instrument+Sans:wght@400;500;600&display=swap');
+@import '@fontsource-variable/montserrat/index.css';
+@import '@fontsource-variable/playfair-display/index.css';
+@import '@fontsource/lato/300.css';
+@import '@fontsource/lato/400.css';
+@import '@fontsource/lato/700.css';
+@import '@fontsource/great-vibes/400.css';
+@import '@fontsource/noto-serif-telugu/400.css';
+@import '@fontsource/noto-serif-telugu/500.css';
+@import '@fontsource/noto-serif-telugu/600.css';
 @import "tailwindcss";
 
 @theme {
-  --font-serif: 'Bodoni Moda', serif;
-  --font-sans: 'Instrument Sans', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-editorial: 'Playfair Display', Georgia, serif;
+  --font-heading: 'Montserrat', 'Century Gothic', sans-serif;
+  --font-interface: 'Lato', Arial, sans-serif;
+  --font-form: 'Lato', Arial, sans-serif;
+  --font-sans: 'Lato', Arial, sans-serif;
   --color-background: #FCFAF5;
   --color-card: #F7F3EA;
   --color-title: #171512;
@@ -14,12 +26,21 @@
   --color-crimson-deep: #6F141E;
   --color-border: #E4DACB;
   --color-muted-gold: #A78035;
+  --color-overlay: rgb(23 21 18 / 50%);
+  --color-header-border: rgb(76 42 44 / 25%);
+  --color-header-border-strong: rgb(76 42 44 / 35%);
+  --color-soft-gold: rgb(167 122 70 / 8%);
+  --color-soft-border: rgb(23 21 18 / 8%);
 }
 
 :root {
   color-scheme: light;
-  --font-serif: 'Bodoni Moda', serif;
-  --font-sans: 'Instrument Sans', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-editorial: 'Playfair Display', Georgia, serif;
+  --font-heading: 'Montserrat', 'Century Gothic', sans-serif;
+  --font-interface: 'Lato', Arial, sans-serif;
+  --font-form: 'Lato', Arial, sans-serif;
+  --font-sans: 'Lato', Arial, sans-serif;
   --color-background: #FCFAF5;
   --color-card: #F7F3EA;
   --color-title: #171512;
@@ -30,7 +51,12 @@
   --color-crimson-deep: #6F141E;
   --color-border: #E4DACB;
   --color-muted-gold: #A78035;
-  --font-display: 'Bodoni Moda', serif;
+  --color-overlay: rgb(23 21 18 / 50%);
+  --color-header-border: rgb(76 42 44 / 25%);
+  --color-header-border-strong: rgb(76 42 44 / 35%);
+  --color-soft-gold: rgb(167 122 70 / 8%);
+  --color-soft-border: rgb(23 21 18 / 8%);
+  --font-display: 'Montserrat', 'Century Gothic', sans-serif;
   --color-paper: #FCFAF5;
   --color-stone: #EEE4D4;
   --color-ink: #171512;
@@ -73,11 +99,30 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-serif) !important;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
+h1, h2, h3, h4,
+.section-title,
+.display-title,
+.product-rail__title {
+  font-family: var(--font-display) !important;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.font-serif,
+.editorial-serif {
+  font-family: var(--font-display) !important;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-family: var(--font-display) !important;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
 }
 
 main {
@@ -102,6 +147,12 @@ select,
 summary {
   color: inherit;
   font: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-form);
 }
 
 button,
@@ -170,7 +221,7 @@ p {
 }
 
 .page-section {
-  padding-block: var(--section-space);
+  padding-block: clamp(3.5rem, 7vw, 6rem);
 }
 
 .folio-label {
@@ -204,18 +255,18 @@ p {
 
 .section-title {
   max-width: 15ch;
-  font-family: var(--font-display);
-  font-size: clamp(2.45rem, 4.8vw, 4.65rem);
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 0.97;
+  font-family: var(--font-display) !important;
+  font-size: clamp(2.2rem, 4.5vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1;
 }
 
 .section-copy {
   max-width: var(--measure);
   color: var(--color-description);
   font-size: clamp(1rem, 1.4vw, 1.125rem);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .button-primary,
@@ -394,7 +445,7 @@ p {
   }
 
   .section-title {
-    font-size: clamp(2.2rem, 10vw, 3.2rem);
+    font-size: clamp(2.15rem, 9.5vw, 3.1rem);
   }
 }
 
@@ -407,8 +458,8 @@ p {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
     animation-iteration-count: 1 !important;
   }
 }
