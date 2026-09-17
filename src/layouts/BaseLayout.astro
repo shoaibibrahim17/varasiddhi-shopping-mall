@@ -97,12 +97,20 @@ for (const item of catalogue) {
   .topbar__track {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    width: 100%;
+    gap: 2.2rem;
+    width: max-content;
     padding-block: 0.3rem;
-    animation: none;
+    animation: topbar-marquee 22s linear infinite;
+  }
+
+  @keyframes topbar-marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .topbar__item {
@@ -119,6 +127,8 @@ for (const item of catalogue) {
   @media (prefers-reduced-motion: reduce) {
     .topbar__track {
       animation: none;
+      justify-content: center;
+      width: 100%;
     }
   }
 </style>

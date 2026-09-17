@@ -14,7 +14,7 @@ export const site = {
    */
   whatsappNumber: "8732223101",
 
-  announcement: "Catalogue preview now live | WhatsApp enquiry enabled | Online ordering integration planned",
+  announcement: "Ganesh Chaturthi edit | Festive pieces to enquire about on WhatsApp",
 
   /** Payment notes shown in the enquiry bag and on product pages. */
   payments: {

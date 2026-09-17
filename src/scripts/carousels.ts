@@ -18,7 +18,6 @@ const initCarousel = (carousel: HTMLElement) => {
   let activeIndex = 0;
   let autoplayId = 0;
   let resumeId = 0;
-  let isPointerInside = false;
   let isFocusInside = false;
   let isInteracting = false;
   let scrollRaf = 0;
@@ -73,7 +72,7 @@ const initCarousel = (carousel: HTMLElement) => {
   };
 
   const startAutoplay = () => {
-    if (reducedMotionQuery.matches || (carousel.hasAttribute("data-static-mobile") && mobileQuery.matches) || document.hidden || isPointerInside || isFocusInside || isInteracting || autoplayId) {
+    if (reducedMotionQuery.matches || (carousel.hasAttribute("data-static-mobile") && mobileQuery.matches) || document.hidden || isFocusInside || isInteracting || autoplayId) {
       return;
     }
 
@@ -133,16 +132,6 @@ const initCarousel = (carousel: HTMLElement) => {
       isInteracting = true;
       pauseAutoplay();
     }, { passive: true });
-  });
-
-  carousel.addEventListener("pointerenter", () => {
-    isPointerInside = true;
-    pauseAutoplay(false);
-  });
-
-  carousel.addEventListener("pointerleave", () => {
-    isPointerInside = false;
-    startAutoplay();
   });
 
   carousel.addEventListener("focusin", () => {
