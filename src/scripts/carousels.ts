@@ -1,6 +1,6 @@
 const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 const mobileQuery = window.matchMedia("(max-width: 47.99rem)");
-const AUTOPLAY_INTERVAL = 5200;
+const AUTOPLAY_INTERVAL = 3600;
 const RESUME_DELAY = 7000;
 
 const initCarousel = (carousel: HTMLElement) => {
