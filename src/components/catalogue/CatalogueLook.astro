@@ -244,11 +244,16 @@ const cropStyle = (item: CatalogueItem) => `--crop-x: ${item.crop.x}%; --crop-y:
       scroll-snap-type: x mandatory;
       padding-inline: var(--gutter);
       background: transparent;
-      grid-template-columns: minmax(14.75rem, 68vw) repeat(6, minmax(11.75rem, 50vw));
+      grid-template-columns: repeat(7, minmax(14.75rem, 68vw));
     }
 
     .look-card {
       border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    }
+
+    .look-card--lead,
+    .catalogue-look--mosaic .look-card--lead {
+      grid-column: auto;
     }
 
     .look-card--lead .look-card__image {
