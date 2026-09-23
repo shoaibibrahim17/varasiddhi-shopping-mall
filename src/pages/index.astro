@@ -8,48 +8,33 @@ import ProductRail from "../components/global/ProductRail.astro";
 import VisitCta from "../components/catalogue/VisitCta.astro";
 import StoryBubbles from "../components/home/StoryBubbles.astro";
 import SplashScreen from "../components/SplashScreen.astro";
+import desktopCampaignOne from "../assets/carousel-web-1.png";
+import desktopCampaignTwo from "../assets/carousel-web-2.png";
+import mobileCampaignOne from "../assets/mobile-carousel-01.png";
+import mobileCampaignTwo from "../assets/mobile-carousel-02.png";
 import {
-  catalogue,
   getCatalogueByCategory,
-  getCatalogueByGroup,
   getCatalogueItem,
 } from "../data/catalogue";
 
 const heroSlides = [
   {
-    id: "festive-red-saree",
-    campaign: "Adilabad",
-    edition: "Store destination",
-    eyebrow: "Store destination",
-    title: "Find the look you came for in Adilabad.",
-    copy: "Start with sarees, occasionwear or menswear here, then visit the mall to see more from each range.",
-    cta: "See the collections",
+    id: "campaign-one",
+    desktop: desktopCampaignOne,
+    mobile: mobileCampaignOne,
+    alt: "Shri Varasiddhi fashion campaign artwork",
     href: "/catalogue",
+    linkLabel: "Explore the Shri Varasiddhi collection",
   },
   {
-    id: "sparkle-pink-coord",
-    campaign: "Occasion Edit",
-    edition: "Family occasions",
-    eyebrow: "Occasion edit",
-    title: "For the days that deserve more.",
-    copy: "Anarkalis, shararas and sherwanis for family celebrations, weddings and evenings that call for something special.",
-    cta: "See occasionwear",
-    href: "/occasion",
+    id: "campaign-two",
+    desktop: desktopCampaignTwo,
+    mobile: mobileCampaignTwo,
+    alt: "Shri Varasiddhi fashion campaign artwork",
+    href: "/collections",
+    linkLabel: "Explore the featured collections",
   },
-  {
-    id: "classic-white-kurta",
-    campaign: "Menswear Edit",
-    edition: "Ethnic and formal",
-    eyebrow: "Menswear",
-    title: "Well-cut clothes for every kind of day.",
-    copy: "Kurtas, shirts, tailoring and wedding layers, brought together for weekday plans and family occasions.",
-    cta: "See menswear",
-    href: "/men",
-  },
-].map((slide) => ({
-  ...slide,
-  item: catalogue.find((c) => c.id === slide.id)!,
-}));
+];
 
 const categoryTiles = [
   { label: "Sarees", href: "/sarees", item: getCatalogueItem("designer-brocade-saree"), detail: "Silk, brocade and cotton" },
@@ -61,12 +46,6 @@ const sareeEdit = [
   ...getCatalogueByCategory("Sarees"),
   ...getCatalogueByCategory("Cotton Sarees"),
 ].slice(0, 7);
-const occasionEdit = [
-  getCatalogueItem("royal-blue-anarkali"),
-  getCatalogueItem("champagne-sherwani-set"),
-  getCatalogueItem("mustard-sharara-set"),
-];
-const menEdit = getCatalogueByGroup("Men").slice(0, 8);
 const newIn = [
   getCatalogueItem("sparkle-pink-coord"),
   getCatalogueItem("maroon-silk-saree"),
@@ -90,45 +69,22 @@ const newIn = [
       <div class="hero__track" data-carousel-track>
         {heroSlides.map((slide, i) => (
           <article class="hero__slide" data-carousel-item>
-            <div class="hero__poster-mark" aria-hidden="true">
-              <span class="hero__poster-index">{String(i + 1).padStart(2, "0")}</span>
-              <span class="hero__poster-rule"></span>
-              <span class="hero__poster-copy">{slide.campaign}</span>
-            </div>
-            <div class="hero__media" aria-hidden="true">
-              <span class="hero__image asset-frame asset-frame--fashion-crop" style={`--crop-x: ${slide.item.crop.x}%; --crop-y: ${slide.item.crop.y}%; --crop-scale: ${slide.item.crop.scale};`}>
-                <Image
-                  class="asset-frame__image"
-                  src={slide.item.image}
-                  alt=""
-                  widths={[720, 1080, 1440, 1920]}
-                  sizes="100vw"
-                  quality={82}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  fetchpriority={i === 0 ? "high" : undefined}
-                />
-              </span>
-            </div>
-            <div class="hero__content container">
-              <div class="hero__campaign-tag">
-                <span class="hero__campaign-dot" aria-hidden="true"></span>
-                <p class="hero__eyebrow">{slide.campaign} / {slide.edition}</p>
-              </div>
-              {i === 0 ? (
-                <h1 class="hero__title hero__title--brand" aria-label="Shri Varasiddhi Shopping Mall">
-                  <span class="hero__brand-telugu" aria-hidden="true">శ్రీ వరసిద్ధి</span>
-                  <span class="hero__brand-main">Shri Varasiddhi</span>
-                  <em class="hero__brand-sub">Shopping Mall</em>
-                </h1>
-              ) : (
-                <h2 class="hero__title">{slide.title}</h2>
-              )}
-              <p class="hero__copy">{slide.copy}</p>
-              <div class="hero__actions">
-                <a class="hero__cta" href={slide.href}>{slide.cta}</a>
-                <a class="hero__link" href="/visit">Visit store</a>
-              </div>
-            </div>
+            <picture class="hero__media">
+              <source media="(max-width: 47.99rem)" srcset={slide.mobile.src} />
+              <Image
+                class="hero__image"
+                src={slide.desktop}
+                alt={slide.alt}
+                widths={[720, 1080, 1440, 1920]}
+                sizes="100vw"
+                quality={86}
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchpriority={i === 0 ? "high" : undefined}
+              />
+            </picture>
+            <a class="hero__explore" href={slide.href} aria-label={slide.linkLabel}>
+              <span class="sr-only">{slide.linkLabel}</span>
+            </a>
           </article>
         ))}
       </div>
@@ -207,8 +163,7 @@ const newIn = [
 
   .hero__slide {
     position: relative;
-    display: grid;
-    min-height: clamp(26rem, 43vw, 34rem);
+    aspect-ratio: 1672 / 941;
     flex: 0 0 100%;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--color-gold) 75%, transparent);
@@ -222,88 +177,23 @@ const newIn = [
   }
 
   .hero__image {
-    --asset-ratio: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .hero__media::after {
+  .hero__explore {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(to right, color-mix(in srgb, var(--color-espresso) 82%, transparent), color-mix(in srgb, var(--color-espresso) 42%, transparent) 42%, transparent 76%),
-      linear-gradient(to bottom, color-mix(in srgb, var(--color-espresso) 24%, transparent), color-mix(in srgb, var(--color-espresso) 18%, transparent));
-    content: "";
+    z-index: 1;
+    display: block;
   }
 
-  .hero__slide::before {
-    position: absolute;
-    inset: clamp(0.55rem, 1.4vw, 1.1rem);
-    z-index: 2;
-    border: 1px solid color-mix(in srgb, var(--color-paper) 64%, transparent);
-    content: "";
-    pointer-events: none;
+  .hero__explore:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: -0.5rem;
   }
 
-  .hero__poster-mark {
-    position: absolute;
-    top: clamp(1.8rem, 4vw, 3.5rem);
-    right: clamp(1.8rem, 4vw, 3.5rem);
-    z-index: 2;
-    display: grid;
-    justify-items: end;
-    gap: 0.6rem;
-    color: color-mix(in srgb, var(--color-paper) 76%, transparent);
-    text-align: right;
-  }
-
-  .hero__poster-index {
-    color: var(--color-gold);
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3.8rem);
-    font-weight: 500;
-    letter-spacing: -0.04em;
-    line-height: 0.8;
-  }
-
-  .hero__poster-rule {
-    width: 3.5rem;
-    height: 1px;
-    background: color-mix(in srgb, var(--color-paper) 55%, transparent);
-  }
-
-  .hero__poster-copy {
-    max-width: 8rem;
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .hero__content {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    align-content: center;
-    gap: 0.75rem;
-    padding-block: clamp(3.5rem, 7vw, 5.5rem);
-    padding-inline: clamp(1.25rem, 6vw, 6.25rem);
-  }
-
-  .hero__campaign-tag {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .hero__campaign-dot {
-    width: 0.42rem;
-    height: 0.42rem;
-    border-radius: 50%;
-    background: var(--color-gold);
-    box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--color-gold) 18%, transparent);
-  }
-
-  .hero__eyebrow,
   .category-shop__eyebrow,
   .catalogue-note p {
     color: var(--color-gold);
@@ -312,105 +202,6 @@ const newIn = [
     letter-spacing: 0.12em;
     line-height: 1.2;
     text-transform: uppercase;
-  }
-
-  .hero__title {
-    max-width: 8.5ch;
-    font-family: var(--font-display);
-    font-size: clamp(2.15rem, 4vw, 4rem);
-    font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 0.84;
-  }
-
-  .hero__title--brand {
-    max-width: 6.8ch;
-    display: grid;
-    gap: 0.18rem;
-    position: relative;
-  }
-
-  .hero__brand-telugu {
-    position: absolute;
-    top: 0.14em;
-    left: 0.28em;
-    z-index: 0;
-    color: color-mix(in srgb, var(--color-gold) 74%, var(--color-espresso) 26%);
-    font-family: 'Noto Serif Telugu', serif;
-    font-size: clamp(2.9rem, 5.2vw, 5.35rem);
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-    opacity: 0.2;
-    transform: translate(0.08em, 0.12em) rotate(-3deg);
-    transform-origin: left center;
-    white-space: nowrap;
-  }
-
-  .hero__brand-main {
-    color: color-mix(in srgb, var(--color-paper) 92%, var(--color-gold) 8%);
-    font-family: 'Great Vibes', var(--font-serif);
-    font-size: clamp(3.45rem, 6vw, 6.25rem);
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0.005em;
-    line-height: 0.86;
-    text-shadow:
-      0 0.75rem 2rem color-mix(in srgb, var(--color-espresso) 48%, transparent),
-      0 1px 0 color-mix(in srgb, var(--color-gold) 48%, transparent);
-  }
-
-  .hero__brand-sub {
-    margin-top: 0.12rem;
-    color: color-mix(in srgb, var(--color-gold) 88%, var(--color-paper) 12%);
-    font-family: var(--font-sans);
-    font-size: clamp(0.56rem, 0.9vw, 0.78rem);
-    font-style: normal;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    line-height: 1.2;
-    text-transform: uppercase;
-  }
-
-  .hero__copy {
-    max-width: 31rem;
-    color: color-mix(in srgb, var(--color-paper) 78%, transparent);
-    font-size: clamp(0.96rem, 1.4vw, 1.12rem);
-    line-height: 1.55;
-  }
-
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem 1rem;
-    align-items: center;
-    margin-top: 0.3rem;
-  }
-
-  .hero__cta,
-  .hero__link {
-    display: inline-flex;
-    min-height: 2.8rem;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 760;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  .hero__cta {
-    padding: 0.8rem 1.05rem;
-    border: 1px solid var(--color-paper);
-    background: var(--color-paper);
-    color: var(--color-espresso);
-  }
-
-  .hero__link {
-    color: var(--color-paper);
-    text-decoration: underline;
-    text-underline-offset: 0.35em;
   }
 
   .hero__controls {
@@ -462,6 +253,12 @@ const newIn = [
     font-size: 0.66rem;
     font-weight: 760;
     letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__slide {
+      aspect-ratio: 2 / 3;
+    }
   }
 
   .category-shop {

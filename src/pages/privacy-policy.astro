@@ -1,0 +1,97 @@
+---
+import Footer from "../components/global/Footer.astro";
+import Header from "../components/global/Header.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Privacy Policy | Shri Varasiddhi Shopping Mall"
+  description="Privacy information for the Shri Varasiddhi Shopping Mall catalogue website."
+>
+  <Header />
+  <main id="main-content" class="legal-page">
+    <div class="legal-page__intro">
+      <p class="legal-page__eyebrow">Legal information</p>
+      <h1>Privacy policy</h1>
+      <p>Last updated: September 23, 2026</p>
+    </div>
+
+    <div class="legal-page__body">
+      <p>This website presents the fashion catalogue of Shri Varasiddhi Shopping Mall, Adilabad. It is designed for browsing collections and sending product enquiries to the store through WhatsApp.</p>
+
+      <h2>Information we receive</h2>
+      <p>This site does not require an account and does not provide online checkout. When you choose to send an enquiry, the products you selected and the message you enter are passed to WhatsApp, an external service, using the link on this website.</p>
+
+      <h2>How information is used</h2>
+      <p>Information shared through an enquiry is used by the store team to respond to your request, discuss availability, and confirm details. The store team may receive information according to WhatsApp's own privacy practices and terms.</p>
+
+      <h2>Cookies and analytics</h2>
+      <p>This static catalogue does not currently use account cookies or first-party analytics. External services you choose to open, including WhatsApp and social media platforms, may use their own cookies or tracking technologies under their respective policies.</p>
+
+      <h2>External links</h2>
+      <p>This website links to WhatsApp, Instagram, Facebook, and other external destinations. We do not control the privacy practices, content, or security of those services. Review their policies before sharing personal information.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>This notice may be updated when the website's features or data practices change. The date at the top of this page identifies the latest version.</p>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    width: min(100%, 72rem);
+    margin-inline: auto;
+    padding: clamp(4rem, 9vw, 8rem) var(--gutter) clamp(5rem, 10vw, 9rem);
+  }
+
+  .legal-page__intro {
+    display: grid;
+    gap: 0.8rem;
+    max-width: 48rem;
+    padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .legal-page__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.7rem;
+    font-weight: 760;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .legal-page h1,
+  .legal-page h2 {
+    color: var(--color-espresso);
+  }
+
+  .legal-page h1 {
+    max-width: 8ch;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.9;
+  }
+
+  .legal-page__intro > p:last-child {
+    color: var(--color-description);
+    font-size: 0.85rem;
+  }
+
+  .legal-page__body {
+    display: grid;
+    gap: 1rem;
+    max-width: 44rem;
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .legal-page__body h2 {
+    margin-top: 2rem;
+    font-size: clamp(1.35rem, 2.8vw, 2rem);
+    line-height: 1;
+  }
+
+  .legal-page__body p {
+    color: var(--color-description);
+    line-height: 1.75;
+  }
+</style>

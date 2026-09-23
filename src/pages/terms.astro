@@ -1,0 +1,97 @@
+---
+import Footer from "../components/global/Footer.astro";
+import Header from "../components/global/Header.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Terms of Use | Shri Varasiddhi Shopping Mall"
+  description="Terms of use for the Shri Varasiddhi Shopping Mall catalogue website."
+>
+  <Header />
+  <main id="main-content" class="legal-page">
+    <div class="legal-page__intro">
+      <p class="legal-page__eyebrow">Legal information</p>
+      <h1>Terms of use</h1>
+      <p>Last updated: September 23, 2026</p>
+    </div>
+
+    <div class="legal-page__body">
+      <p>By using this website, you agree to use it responsibly and for lawful purposes. This website is a catalogue and enquiry experience for Shri Varasiddhi Shopping Mall, Adilabad; it is not an online store or checkout service.</p>
+
+      <h2>Catalogue information</h2>
+      <p>Images and descriptions are provided to help you browse the available fashion ranges. Product availability, colours, sizing, pricing, and other details may change and are confirmed by the store team through WhatsApp. A catalogue enquiry is not an order, reservation, or guarantee of availability.</p>
+
+      <h2>Enquiries and external services</h2>
+      <p>When you send an enquiry, you choose to open WhatsApp and share your selected items and message with the store team. WhatsApp and social media links are operated by third parties and are subject to their own terms and policies.</p>
+
+      <h2>Intellectual property</h2>
+      <p>Unless stated otherwise, the website structure, written content, branding, and visual presentation belong to Shri Varasiddhi Shopping Mall or are used with permission. Do not reproduce, redistribute, or commercially use website content without permission.</p>
+
+      <h2>Availability and changes</h2>
+      <p>We aim to keep the catalogue useful, but the website may be updated, interrupted, or changed without notice. We may add, remove, or revise content as the catalogue and website develop.</p>
+
+      <h2>Limitation</h2>
+      <p>The website is provided for general catalogue and enquiry purposes. Information on the site should be confirmed with the store team before you make a purchase or visit based on a specific product expectation.</p>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    width: min(100%, 72rem);
+    margin-inline: auto;
+    padding: clamp(4rem, 9vw, 8rem) var(--gutter) clamp(5rem, 10vw, 9rem);
+  }
+
+  .legal-page__intro {
+    display: grid;
+    gap: 0.8rem;
+    max-width: 48rem;
+    padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .legal-page__eyebrow {
+    color: var(--color-muted-gold);
+    font-size: 0.7rem;
+    font-weight: 760;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .legal-page h1,
+  .legal-page h2 {
+    color: var(--color-espresso);
+  }
+
+  .legal-page h1 {
+    max-width: 8ch;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.9;
+  }
+
+  .legal-page__intro > p:last-child {
+    color: var(--color-description);
+    font-size: 0.85rem;
+  }
+
+  .legal-page__body {
+    display: grid;
+    gap: 1rem;
+    max-width: 44rem;
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .legal-page__body h2 {
+    margin-top: 2rem;
+    font-size: clamp(1.35rem, 2.8vw, 2rem);
+    line-height: 1;
+  }
+
+  .legal-page__body p {
+    color: var(--color-description);
+    line-height: 1.75;
+  }
+</style>
